@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ZNAPP! | Be a Road Hero</title>
-  <meta name="description" content="Join the ZNAPP! driver community and become a Road Hero. Fast onboarding, clear earnings, and a local community that supports you." />
+  <meta name="description" content="ZNAPP! is a roads-first rideshare network for cities and municipalities. Join local routes, move people and goods, and get paid clearly for every mile." />
   <link rel="icon" type="image/png" href="Favicon - ZNAPP.png" sizes="32x32" />
   <link rel="apple-touch-icon" href="Favicon - ZNAPP.png" />
   <link rel="stylesheet" href="styles.css" />
@@ -165,8 +165,8 @@
         <!-- Right: headline + signup -->
         <div class="hero-signup">
           <div class="hero-badge">Driver Community</div>
-          <h1>Join <span class="accent">ZNAPP!</span> and become a <span class="accent">Road Hero</span></h1>
-          <p class="hero-sub">Fast onboarding, clear earnings, and a local driver community that has your back.</p>
+          <h1>Drive your city with <span class="accent">ZNAPP!</span></h1>
+          <p class="hero-sub">A rideshare built around roads, routes, and municipalities—not just apps. Get matched to local trips, see every dollar, and stay close to home.</p>
           <form class="signup-form" action="#" method="post">
             <label class="sr-only" for="hero-email">Email address</label>
             <input id="hero-email" name="email" type="email" placeholder="Enter your email address" required />
@@ -188,7 +188,7 @@
           <div class="why-left">
             <span class="section-label">Our story</span>
             <h2>Why be a Road Hero with <span class="accent">ZNAPP!</span>?</h2>
-            <p class="why-tagline">A driver-first platform built for speed, clarity, and community.</p>
+            <p class="why-tagline">A driver-first rideshare network that partners with cities and road teams to keep local streets moving.</p>
             <a href="#contact" class="btn btn-comic btn-lg">Contact Us</a>
           </div>
 
@@ -198,7 +198,7 @@
             <!-- BOX 1: Left large panel -->
             <div class="wpc-panel wpc-panel--main">
               <div class="wpc-bubble wpc-bubble--tl">
-                <p>🚗 Drive on your schedule. No boss, no shifts.</p>
+                <p>Drive on your schedule. No boss, no shifts.</p>
               </div>
               <img src="assets/driver-comic.png?v=4" alt="Driver using ZNAPP app" class="wpc-panel-img">
             </div>
@@ -209,7 +209,7 @@
               <!-- BOX 2: Top-right panel -->
               <div class="wpc-panel wpc-panel--sm">
                 <div class="wpc-bubble wpc-bubble--tr">
-                  <p>⚡ Sign up in minutes. Hit the road fast.</p>
+                  <p>Sign up in minutes. Hit the road fast.</p>
                 </div>
                 <img src="assets/driver-comic.png?v=4" alt="Driver using ZNAPP app" class="wpc-panel-img">
               </div>
@@ -217,7 +217,7 @@
               <!-- BOX 3: Bottom-right panel -->
               <div class="wpc-panel wpc-panel--sm">
                 <div class="wpc-bubble wpc-bubble--br">
-                  <p>💸 See exactly what you earn. Transparent every time.</p>
+                  <p>See exactly what you earn. Transparent every time.</p>
                 </div>
                 <img src="assets/driver-comic.png?v=4" alt="Driver using ZNAPP app" class="wpc-panel-img">
               </div>
@@ -276,19 +276,19 @@
         <div class="what-cta-layout">
           <div class="what-left">
             <h2>What do we do at ZNAPP!?</h2>
-            <p class="what-desc">We tell the ZNAPP! story with a layout that feels familiar, but adds a memorable comic identity that drivers won't forget. Clear messaging and strong hierarchy, built to translate cleanly into WordPress later.</p>
+            <p class="what-desc">ZNAPP! connects drivers to city-approved routes, municipal contracts, and everyday riders. One place to find work on the road, from late-night rides to last‑mile deliveries.</p>
             <a href="#signup" class="btn btn-comic btn-lg">Sign up!</a>
           </div>
           <div class="what-cards-stack">
             <article class="what-card">
               <div class="what-icon">🎯</div>
-              <h3>Convert attention into action</h3>
-              <p>We tell the ZNAPP! story with a layout that feels familiar, but adds a memorable comic identity that drivers won't forget.</p>
+              <h3>Put empty seats to work</h3>
+              <p>Turn your time on the road into paid trips for commuters, visitors, and community programs that keep your city moving.</p>
             </article>
             <article class="what-card">
               <div class="what-icon">🧠</div>
-              <h3>Make it easy to say "yes"</h3>
-              <p>Clear messaging, modern components, and strong hierarchy, built to translate cleanly into WordPress later.</p>
+              <h3>Make it easy to drive for cities</h3>
+              <p>Simple onboarding, clear route expectations, and tools that help you work with municipalities instead of guessing where to go next.</p>
             </article>
           </div>
         </div>
@@ -394,34 +394,66 @@
         const backBtn = document.querySelector('.review-arrow-back');
         let current = 0;
 
+        function updateArrows() {
+          if (!nextBtn || !backBtn) return;
+          // Keep layout stable, just fade arrows in/out
+          backBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
+          nextBtn.style.visibility = current === slides.length - 1 ? 'hidden' : 'visible';
+        }
+
         function goTo(index) {
+          if (index < 0 || index >= slides.length || index === current) return;
           slides[current].classList.remove('active');
           dots[current].classList.remove('active');
-          current = (index + slides.length) % slides.length;
+          current = index;
           slides[current].classList.add('active');
           dots[current].classList.add('active');
+          updateArrows();
         }
 
         nextBtn.addEventListener('click', () => goTo(current + 1));
         backBtn.addEventListener('click', () => goTo(current - 1));
         dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+        // initial: first slide active, no back arrow
+        updateArrows();
       })();
+
+      // Rotating CTA phrase in the "Become a Road Hero" banner
+      window.addEventListener('load', function () {
+        const el = document.getElementById('cta-phrase');
+        if (!el) return;
+
+        const phrases = [
+          'Road Hero',
+          'City Driver',
+          'Route Pro',
+          'Municipal Partner'
+        ];
+        let index = 0;
+
+        setInterval(() => {
+          index = (index + 1) % phrases.length;
+          el.textContent = phrases[index];
+          el.classList.remove('cta-phrase-animate');
+          // force reflow so animation can replay
+          void el.offsetWidth;
+          el.classList.add('cta-phrase-animate');
+        }, 3000);
+      });
 
       // FAQ scroll and expand/collapse
       (function() {
         const scrollContainer = document.querySelector('.faq-cards-scroll');
         const wrapper = document.querySelector('.faq-carousel-wrapper');
         
-        // Handle expand/collapse toggle
+        // Handle expand/collapse; CSS max-height handles smooth animation
         const faqCards = document.querySelectorAll('.faq-card-compact');
         faqCards.forEach(card => {
-          card.addEventListener('toggle', function() {
+          card.addEventListener('toggle', function () {
             const toggle = this.querySelector('.faq-toggle');
-            if (this.open) {
-              toggle.textContent = '−';
-            } else {
-              toggle.textContent = '+';
-            }
+            if (!toggle) return;
+            toggle.textContent = this.open ? '−' : '+';
           });
         });
         
@@ -478,8 +510,8 @@
             <article class="news-card-modern">
               <div class="news-content-block">
                 <div class="news-tag">Launch</div>
-                <h3>WordPress-ready</h3>
-                <p>Designed to translate into editable WP blocks later.</p>
+                <h3>City &amp; municipal pilots</h3>
+                <p>Rolling out ZNAPP! pilots with local governments to serve school runs, events, and essential services.</p>
               </div>
             </article>
           </div>
@@ -492,7 +524,7 @@
       <div class="container">
         <div class="cta-inner">
           <div class="cta-content-modern">
-            <h2>Become a Road Hero with ZNAPP!</h2>
+            <h2>Become a <span id="cta-phrase" class="cta-phrase">Road Hero</span> with ZNAPP!</h2>
             <p>Ready to drive? Join our community and start earning on your own terms.</p>
           </div>
           <div class="cta-actions-modern">
@@ -536,10 +568,10 @@
               
               <details class="faq-card-compact">
                 <summary>
-                  <h3>Can this connect to WordPress and Zoho?</h3>
+                  <h3>Where does ZNAPP! operate?</h3>
                   <span class="faq-toggle">+</span>
                 </summary>
-                <p>Yes, the layout is built with simple HTML/CSS that maps cleanly to WordPress blocks and can integrate with Zoho forms.</p>
+                <p>ZNAPP! focuses on city and municipal partnerships. We start in select regions and expand route by route, so drivers always have real local demand.</p>
               </details>
               
               <details class="faq-card-compact">

@@ -139,12 +139,19 @@ p { margin: 0; }
   border-bottom: 1px solid #E2DAF0;
 }
 .header-inner {
-  display: flex; align-items: center; justify-content: space-between;
-  height: 66px; gap: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 66px;
+  gap: 24px;
 }
-.logo img { height: 38px; }
+.logo img {
+  height: 52px; /* make logo feel big and dominant on the left */
+}
 .nav {
-  display: flex; gap: 28px;
+  display: flex;
+  gap: 28px;
+  margin-left: auto; /* push nav (and following signup button) to the right */
   font-family: var(--font-body); font-size: 0.83rem; font-weight: 700;
   letter-spacing: 0.02em;
 }
@@ -350,7 +357,7 @@ p { margin: 0; }
 
 .why-layout {
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 280px 1fr; /* make left text column a bit wider */
   gap: 56px;
   align-items: center; /* vertically center left text block with panels */
 }
@@ -360,13 +367,13 @@ p { margin: 0; }
   align-items: flex-start;
   position: sticky; top: 88px;
 }
-.why-left h2 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); line-height: 1.08; }
+.why-left h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.08; }
 .why-tagline { color: var(--text-muted); font-size: 0.95rem; line-height: 1.65; }
 
 /* ── 3 comic panels: individual cards, gap between them ── */
 .why-panels {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: 1.25fr 0.95fr; /* slightly shrink right comic column */
   gap: 14px;
   align-items: stretch;
   min-width: 0;
@@ -393,26 +400,26 @@ p { margin: 0; }
     0 10px 30px rgba(0, 0, 0, 0.07);
 }
 
-.wpc-panel--main { height: 380px; }
-.wpc-panel--sm   { height: 183px; flex-shrink: 0; }
+.wpc-panel--main { height: 360px; } /* tiny reduction to make right side feel lighter */
+.wpc-panel--sm   { height: 172px; flex-shrink: 0; }
 
 /* ── Speech bubbles — polished, soft shadow, slightly overlapping ── */
 .wpc-bubble {
   position: absolute;
   display: inline-block;
   background: var(--white);
-  border: 2px solid var(--black);
-  border-radius: 18px;
-  padding: 10px 16px;
+  border: 3px solid var(--black);
+  border-radius: 24px;
+  padding: 14px 22px;
   box-shadow:
-    3px 3px 0 rgba(0, 0, 0, 0.75),
-    0 6px 18px rgba(0, 0, 0, 0.1);
+    4px 4px 0 rgba(0, 0, 0, 0.9),
+    0 10px 26px rgba(0, 0, 0, 0.18);
   z-index: 3;
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 1.4;
-  max-width: 260px;
+  line-height: 1.5;
+  max-width: 88%;
   white-space: normal;
   pointer-events: none;
 }
@@ -421,11 +428,9 @@ p { margin: 0; }
 
 /* Top-left bubble — tail points down into main panel */
 .wpc-bubble--tl {
-  top: -40px; left: 18px;
+  top: -50px; left: 22px;
   border-bottom-left-radius: 4px;
-  font-size: 0.88rem;
   white-space: normal;
-  max-width: 82%;
 }
 .wpc-bubble--tl::after {
   content: ""; position: absolute;
@@ -444,11 +449,9 @@ p { margin: 0; }
 
 /* Top-right bubble — tail points down into top-right panel */
 .wpc-bubble--tr {
-  top: -40px; right: 18px;
+  top: -70px; right: 22px;
   border-bottom-right-radius: 4px;
-  font-size: 0.88rem;
   white-space: normal;
-  max-width: 82%;
 }
 .wpc-bubble--tr::after {
   content: ""; position: absolute;
@@ -467,11 +470,9 @@ p { margin: 0; }
 
 /* Bottom-right bubble — tail points up into bottom-right panel */
 .wpc-bubble--br {
-  bottom: -40px; right: 18px;
+  bottom: -72px; right: 22px;
   border-top-right-radius: 4px;
-  font-size: 0.88rem;
   white-space: normal;
-  max-width: 82%;
 }
 .wpc-bubble--br::after {
   content: ""; position: absolute;
@@ -548,6 +549,11 @@ p { margin: 0; }
   gap: 48px;
   align-items: center;
 }
+.what-left {
+  position: sticky;
+  top: 88px; /* starts centered, then gently sticks as you scroll */
+  align-self: center;
+}
 .what-left h2 {
   font-size: clamp(1.8rem, 3.2vw, 2.6rem);
   margin-bottom: 16px;
@@ -569,8 +575,11 @@ p { margin: 0; }
 
 .what-card {
   padding: 32px 26px; border-radius: var(--radius-lg);
-  background: var(--card); border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
+  background: var(--card);
+  border: 2px solid rgba(0,0,0,0.9); /* comic-style black border */
+  box-shadow:
+    4px 4px 0 rgba(0,0,0,0.18),
+    0 10px 30px rgba(0,0,0,0.06);
   transition: transform 0.18s, box-shadow 0.18s;
 }
 .what-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
@@ -588,6 +597,7 @@ p { margin: 0; }
   background: var(--bg); 
   padding: 0;
   overflow: hidden;
+  display: none; /* temporarily hide this section without removing markup */
 }
 
 .pd-wrapper {
@@ -706,9 +716,9 @@ p { margin: 0; }
 
 .testimonial-fullwidth {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1160px;
   margin: 0 auto;
-  padding: 80px 40px;
+  padding: 96px 48px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -766,14 +776,14 @@ p { margin: 0; }
 /* CSS speech bubble matching Add a heading (1) 1.png style */
 .lyft-bubble {
   position: relative;
-  padding: 56px 64px 64px;
+  padding: 80px 96px 96px;
   background: var(--white);
-  border-radius: 24px;
-  border: 2px solid rgba(0, 0, 0, 0.82);
+  border-radius: 28px;
+  border: 3px solid rgba(0, 0, 0, 0.9);
   box-shadow:
-    4px 4px 0 rgba(0, 0, 0, 0.15),
-    0 10px 30px rgba(0, 0, 0, 0.07);
-  max-width: 880px;
+    6px 6px 0 rgba(0, 0, 0, 0.85),
+    0 16px 46px rgba(0, 0, 0, 0.18);
+  max-width: 1120px;
   width: 100%;
 }
 
@@ -809,8 +819,8 @@ p { margin: 0; }
 .quote-large {
   position: relative;
   z-index: 1;
-  font-size: clamp(1.4rem, 2.8vw, 2rem);
-  line-height: 1.6;
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  line-height: 1.7;
   font-style: normal;
   color: var(--text);
   margin: 0;
@@ -1026,6 +1036,20 @@ p { margin: 0; }
   margin-bottom: 12px;
   font-family: var(--font-display);
   line-height: 1.1;
+}
+
+.cta-phrase {
+  position: relative;
+  display: inline-block;
+}
+
+.cta-phrase-animate {
+  animation: cta-fade-in 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+@keyframes cta-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .cta-content-modern p { 
@@ -1313,7 +1337,8 @@ p { margin: 0; }
 
 /* Very compact FAQ cards - small boxes with just question title */
 .faq-card-compact {
-  flex: 0 0 calc((100% - 32px) / 2.3);
+  /* Show exactly three cards on desktop */
+  flex: 0 0 calc((100% - 32px) / 3);
   scroll-snap-align: start;
   border-radius: 32px;
   background: var(--white);
@@ -1321,15 +1346,15 @@ p { margin: 0; }
   box-shadow:
     4px 4px 0 rgba(0, 0, 0, 0.15),
     0 10px 30px rgba(0, 0, 0, 0.07);
-  /* Smooth open/close using max-height so the whole page lengthens smoothly */
-  transition: max-height 0.5s ease;
+  /* Smooth open/close using max-height so expand + collapse animate */
+  transition: max-height 0.45s ease;
   overflow: hidden;
-  min-height: 180px;
-  max-height: 260px; /* closed state: roomy title like original cards */
+  min-height: 160px;
+  max-height: 190px; /* closed state */
 }
 
 .faq-card-compact[open] {
-  max-height: 520px; /* expanded state: room for answer, animates back on close */
+  max-height: 420px; /* expanded state */
 }
 
 .faq-card-compact:hover {
@@ -1338,7 +1363,7 @@ p { margin: 0; }
 }
 
 .faq-card-compact summary {
-  padding: 44px 40px; /* back to original comfy padding */
+  padding: 28px 26px;
   cursor: pointer;
   list-style: none;
   display: flex;
@@ -1352,13 +1377,13 @@ p { margin: 0; }
 }
 
 .faq-card-compact h3 {
-  font-size: 1.8rem; /* restore bold comic heading size */
+  font-size: 1.1rem;
   font-family: var(--font-display);
   font-weight: 400;
   color: var(--text);
   margin: 0;
-  line-height: 1.25;
-  letter-spacing: 0.01em;
+  line-height: 1.35;
+  letter-spacing: 0.005em;
   flex: 1;
 }
 
@@ -1386,7 +1411,7 @@ p { margin: 0; }
 .faq-card-compact p {
   color: var(--text-muted);
   line-height: 1.65;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 400;
   margin: 0;
   padding: 0 40px 44px;
@@ -1429,10 +1454,32 @@ p { margin: 0; }
 .contact-form textarea { min-height: 110px; }
 
 /* ══════════════ 15. FOOTER ══════════════ */
-.footer { background: var(--black); color: var(--white); padding: 52px 0 24px; }
+.footer {
+  position: relative;
+  background: var(--black);
+  color: var(--white);
+  padding: 52px 0 24px;
+}
+
+/* Soft band that appears as you reach the footer (no Lyft colors, just brand neutrals) */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: 0;
+  right: 0;
+  height: 120px;
+  /* Pure white fade so it blends with the main page background instead of looking grey */
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+  pointer-events: none;
+}
 .footer-inner { display: grid; grid-template-columns: 1.4fr 0.7fr 0.7fr; gap: 32px; padding-bottom: 32px; }
 
-.footer-logo { height: 32px; margin-bottom: 14px; filter: brightness(10); }
+.footer-logo {
+  height: 40px;
+  margin-bottom: 14px;
+  filter: none; /* use the original brand colors instead of over-brightening */
+}
 .footer-brand p { color: rgba(255,255,255,0.45); max-width: 300px; line-height: 1.7; font-size: 0.86rem; }
 
 .footer-col h4 { color: var(--purple-soft); margin-bottom: 14px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; }
