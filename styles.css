@@ -394,11 +394,11 @@ p { margin: 0; }
   background: var(--white);
   display: flex; flex-direction: column;
   overflow: visible;
-  border: 2px solid rgba(0, 0, 0, 0.82);
-  border-radius: 12px;
+  border: 3px solid rgba(0, 0, 0, 0.9);
+  border-radius: 8px; /* match comic rectangle look used elsewhere */
   box-shadow:
-    4px 4px 0 rgba(0, 0, 0, 0.15),
-    0 10px 30px rgba(0, 0, 0, 0.07);
+    5px 5px 0 rgba(0, 0, 0, 0.9),
+    0 10px 26px rgba(0, 0, 0, 0.12);
 }
 
 .wpc-panel--main { height: 360px; } /* tiny reduction to make right side feel lighter */
@@ -450,7 +450,7 @@ p { margin: 0; }
 
 /* Top-right bubble — tail points down into top-right panel */
 .wpc-bubble--tr {
-  top: -70px; right: 22px;
+  top: -78px; right: 22px;
   border-bottom-right-radius: 4px;
   white-space: normal;
 }
@@ -471,7 +471,7 @@ p { margin: 0; }
 
 /* Bottom-right bubble — tail points up into bottom-right panel */
 .wpc-bubble--br {
-  bottom: -72px; right: 22px;
+  bottom: -80px; right: 22px;
   border-top-right-radius: 4px;
   white-space: normal;
 }
@@ -523,9 +523,13 @@ p { margin: 0; }
 
 .carousel-card {
   flex: 0 0 260px; scroll-snap-align: start;
-  padding: 28px 22px; border-radius: var(--radius);
-  background: var(--card); border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
+  padding: 28px 22px;
+  border-radius: 8px;
+  background: var(--card);
+  border: 3px solid rgba(0, 0, 0, 0.9);
+  box-shadow:
+    5px 5px 0 rgba(0, 0, 0, 0.9),
+    0 10px 26px rgba(0, 0, 0, 0.12);
   transition: transform 0.18s, box-shadow 0.18s;
 }
 .carousel-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
@@ -575,7 +579,8 @@ p { margin: 0; }
 }
 
 .what-card {
-  padding: 32px 26px; border-radius: var(--radius-lg);
+  padding: 32px 26px;
+  border-radius: 8px;
   background: var(--card);
   border: 2px solid rgba(0,0,0,0.9); /* comic-style black border */
   box-shadow:
@@ -959,12 +964,12 @@ p { margin: 0; }
 
 .news-card-modern {
   padding: 0;
-  border-radius: 20px;
+  border-radius: 8px;
   background: var(--white);
-  border: 2px solid rgba(0, 0, 0, 0.75);
+  border: 3px solid rgba(0, 0, 0, 0.9);
   box-shadow:
-    3px 3px 0 rgba(0, 0, 0, 0.12),
-    0 8px 24px rgba(0, 0, 0, 0.06);
+    5px 5px 0 rgba(0, 0, 0, 0.9),
+    0 10px 26px rgba(0, 0, 0, 0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   overflow: hidden;
   min-height: 220px;
@@ -1181,12 +1186,12 @@ p { margin: 0; }
   flex: 0 0 calc((100% - 40px) / 2.3);
   scroll-snap-align: start;
   padding: 36px 32px;
-  border-radius: 20px;
+  border-radius: 8px;
   background: var(--white);
-  border: 2px solid rgba(0, 0, 0, 0.75);
+  border: 3px solid rgba(0, 0, 0, 0.9);
   box-shadow:
-    3px 3px 0 rgba(0, 0, 0, 0.12),
-    0 8px 24px rgba(0, 0, 0, 0.06);
+    5px 5px 0 rgba(0, 0, 0, 0.9),
+    0 10px 26px rgba(0, 0, 0, 0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   min-height: 220px;
   display: flex;
@@ -1349,12 +1354,12 @@ p { margin: 0; }
   /* Show exactly three cards on desktop */
   flex: 0 0 calc((100% - 32px) / 3);
   scroll-snap-align: start;
-  border-radius: 32px;
+  border-radius: 8px; /* sharper, comic-style rectangle */
   background: var(--white);
-  border: 2px solid rgba(0, 0, 0, 0.82);
+  border: 3px solid rgba(0, 0, 0, 0.9);
   box-shadow:
-    4px 4px 0 rgba(0, 0, 0, 0.15),
-    0 10px 30px rgba(0, 0, 0, 0.07);
+    5px 5px 0 rgba(0, 0, 0, 0.9),
+    0 10px 26px rgba(0, 0, 0, 0.12);
   /* Smooth open/close using max-height so expand + collapse animate */
   transition: max-height 0.45s ease;
   overflow: hidden;
@@ -1433,11 +1438,16 @@ p { margin: 0; }
 .contact { background: var(--white); }
 
 .contact-card {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
-  padding: 44px 40px; border-radius: var(--radius-lg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 44px 40px;
+  border-radius: 8px;
   background: var(--bg);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-md);
+  border: 3px solid rgba(0, 0, 0, 0.9);
+  box-shadow:
+    5px 5px 0 rgba(0, 0, 0, 0.9),
+    0 10px 26px rgba(0, 0, 0, 0.12);
 }
 .contact-info h2 { font-size: clamp(1.4rem, 2.8vw, 2rem); margin-bottom: 10px; }
 .contact-info p { color: var(--text-muted); margin-bottom: 20px; line-height: 1.7; font-size: 0.95rem; }
