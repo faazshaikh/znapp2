@@ -37,9 +37,9 @@
   --black:        #000000;
   --white:        #FFFFFF;
 
-  /* Surfaces — subtle tint, derived from brand #C7B4D3 softened to near-white */
-  --bg:           #F5F3F8;   /* very light lavender — slightly darker than pure white */
-  --bg-alt:       #EDE9F4;   /* second section tone — soft tint of #C7B4D3 */
+  /* Surfaces — use slightly darker brand tints so the overall background feels less bright */
+  --bg:           #EDE9F4;   /* soft lavender from C7B4D3, darker than previous */
+  --bg-alt:       #D9CBE8;   /* alternate section tone, a step deeper */
   --card:         #FFFFFF;   /* cards pure white for maximum contrast */
   --card-hover:   #FDFCFF;
 
@@ -185,6 +185,7 @@ p { margin: 0; }
   position: relative;
   overflow: hidden;
   padding: 52px 0 68px;
+  /* Brand background: soft lavender with subtle radial from purple-soft */
   background:
     radial-gradient(ellipse 55% 70% at 10% 55%, rgba(199,180,211,0.18) 0%, transparent 65%),
     var(--bg);
@@ -704,7 +705,13 @@ p { margin: 0; }
 
 /* ══════════════ 10. REVIEW (full-width Lyft-inspired testimonial) ══════════════ */
 .testimonial {
-  background: linear-gradient(135deg, #f0ebf7 0%, #e8f8f7 100%);
+  /* Use brand teal as main backdrop for the review section */
+  background: linear-gradient(
+    135deg,
+    rgba(48,213,200,0.9) 0%,
+    rgba(48,213,200,0.75) 40%,
+    rgba(199,180,211,0.6) 100%
+  );
   padding: 0;
   min-height: 85vh;
   display: flex;
@@ -917,7 +924,7 @@ p { margin: 0; }
 
 /* ══════════════ 11. NEWSFLASH (asymmetric editorial layout) ══════════════ */
 .news { 
-  background: var(--bg); 
+  background: var(--white); 
   padding: 100px 0;
 }
 .news .section-header { margin-bottom: 56px; }
@@ -1233,7 +1240,7 @@ p { margin: 0; }
 
 /* ══════════════ 13. FAQ (matching What We Do layout) ══════════════ */
 .faq { 
-  background: var(--white); 
+  background: var(--bg); 
   padding: 88px 0;
 }
 
@@ -1300,7 +1307,8 @@ p { margin: 0; }
   bottom: 0;
   width: 80px;
   pointer-events: none;
-  background: linear-gradient(to right, transparent, var(--white));
+  /* Match the FAQ section tint so the preview edge isn't white */
+  background: linear-gradient(to right, transparent, var(--bg));
   z-index: 2;
 }
 
@@ -1313,7 +1321,7 @@ p { margin: 0; }
   bottom: 0;
   width: 80px;
   pointer-events: none;
-  background: linear-gradient(to left, transparent, var(--white));
+  background: linear-gradient(to left, transparent, var(--bg));
   z-index: 2;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -1330,6 +1338,7 @@ p { margin: 0; }
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 12px;
+  background: var(--bg); /* ensure right-edge preview sits on the same tinted background */
   scrollbar-width: none;
 }
 
@@ -1469,8 +1478,12 @@ p { margin: 0; }
   left: 0;
   right: 0;
   height: 120px;
-  /* Pure white fade so it blends with the main page background instead of looking grey */
-  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+  /* Fade from page background tint into transparent so it matches FAQ section above */
+  background: linear-gradient(
+    to bottom,
+    rgba(237,233,244,1) 0%,
+    rgba(237,233,244,0) 100%
+  );
   pointer-events: none;
 }
 .footer-inner { display: grid; grid-template-columns: 1.4fr 0.7fr 0.7fr; gap: 32px; padding-bottom: 32px; }
