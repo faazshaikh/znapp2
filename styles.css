@@ -1321,18 +1321,24 @@ p { margin: 0; }
   box-shadow:
     4px 4px 0 rgba(0, 0, 0, 0.15),
     0 10px 30px rgba(0, 0, 0, 0.07);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* Smooth open/close using max-height so the whole page lengthens smoothly */
+  transition: max-height 0.5s ease;
   overflow: hidden;
   min-height: 180px;
+  max-height: 260px; /* closed state: roomy title like original cards */
+}
+
+.faq-card-compact[open] {
+  max-height: 520px; /* expanded state: room for answer, animates back on close */
 }
 
 .faq-card-compact:hover {
-  transform: translate(-2px, -2px);
+  /* keep subtle shadow only, no position shift */
   box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15), 0 12px 36px rgba(0, 0, 0, 0.09);
 }
 
 .faq-card-compact summary {
-  padding: 44px 40px;
+  padding: 44px 40px; /* back to original comfy padding */
   cursor: pointer;
   list-style: none;
   display: flex;
@@ -1346,7 +1352,7 @@ p { margin: 0; }
 }
 
 .faq-card-compact h3 {
-  font-size: 1.8rem;
+  font-size: 1.8rem; /* restore bold comic heading size */
   font-family: var(--font-display);
   font-weight: 400;
   color: var(--text);
