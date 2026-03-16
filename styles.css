@@ -1486,7 +1486,7 @@ p { margin: 0; }
   padding: 52px 0 24px;
 }
 
-/* Soft band that appears as you reach the footer (no Lyft colors, just brand neutrals) */
+/* Soft band that appears as you reach the footer, using page background tint */
 .footer::before {
   content: "";
   position: absolute;
@@ -1494,7 +1494,6 @@ p { margin: 0; }
   left: 0;
   right: 0;
   height: 120px;
-  /* Fade from page background tint into transparent so it matches FAQ section above */
   background: linear-gradient(
     to bottom,
     rgba(237,233,244,1) 0%,
