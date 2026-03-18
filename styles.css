@@ -1761,26 +1761,26 @@ p { margin: 0; }
   /* Life section */
   .life-frame        { flex: 0 0 88%; }
   .life-carousel-wrapper::after { width: 80px; }
-  .life-carousel-wrapper { position: relative; padding-bottom: 40px; }
+  .life { padding-bottom: 80px; } /* Extra space for swipe indicator */
   
   /* Swipe indicator for life carousel */
   .life-carousel-wrapper::before {
     content: "";
     position: absolute;
-    bottom: 0;
+    bottom: -50px;
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
-    height: 30px;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><text x="10" y="18" font-family="Comic Sans MS, cursive" font-size="14" font-weight="bold" fill="%23843DB3">SWIPE</text><path d="M 70 15 L 85 15 M 85 15 L 80 10 M 85 15 L 80 20" stroke="%23843DB3" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>') center/contain no-repeat;
+    width: 120px;
+    height: 35px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 35"><text x="5" y="22" font-family="Arial Black, sans-serif" font-size="16" font-weight="900" fill="%239D6ABA" letter-spacing="1">SWIPE</text><path d="M 85 17 L 105 17 M 105 17 L 98 12 M 105 17 L 98 22" stroke="%239D6ABA" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>') center/contain no-repeat;
     pointer-events: none;
     z-index: 10;
     animation: swipeHint 2s ease-in-out infinite;
   }
   
   @keyframes swipeHint {
-    0%, 100% { opacity: 0.6; transform: translateX(-50%); }
-    50% { opacity: 1; transform: translateX(-40%); }
+    0%, 100% { opacity: 0.7; transform: translateX(-50%); }
+    50% { opacity: 1; transform: translateX(-45%); }
   }
   
   /* What section */
@@ -1813,28 +1813,39 @@ p { margin: 0; }
   .news-card-modern p { font-size: 0.88rem; }
   
   /* FAQ */
-  .faq               { padding: 48px 0; }
+  .faq               { padding: 48px 0 80px; } /* Extra bottom padding for swipe indicator */
   .faq-layout        { gap: 28px; }
   .faq-card-compact  { flex: 0 0 85%; min-height: 140px; }
   .faq-card-header   { padding: 20px 18px; gap: 14px; }
   .faq-card-compact h3 { font-size: 1rem; }
-  .faq-toggle        { width: 44px; height: 44px; font-size: 2rem; }
+  .faq-toggle        { 
+    width: 44px; 
+    height: 44px; 
+    font-size: 2rem;
+    line-height: 0.9;
+    padding-bottom: 2px;
+  }
   .faq-modal-body    { padding: 36px 24px; }
   .faq-modal-body h3 { font-size: 1.3rem; padding-right: 30px; }
   .faq-modal-body p  { font-size: 0.95rem; }
-  .faq-modal-close   { width: 36px; height: 36px; font-size: 1.6rem; }
+  .faq-modal-close   { 
+    width: 36px; 
+    height: 36px; 
+    font-size: 1.6rem;
+    line-height: 0.9;
+    padding-bottom: 2px;
+  }
   
   /* Swipe indicator for FAQ carousel */
-  .faq-carousel-wrapper { position: relative; padding-bottom: 40px; }
   .faq-carousel-wrapper::before {
     content: "";
     position: absolute;
-    bottom: 0;
+    bottom: -50px;
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
-    height: 30px;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><text x="10" y="18" font-family="Comic Sans MS, cursive" font-size="14" font-weight="bold" fill="%23843DB3">SWIPE</text><path d="M 70 15 L 85 15 M 85 15 L 80 10 M 85 15 L 80 20" stroke="%23843DB3" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>') center/contain no-repeat;
+    width: 120px;
+    height: 35px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 35"><text x="5" y="22" font-family="Arial Black, sans-serif" font-size="16" font-weight="900" fill="%239D6ABA" letter-spacing="1">SWIPE</text><path d="M 85 17 L 105 17 M 105 17 L 98 12 M 105 17 L 98 22" stroke="%239D6ABA" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>') center/contain no-repeat;
     pointer-events: none;
     z-index: 10;
     animation: swipeHint 2s ease-in-out infinite;
@@ -1883,6 +1894,7 @@ p { margin: 0; }
   
   /* Life */
   .life-frame        { flex: 0 0 92%; }
+  .life { padding-bottom: 80px; } /* Extra space for swipe indicator */
   
   /* What */
   .what-card-img     { height: 160px; }
@@ -1915,19 +1927,33 @@ p { margin: 0; }
   .news-tag          { height: 24px; font-size: 0.68rem; padding: 0 12px; }
   
   /* FAQ */
-  .faq               { padding: 40px 0; }
+  .faq               { padding: 40px 0 80px; } /* Extra bottom padding for swipe indicator */
   .faq-left h2       { font-size: 1.5rem; }
   .faq-desc          { font-size: 0.9rem; }
   .faq-card-compact  { flex: 0 0 90%; min-height: 130px; }
   .faq-card-header   { padding: 18px 16px; gap: 12px; }
   .faq-card-compact h3 { font-size: 0.95rem; }
-  .faq-toggle        { width: 40px; height: 40px; font-size: 1.8rem; }
+  .faq-toggle        { 
+    width: 40px; 
+    height: 40px; 
+    font-size: 1.8rem;
+    line-height: 0.9;
+    padding-bottom: 2px;
+  }
   .faq-modal-content { width: 96%; }
   .faq-modal-body    { padding: 28px 20px; }
   .faq-modal-body h3 { font-size: 1.15rem; padding-right: 25px; }
   .faq-modal-body p  { font-size: 0.9rem; }
   .faq-modal-body li { font-size: 0.88rem; }
-  .faq-modal-close   { width: 34px; height: 34px; font-size: 1.5rem; top: 12px; right: 12px; }
+  .faq-modal-close   { 
+    width: 34px; 
+    height: 34px; 
+    font-size: 1.5rem; 
+    top: 12px; 
+    right: 12px;
+    line-height: 0.9;
+    padding-bottom: 2px;
+  }
   
   /* CTA */
   .cta-fullwidth     { padding: 40px 0; }
