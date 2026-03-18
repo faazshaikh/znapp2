@@ -626,6 +626,36 @@
   </footer>
 
   <script>
+    // Mobile menu toggle
+    (function() {
+      const mobileToggle = document.querySelector('.mobile-toggle');
+      const nav = document.querySelector('.nav');
+      
+      if (mobileToggle && nav) {
+        mobileToggle.addEventListener('click', function() {
+          this.classList.toggle('active');
+          nav.classList.toggle('mobile-open');
+        });
+        
+        // Close menu when clicking on a link
+        const navLinks = nav.querySelectorAll('a');
+        navLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            mobileToggle.classList.remove('active');
+            nav.classList.remove('mobile-open');
+          });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!nav.contains(e.target) && !mobileToggle.contains(e.target)) {
+            mobileToggle.classList.remove('active');
+            nav.classList.remove('mobile-open');
+          }
+        });
+      }
+    })();
+
     // FAQ Modal functionality
     (function() {
       const faqData = {

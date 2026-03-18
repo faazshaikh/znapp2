@@ -141,9 +141,10 @@ p { margin: 0; }
 .header-inner {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: 66px;
   gap: 24px;
+  position: relative;
 }
 .logo img {
   height: 52px; /* make logo feel big and dominant on the left */
@@ -158,8 +159,69 @@ p { margin: 0; }
 .nav a { color: var(--gray); transition: color 0.15s; }
 .nav a:hover { color: var(--purple); }
 
-.mobile-toggle { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
-.mobile-toggle span { display: block; width: 22px; height: 2px; background: var(--black); margin: 5px 0; border-radius: 2px; }
+.mobile-toggle { 
+  display: none; 
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  padding: 8px;
+  margin-left: auto;
+  z-index: 101;
+}
+.mobile-toggle span { 
+  display: block; 
+  width: 24px; 
+  height: 2.5px; 
+  background: var(--black); 
+  margin: 5px 0; 
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Mobile menu styles */
+.nav.mobile-open {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px);
+  padding: 24px;
+  gap: 20px;
+  border-bottom: 1px solid #E2DAF0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.nav.mobile-open a {
+  font-size: 1rem;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.nav.mobile-open a:last-child {
+  border-bottom: none;
+}
+
+/* Hamburger animation when open */
+.mobile-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(7px, 7px);
+}
+
+.mobile-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
 
 /* ── SHARED SECTION ── */
 .section { padding: 88px 0; }
@@ -1634,86 +1696,217 @@ p { margin: 0; }
 
 /* ══════════════ RESPONSIVE ══════════════ */
 
-/* Why section: stack on smaller screens */
-@media (max-width: 860px) {
-  .why-layout { grid-template-columns: 1fr; gap: 36px; align-items: start; }
-  .why-left { position: static; }
-  .why-left .btn { width: 100%; justify-content: center; }
-  .why-panels { grid-template-columns: 1fr; margin-top: 52px; margin-bottom: 52px; }
-  .why-callout-col { gap: 14px; }
-  .wpc-panel--sm { flex: none; }
-  .wpc-placeholder { min-height: 140px; }
-}
-
+/* Tablet and below - 1024px */
 @media (max-width: 1024px) {
+  .hero-grid         { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual-card  { min-height: 400px; }
   .what-cards-stack  { grid-template-columns: 1fr; }
+  .what-card-img     { height: 240px; }
   .pd-split          { grid-template-columns: 1fr; gap: 40px; }
   .cta-inner         { flex-direction: column; align-items: flex-start; gap: 28px; }
   .cta-actions-modern { width: 100%; flex-direction: column; }
   .cta-actions-modern .btn { width: 100%; justify-content: center; }
-  .contact-card      { grid-template-columns: 1fr; }
-  .footer-inner      { grid-template-columns: 1fr; }
-  .news-row-equal, .news-row-asymmetric { grid-template-columns: 1fr; }
+  .contact-card      { grid-template-columns: 1fr; padding: 36px 28px; }
+  .footer-inner      { grid-template-columns: 1fr; gap: 40px; }
+  .news-row-equal, .news-row-asymmetric { grid-template-columns: 1fr; gap: 16px; }
+  .news-card-modern  { min-height: 180px; }
   .faq-layout        { grid-template-columns: 1fr; gap: 32px; }
   .faq-left .btn     { width: 100%; justify-content: center; }
-  .cta-strip-inner   { justify-content: center; text-align: center; }
+  .faq-card-compact  { flex: 0 0 calc((100% - 16px) / 2); }
+  .testimonial-fullwidth { max-width: 100%; padding: 0 32px; }
+  .lyft-bubble       { padding: 40px 44px; }
 }
 
+/* Why section: stack on smaller screens - 860px */
+@media (max-width: 860px) {
+  .why-layout { grid-template-columns: 1fr; gap: 36px; align-items: start; }
+  .why-left { position: static; }
+  .why-panels { grid-template-columns: 1fr; gap: 16px; }
+  .why-callout-col { gap: 16px; }
+  .wpc-panel--main { height: 300px; }
+  .wpc-panel--sm { height: 200px; }
+}
+
+/* Mobile - 768px */
 @media (max-width: 768px) {
-  .section           { padding: 60px 0; }
+  .section           { padding: 48px 0; }
+  .section-header    { margin-bottom: 36px; }
+  .section-header h2 { font-size: 1.8rem; }
+  .section-sub       { font-size: 0.95rem; }
+  
+  /* Header */
   .nav               { display: none; }
   .mobile-toggle     { display: block; }
   .header-inner .btn { display: none; }
-  .hero              { padding: 36px 0 52px; }
+  .header-inner      { height: 60px; }
+  .logo img          { height: 44px; }
+  
+  /* Hero */
+  .hero              { padding: 32px 0 48px; }
   .hero-grid         { grid-template-columns: 1fr; gap: 32px; }
-  .hero-visual-card  { min-height: 300px; border-radius: 8px; }
-  .hero-signup       { padding: 0; }
+  .hero-visual-card  { min-height: 280px; order: 2; }
+  .hero-signup       { padding: 0; order: 1; }
+  .hero-signup h1    { font-size: 1.8rem; }
+  .hero-sub          { font-size: 0.95rem; }
   .signup-form       { max-width: 100%; }
-  /* Why section mobile — keep bubbles visible */
-  .wpc-bubble { font-size: 0.82rem; padding: 8px 12px; }
-  .wpc-bubble--tl { top: -44px; left: 10px; max-width: 90%; }
-  .wpc-bubble--tr { top: -44px; right: 10px; }
-  .wpc-bubble--br { bottom: -44px; right: 10px; }
-  /* Life section mobile — one frame per slide */
-  .life-frame { flex: 0 0 90%; }
-  /* What section mobile */
-  .what-cards-stack { grid-template-columns: 1fr; }
-  .what-card-img { height: 220px; }
-  /* FAQ modal mobile */
-  .faq-modal-body { padding: 36px 24px; }
-  .faq-modal-body h3 { font-size: 1.3rem; }
-  .phone-frame       { width: 180px; }
-  .cta-card          { padding: 32px 24px; }
-  .contact-card      { padding: 28px 22px; gap: 28px; }
-  .section-header h2 { font-size: 1.6rem; }
-  .cta-strip-inner   { flex-direction: column; text-align: center; }
-  .life-carousel-wrapper::after { background: linear-gradient(to right, transparent, var(--bg)); }
-}
-
-@media (max-width: 480px) {
-  .section           { padding: 48px 0; }
-  .hero-signup h1    { font-size: 1.6rem; }
-  .life-frame        { flex: 0 0 85%; }
-  .cta-card          { gap: 18px; }
-  .section-header h2 { font-size: 1.4rem; }
-  .dashboard-grid    { grid-template-columns: 1fr; }
-  .testimonial-fullwidth { padding: 40px 20px; }
-  .lyft-bubble { padding: 24px 18px; }
-  .quote-large { font-size: 1rem; }
-  .author-avatar-large { width: 44px; height: 44px; font-size: 0.95rem; }
-  .author-name-large { font-size: 0.92rem; }
-  .author-subtitle { font-size: 0.8rem; }
-  /* FAQ modal mobile */
-  .faq-modal-body { padding: 28px 20px; }
-  .faq-modal-body h3 { font-size: 1.2rem; }
-  .faq-modal-content { width: 95%; }
-}
-
-@media (max-width: 768px) {
-  .testimonial { min-height: auto; }
-  .testimonial-fullwidth { padding: 48px 24px; }
-  .lyft-bubble { padding: 32px 24px; border-radius: 8px; }
-  .quote-large { font-size: 1.1rem; line-height: 1.6; }
+  .signup-form input { height: 48px; font-size: 0.9rem; }
+  .signup-form .btn  { height: 48px; font-size: 0.95rem; }
+  
+  /* Why section */
+  .why-panels        { gap: 14px; }
+  .wpc-panel--main   { height: 260px; }
+  .wpc-panel--sm     { height: 180px; }
+  
+  /* Life section */
+  .life-frame        { flex: 0 0 88%; }
+  .life-carousel-wrapper::after { width: 80px; }
+  
+  /* What section */
+  .what-cards-stack  { gap: 16px; }
+  .what-card-img     { height: 200px; }
+  .what-card-content { padding: 20px 18px; min-height: 90px; }
+  .what-card h3      { font-size: 1rem; }
+  
+  /* Testimonial */
+  .testimonial       { padding: 48px 0; }
+  .testimonial-fullwidth { padding: 0 24px; gap: 32px; }
+  .review-carousel   { min-height: 320px; }
+  .lyft-bubble       { padding: 32px 24px; gap: 24px; min-height: 240px; }
+  .lyft-bubble::before { font-size: 3.5rem; top: 16px; left: 20px; }
+  .quote-large       { font-size: 1.1rem; line-height: 1.6; }
+  .author-meta       { padding-top: 16px; gap: 12px; }
   .author-avatar-large { width: 48px; height: 48px; font-size: 1rem; }
-  .author-meta { flex-direction: row; gap: 12px; }
+  .author-name-large { font-size: 0.95rem; }
+  .author-subtitle   { font-size: 0.85rem; }
+  .review-nav        { gap: 16px; }
+  .review-arrow-lyft { width: 40px; height: 40px; }
+  
+  /* News */
+  .news              { padding: 48px 0; }
+  .news .section-header { margin-bottom: 32px; }
+  .news-card-modern  { min-height: 160px; }
+  .news-content-block { padding: 24px 20px; gap: 10px; }
+  .news-card-modern h3 { font-size: 1.1rem; }
+  .news-card-modern p { font-size: 0.88rem; }
+  
+  /* FAQ */
+  .faq               { padding: 48px 0; }
+  .faq-layout        { gap: 28px; }
+  .faq-card-compact  { flex: 0 0 85%; min-height: 140px; }
+  .faq-card-header   { padding: 20px 18px; gap: 14px; }
+  .faq-card-compact h3 { font-size: 1rem; }
+  .faq-toggle        { width: 44px; height: 44px; font-size: 2rem; }
+  .faq-modal-body    { padding: 36px 24px; }
+  .faq-modal-body h3 { font-size: 1.3rem; padding-right: 30px; }
+  .faq-modal-body p  { font-size: 0.95rem; }
+  .faq-modal-close   { width: 36px; height: 36px; font-size: 1.6rem; }
+  
+  /* CTA */
+  .cta-fullwidth     { padding: 48px 0; }
+  .cta-content-modern h2 { font-size: 1.8rem; }
+  .cta-content-modern p { font-size: 1rem; }
+  .btn-secondary-cta { height: 52px; font-size: 1rem; }
+  
+  /* Contact */
+  .contact           { padding: 48px 0; }
+  .contact-card      { padding: 28px 22px; gap: 24px; }
+  .contact-info h2   { font-size: 1.4rem; }
+  .contact-btns      { flex-direction: column; }
+  .contact-btns .btn { width: 100%; }
+  
+  /* Footer */
+  .footer            { padding: 40px 0 20px; }
+  .footer-inner      { gap: 32px; padding-bottom: 24px; }
+  .footer-logo       { height: 36px; }
+}
+
+/* Small mobile - 480px */
+@media (max-width: 480px) {
+  .section           { padding: 40px 0; }
+  .section-header h2 { font-size: 1.5rem; }
+  .section-sub       { font-size: 0.9rem; }
+  
+  /* Hero */
+  .hero              { padding: 24px 0 40px; }
+  .hero-signup h1    { font-size: 1.5rem; }
+  .hero-sub          { font-size: 0.9rem; }
+  .hero-visual-card  { min-height: 240px; }
+  .hero-badge        { font-size: 0.7rem; padding: 4px 12px; }
+  .signup-form input { height: 46px; font-size: 0.88rem; padding: 0 16px; }
+  .signup-form .btn  { height: 46px; font-size: 0.9rem; }
+  
+  /* Why */
+  .why-left h2       { font-size: 1.5rem; }
+  .why-tagline       { font-size: 0.9rem; }
+  .wpc-panel--main   { height: 220px; }
+  .wpc-panel--sm     { height: 160px; }
+  
+  /* Life */
+  .life-frame        { flex: 0 0 92%; }
+  
+  /* What */
+  .what-card-img     { height: 180px; }
+  .what-card-content { padding: 18px 16px; min-height: 85px; }
+  .what-card h3      { font-size: 0.95rem; }
+  
+  /* Testimonial */
+  .testimonial       { padding: 40px 0; }
+  .testimonial-fullwidth { padding: 0 20px; gap: 28px; }
+  .review-carousel   { min-height: 280px; }
+  .lyft-bubble       { padding: 24px 18px; gap: 20px; min-height: 220px; }
+  .lyft-bubble::before { font-size: 3rem; top: 12px; left: 16px; }
+  .quote-large       { font-size: 1rem; line-height: 1.55; }
+  .author-meta       { padding-top: 14px; gap: 10px; }
+  .author-avatar-large { width: 44px; height: 44px; font-size: 0.95rem; }
+  .author-name-large { font-size: 0.9rem; }
+  .author-subtitle   { font-size: 0.8rem; }
+  .review-arrow-lyft { width: 36px; height: 36px; }
+  .review-dot-lyft   { width: 10px; height: 10px; }
+  
+  /* News */
+  .news              { padding: 40px 0; }
+  .news .section-header h2 { font-size: 1.6rem; }
+  .news-card-modern  { min-height: 140px; }
+  .news-content-block { padding: 20px 18px; }
+  .news-card-modern h3 { font-size: 1rem; }
+  .news-card-modern p { font-size: 0.85rem; }
+  .news-tag          { height: 24px; font-size: 0.68rem; padding: 0 12px; }
+  
+  /* FAQ */
+  .faq               { padding: 40px 0; }
+  .faq-left h2       { font-size: 1.5rem; }
+  .faq-desc          { font-size: 0.9rem; }
+  .faq-card-compact  { flex: 0 0 90%; min-height: 130px; }
+  .faq-card-header   { padding: 18px 16px; gap: 12px; }
+  .faq-card-compact h3 { font-size: 0.95rem; }
+  .faq-toggle        { width: 40px; height: 40px; font-size: 1.8rem; }
+  .faq-modal-content { width: 96%; }
+  .faq-modal-body    { padding: 28px 20px; }
+  .faq-modal-body h3 { font-size: 1.15rem; padding-right: 25px; }
+  .faq-modal-body p  { font-size: 0.9rem; }
+  .faq-modal-body li { font-size: 0.88rem; }
+  .faq-modal-close   { width: 34px; height: 34px; font-size: 1.5rem; top: 12px; right: 12px; }
+  
+  /* CTA */
+  .cta-fullwidth     { padding: 40px 0; }
+  .cta-content-modern h2 { font-size: 1.5rem; }
+  .cta-content-modern p { font-size: 0.95rem; }
+  .cta-fullwidth .btn-comic { height: 52px; font-size: 1rem; padding: 0 32px; }
+  .btn-secondary-cta { height: 48px; font-size: 0.95rem; padding: 0 32px; }
+  
+  /* Contact */
+  .contact           { padding: 40px 0; }
+  .contact-card      { padding: 24px 18px; }
+  .contact-info h2   { font-size: 1.3rem; }
+  .contact-info p    { font-size: 0.9rem; }
+  .contact-form input,
+  .contact-form textarea { font-size: 0.88rem; padding: 12px 14px; }
+  
+  /* Footer */
+  .footer            { padding: 36px 0 18px; }
+  .footer-logo       { height: 32px; }
+  .footer-brand p    { font-size: 0.82rem; }
+  .footer-col h4     { font-size: 0.75rem; }
+  .footer-col a      { font-size: 0.82rem; }
+  .footer-bottom p   { font-size: 0.75rem; }
 }
