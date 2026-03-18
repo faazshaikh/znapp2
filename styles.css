@@ -599,7 +599,7 @@ p { margin: 0; }
 /* Large comic frames - show 2 full + 1 cascaded preview */
 .life-frame {
   position: relative;
-  flex: 0 0 calc((100% - 20px) / 2.3); /* 2 full frames + partial third */
+  flex: 0 0 calc((100% - 20px) / 2.4); /* 2 full frames + slightly more of third */
   scroll-snap-align: start;
   border-radius: 8px;
   background: var(--white);
@@ -660,11 +660,11 @@ p { margin: 0; }
 }
 
 .what-card-content {
-  padding: 24px 20px;
+  padding: 20px 18px;
   background: var(--white);
   flex-shrink: 0;
   border-bottom: 3px solid rgba(0,0,0,0.9);
-  min-height: 100px;
+  min-height: 90px;
   display: flex;
   align-items: center;
 }
