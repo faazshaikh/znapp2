@@ -294,31 +294,49 @@
       </div>
     </section>
 
-    <!-- ═══ 8+9. PHONE + DASHBOARD (diagonal split panels) ═══ -->
-    <section class="section phone-dashboard" id="phone">
-      <div class="pd-wrapper">
-        <div class="pd-panels">
-          <!-- Left panel with diagonal right edge -->
-          <div class="pd-panel pd-panel-left">
-            <div class="pd-panel-border">
-              <div class="pd-panel-content">
-                <h2>Your phone is your tool</h2>
-                <div class="pd-device-container">
-                  <img src="iphone-15-mockup-front-view-isolated-illustration-on-transparent-background-smartphone-or-mobile-phone-or-cellphone-cut-out-template-png.png" alt="iPhone 15 with ZNAPP app" class="pd-phone-img" />
-                </div>
-              </div>
+    <!-- ═══ PHONE + DASHBOARD — diagonal split (titles above panels) ═══ -->
+    <section class="section tools-split" id="phone">
+      <!-- On-brand placeholder: routes + ZNAPP palette (no external stock) -->
+      <div class="tools-split-bg-layer" aria-hidden="true">
+        <img
+          src="assets/tools-split-bg-znapp.svg"
+          alt=""
+          class="tools-split-bg-img"
+          loading="lazy"
+          decoding="async"
+          width="1600"
+          height="1000"
+        />
+        <div class="tools-split-bg-overlay"></div>
+      </div>
+      <div class="tools-split-head">
+        <div class="tools-split-titles">
+          <h2 class="tools-split-title tools-split-title--left">Your phone is your tool</h2>
+          <h2 class="tools-split-title tools-split-title--right">Everything on your dashboard</h2>
+        </div>
+      </div>
+      <div class="tools-split-bleed">
+        <div class="tools-split-panels">
+          <div class="tools-split-mask tools-split-mask--left">
+            <div class="tools-split-inner">
+              <img
+                src="assets/smartphone-and-mobile-phone-free-png.png"
+                alt="Smartphone with the ZNAPP app"
+                class="tools-split-img tools-split-img--phone"
+                width="350"
+                height="350"
+              />
             </div>
           </div>
-          
-          <!-- Right panel with diagonal left edge -->
-          <div class="pd-panel pd-panel-right">
-            <div class="pd-panel-border">
-              <div class="pd-panel-content">
-                <h2>Everything on your dashboard</h2>
-                <div class="pd-device-container">
-                  <img src="pngimg.com - laptop_PNG101816.png" alt="Laptop with ZNAPP dashboard" class="pd-laptop-img" />
-                </div>
-              </div>
+          <div class="tools-split-mask tools-split-mask--right">
+            <div class="tools-split-inner">
+              <img
+                src="pngimg.com - laptop_PNG101816.png"
+                alt="Laptop with the ZNAPP dashboard"
+                class="tools-split-img tools-split-img--laptop"
+                width="800"
+                height="500"
+              />
             </div>
           </div>
         </div>
@@ -452,6 +470,43 @@
           el.classList.add('cta-phrase-animate');
         }, 3000);
       });
+
+      // Life carousel preview: hide right fade when at end
+      (function() {
+        function initLifePreviewFade() {
+          const scrollContainer = document.querySelector('.life-carousel');
+          const wrapper = document.querySelector('.life-carousel-wrapper');
+          if (!scrollContainer || !wrapper) return;
+
+          function updateLifePreviewFade() {
+            const el = scrollContainer;
+            const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth);
+            const epsilon = 8;
+
+            if (el.scrollLeft > 20) {
+              wrapper.classList.add('scrolled');
+            } else {
+              wrapper.classList.remove('scrolled');
+            }
+
+            if (maxScroll <= epsilon || el.scrollLeft >= maxScroll - epsilon) {
+              wrapper.classList.add('at-end');
+            } else {
+              wrapper.classList.remove('at-end');
+            }
+          }
+
+          scrollContainer.addEventListener('scroll', updateLifePreviewFade);
+          window.addEventListener('resize', updateLifePreviewFade);
+          updateLifePreviewFade();
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initLifePreviewFade);
+        } else {
+          initLifePreviewFade();
+        }
+      })();
 
       // FAQ scroll and expand/collapse
       (function() {

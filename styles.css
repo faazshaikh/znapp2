@@ -577,17 +577,50 @@ p { margin: 0; }
   position: relative;
 }
 
-.life-carousel-wrapper::after {
-  content: ""; 
-  position: absolute; 
-  right: 0; 
-  /* Start below speech bubbles so the fade doesn’t wash out bubble text */
-  top: 76px;
-  bottom: 0; 
-  width: 120px;
+.life-carousel-wrapper::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 88px;
   pointer-events: none;
-  background: linear-gradient(to right, transparent, var(--bg));
+  background: linear-gradient(
+    to left,
+    rgba(237, 233, 244, 0) 0%,
+    rgba(237, 233, 244, 0.45) 62%,
+    rgba(237, 233, 244, 0.78) 100%
+  );
   z-index: 2;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.life-carousel-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 88px;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgba(237, 233, 244, 0) 0%,
+    rgba(237, 233, 244, 0.65) 58%,
+    rgba(237, 233, 244, 1) 100%
+  );
+  z-index: 2;
+  opacity: 1;
+  transition: opacity 0.28s ease;
+}
+
+.life-carousel-wrapper.scrolled::before {
+  opacity: 0.62;
+}
+
+.life-carousel-wrapper.at-end::after {
+  opacity: 0;
 }
 
 .life-carousel {
@@ -597,7 +630,9 @@ p { margin: 0; }
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   padding-top: 0;
-  padding-bottom: 12px; 
+  padding-bottom: 12px;
+  padding-right: 12px;
+  scroll-padding-right: 12px;
   scrollbar-width: none;
 }
 
@@ -687,6 +722,15 @@ p { margin: 0; }
 /* ══════════════ 6. WHAT + CTA (combo) ══════════════ */
 .what { background: var(--white); padding: 60px 0; }
 
+/* Same headline treatment as centered section headers (e.g. Life, News) */
+.what-left h2 {
+  font-size: clamp(1.8rem, 3.8vw, 2.6rem);
+  line-height: 1.12;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--text);
+}
+
 .what-cards-stack {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -721,7 +765,7 @@ p { margin: 0; }
   background: var(--white);
   flex-shrink: 0;
   border-bottom: 3px solid rgba(0,0,0,0.9);
-  min-height: 68px;
+  height: 78px;
   display: flex;
   align-items: center;
 }
@@ -732,7 +776,11 @@ p { margin: 0; }
   font-family: var(--font-body);
   color: var(--black);
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .what-card-img {
@@ -744,115 +792,319 @@ p { margin: 0; }
   flex: 1;
 }
 
-/* ══════════════ 8+9. PHONE + DASHBOARD (diagonal split panels) ══════════════ */
-.phone-dashboard { 
-  background: var(--bg); 
-  padding: 0;
-  overflow: hidden;
-  display: none; /* temporarily hide this section without removing markup */
-}
-
-.pd-wrapper {
+/* ══════════════ PHONE + DASHBOARD — diagonal split (titles above boxes) ══════════════ */
+.tools-split {
+  /* overlap = how tucked together they are (px). strip = diagonal “run” — bigger = bolder cut. reveal = nudge cuts apart so lavender still shows through (not a hairline). */
+  --split-overlap: 32px;
+  --split-strip: 76px;
+  --split-reveal: 16px;
   width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  background: var(--bg);
+  padding: 48px 0 120px;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: visible;
+}
+
+/* Background: full-bleed art (assets/tools-split-bg-znapp.svg) + NewsFLASH-style overlay */
+.tools-split-bg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.tools-split-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+/* Matches .news-card-modern::before purple wash; light scrim on top keeps black headlines readable */
+.tools-split-bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(237, 233, 244, 0.5) 0%,
+      rgba(237, 233, 244, 0.2) 40%,
+      rgba(237, 233, 244, 0.45) 100%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(157, 106, 186, 0.72) 0%,
+      rgba(199, 180, 211, 0.68) 100%
+    );
+}
+
+.tools-split > *:not(.tools-split-bg-layer) {
+  position: relative;
+  z-index: 2;
+}
+
+/*
+ * Full-bleed title row so each headline lines up with the 50/50 viewport panels below
+ * (same breakout as .tools-split-bleed — not the 1140px container).
+ */
+.tools-split-head {
+  width: 100vw;
+  max-width: none;
+  position: relative;
+  margin-left: calc(50% - 50vw);
+  margin-right: 0;
+  margin-bottom: 28px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tools-split-titles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 0;
+  align-items: end;
+  width: 100%;
+}
+
+/* Full-bleed row — classic breakout; mask widths use 50vw so right column locks to viewport right */
+.tools-split-bleed {
+  width: 100vw;
+  max-width: none;
+  position: relative;
+  margin-left: calc(50% - 50vw);
+  margin-right: 0;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.tools-split-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(440px, 1fr);
+  gap: 0;
+  align-items: stretch;
+  justify-items: stretch;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
 
-.pd-panels {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  min-height: 600px;
+/* Match “What do we do at ZNAPP!?” — Badaboom; light comic ink + lift (site purple accent) */
+.tools-split-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.8vw, 2.6rem);
+  font-style: normal;
+  font-weight: 400;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.12;
+  letter-spacing: var(--letter-spacing-heading);
+  text-transform: none;
+  max-width: 42ch;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.45),
+    1px 1px 0 rgba(132, 61, 179, 0.14),
+    2px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
-/* Panel containers */
-.pd-panel {
+.tools-split-title--left {
+  grid-column: 1;
+  justify-self: start;
+  text-align: left;
+  padding: 0 clamp(16px, 4vw, 56px) 0 clamp(36px, 7vw, 120px);
+}
+
+.tools-split-title--right {
+  grid-column: 2;
+  justify-self: end;
+  text-align: right;
+  padding: 0 clamp(16px, 4vw, 72px) 0 clamp(16px, 4vw, 56px);
+}
+
+@media (min-width: 1025px) {
+  .tools-split-titles .tools-split-title {
+    white-space: nowrap;
+  }
+}
+
+/* 50vw + overlap keeps edges close; strip/reveal balance = dramatic diagonal + visible lavender channel */
+.tools-split-mask--left {
+  grid-column: 1;
+  width: calc(50vw + var(--split-overlap));
+  max-width: none;
+  margin-right: calc(-1 * var(--split-overlap));
+  z-index: 1;
+}
+
+.tools-split-mask--right {
+  grid-column: 2;
+  justify-self: start;
+  width: calc(50vw + var(--split-overlap));
+  max-width: none;
+  margin-left: calc(-1 * var(--split-overlap));
+  margin-right: 0;
+  z-index: 2;
+}
+
+/* Black “frame” behind inner — do NOT set width here; it would override the 50vw rules on --left/--right */
+.tools-split-mask {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-width: 0;
+  min-height: 440px;
+  filter: none;
 }
 
-/* Border layer using clip-path with comic styling */
-.pd-panel-border {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background: var(--white);
-  border: 2px solid rgba(0, 0, 0, 0.82);
-  box-shadow:
-    4px 4px 0 rgba(0, 0, 0, 0.15),
-    0 10px 30px rgba(0, 0, 0, 0.07);
+.tools-split-mask::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Slight depth on the ink frame — same clip-path as before */
+  background: linear-gradient(168deg, #141414 0%, var(--black) 45%, #0a0a0a 100%);
+  pointer-events: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
-/* Left panel - diagonal angles inward from top-right to bottom-left */
-.pd-panel-left .pd-panel-border {
+/* Parallel split: strip+reveal in px so angle + gap stay consistent across widths */
+.tools-split-mask--left::before {
   clip-path: polygon(
     0 0,
-    96% 0,
-    88% 100%,
+    100% 0,
+    calc(100% - var(--split-strip) - var(--split-reveal)) 100%,
     0 100%
   );
-  border-right: none;
 }
 
-/* Right panel - diagonal angles inward from top-left to bottom-right */
-.pd-panel-right .pd-panel-border {
+.tools-split-mask--right::before {
   clip-path: polygon(
-    12% 0,
+    calc(var(--split-strip) + var(--split-reveal)) 0,
     100% 0,
     100% 100%,
-    4% 100%
+    0 100%
   );
-  border-left: none;
 }
 
-/* Content inside panels */
-.pd-panel-content {
+/* Inner = layout only (no clip) so devices sit ON the panel */
+.tools-split-inner {
   position: relative;
-  width: 100%;
-  height: 100%;
+  z-index: 1;
+  box-sizing: border-box;
+  margin: 3px;
+  min-height: 434px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  gap: 48px;
-  padding: 80px 60px;
+  padding: 32px 20px 88px;
+  background: transparent;
+  overflow: visible;
 }
 
-.pd-panel h2 {
-  margin: 0;
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  font-family: var(--font-display);
-  text-align: center;
-  color: var(--text);
-  line-height: 1.2;
-  letter-spacing: var(--letter-spacing-heading);
+/* Clipped gradient + comic edge (aligned with .btn-comic / card shadow language) */
+.tools-split-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 90% 70% at 90% 8%, rgba(132, 61, 179, 0.07) 0%, transparent 52%),
+    radial-gradient(ellipse 80% 60% at 5% 95%, rgba(48, 213, 200, 0.05) 0%, transparent 48%),
+    linear-gradient(165deg, #ffffff 0%, #f5f1fb 44%, #ebe4f4 100%);
+  box-shadow:
+    5px 5px 0 rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(132, 61, 179, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  pointer-events: none;
 }
 
-.pd-device-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  flex: 1;
+.tools-split-mask--left .tools-split-inner::after {
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - var(--split-strip) - var(--split-reveal)) 100%,
+    0 100%
+  );
 }
 
-.pd-phone-img {
-  width: 100%;
-  max-width: 220px;
+.tools-split-mask--right .tools-split-inner::after {
+  clip-path: polygon(
+    calc(var(--split-strip) + var(--split-reveal)) 0,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+}
+
+.tools-split-img {
+  display: block;
+  width: auto;
   height: auto;
+  max-width: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15));
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  filter:
+    drop-shadow(0 14px 28px rgba(132, 61, 179, 0.12))
+    drop-shadow(0 8px 16px rgba(0, 0, 0, 0.14));
+  transition: filter 0.22s ease;
+  /* Hang past the bottom frame — only the art overlaps; boxes unchanged */
+  margin-bottom: -128px;
 }
 
-.pd-laptop-img {
-  width: 100%;
-  max-width: 480px;
+/* Don’t use transform here — phone/laptop already use translateX for layout */
+.tools-split-img:hover {
+  filter:
+    drop-shadow(0 18px 36px rgba(132, 61, 179, 0.18))
+    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tools-split-img {
+    transition: none;
+  }
+  .tools-split-img:hover {
+    filter:
+      drop-shadow(0 14px 28px rgba(132, 61, 179, 0.12))
+      drop-shadow(0 8px 16px rgba(0, 0, 0, 0.14));
+  }
+}
+
+/* Laptop: bounded by width like a real scene */
+.tools-split-img--laptop {
+  max-height: min(520px, 58vh);
+  max-width: min(600px, 52vw);
+  margin-left: auto;
+  margin-right: 0;
+  transform: translateX(clamp(8px, 1.8vw, 28px));
+}
+
+/*
+ * Phone is portrait — laptop “reads” big from width (~600px); push the handset up so its height
+ * approaches the laptop’s span and the silhouette fills the panel similarly.
+ */
+.tools-split-img--phone {
+  /* Prefer a wide handset first so it visually competes with the laptop’s ~600px span */
+  width: min(480px, 52vw);
+  max-width: min(480px, 52vw);
   height: auto;
+  max-height: min(880px, 84vh);
   object-fit: contain;
-  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15));
+  margin-right: auto;
+  margin-left: 0;
+  transform: translateX(calc(-1 * clamp(8px, 1.8vw, 28px)));
+  /* Match laptop’s bottom overlap; taller asset needs a deeper hang */
+  margin-bottom: -168px;
 }
 
 /* ══════════════ 10. REVIEW (comic-style testimonial) ══════════════ */
@@ -1137,7 +1389,7 @@ p { margin: 0; }
     0 10px 26px rgba(0, 0, 0, 0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   overflow: hidden;
-  min-height: 200px;
+  min-height: 220px;
   display: flex;
   align-items: stretch;
 }
@@ -1160,8 +1412,8 @@ p { margin: 0; }
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(157, 106, 186, 0.85) 0%,
-    rgba(199, 180, 211, 0.8) 100%
+    rgba(125, 72, 156, 0.9) 0%,
+    rgba(165, 124, 192, 0.86) 100%
   );
   z-index: 1;
 }
@@ -1179,6 +1431,8 @@ p { margin: 0; }
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* Subtle ink card behind copy for readability */
+  background: linear-gradient(110deg, rgba(30, 20, 42, 0.34) 0%, rgba(20, 14, 30, 0.16) 100%);
 }
 
 .news-tag {
@@ -1201,19 +1455,21 @@ p { margin: 0; }
 .news-card-modern h3 { 
   font-size: 1.25rem; 
   margin: 0;
-  color: var(--white);
+  color: #ffffff;
   font-family: var(--font-display);
   line-height: 1.2;
   letter-spacing: 0.07em;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.42);
 }
 
 .news-card-modern p { 
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.7; 
-  font-size: 0.92rem;
+  color: rgba(255, 255, 255, 0.98);
+  line-height: 1.68; 
+  font-size: 0.95rem;
   margin: 0;
   font-family: var(--font-body);
   letter-spacing: 0.02em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.44);
 }
 
 /* ══════════════ 12. CTA SECTION (full-width modern comic) ══════════════ */
@@ -1875,18 +2131,94 @@ p { margin: 0; }
 
 /* Tablet and below - 1024px */
 @media (max-width: 1024px) {
+  .tools-split {
+    --split-overlap: 0;
+  }
   .hero-grid         { grid-template-columns: 1fr; gap: 40px; }
   .hero-visual-card  { min-height: 400px; }
   .what-cards-stack  { grid-template-columns: 1fr; }
   .what-card-img     { height: 240px; }
-  .pd-split          { grid-template-columns: 1fr; gap: 40px; }
+  .tools-split-head {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .tools-split-titles {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .tools-split-title--left,
+  .tools-split-title--right {
+    grid-column: 1;
+    justify-self: center;
+    text-align: center;
+    padding-left: clamp(12px, 4vw, 24px);
+    padding-right: clamp(12px, 4vw, 24px);
+    max-width: 100%;
+  }
+  .tools-split-panels {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 16px 0;
+  }
+  .tools-split-bleed {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .tools-split-mask--left,
+  .tools-split-mask--right {
+    grid-column: 1;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+  .tools-split-mask {
+    min-height: 380px;
+  }
+  .tools-split-inner {
+    min-height: 360px;
+    padding: 32px 16px 88px;
+    align-items: flex-end;
+  }
+  .tools-split-img--laptop {
+    max-height: min(440px, 50vh);
+    max-width: min(560px, 92vw);
+    margin-left: auto;
+    margin-right: 0;
+    transform: translateX(clamp(6px, 1.5vw, 20px));
+  }
+  .tools-split-img--phone {
+    max-height: min(640px, 68vh);
+    max-width: min(440px, 94vw);
+    margin-right: auto;
+    margin-left: 0;
+    transform: translateX(calc(-1 * clamp(6px, 1.5vw, 20px)));
+    margin-bottom: -132px;
+  }
+  .tools-split-img {
+    margin-bottom: -104px;
+  }
+  /* Stacked: full rectangles + continuous border (no diagonal) */
+  .tools-split-mask--left::before,
+  .tools-split-mask--right::before {
+    clip-path: none;
+    border-radius: 12px;
+  }
+  .tools-split-mask--left .tools-split-inner::after,
+  .tools-split-mask--right .tools-split-inner::after {
+    clip-path: none;
+    border-radius: 9px;
+  }
   .cta-inner         { flex-direction: column; align-items: flex-start; gap: 28px; }
   .cta-actions-modern { width: 100%; flex-direction: column; }
   .cta-actions-modern .btn { width: 100%; justify-content: center; }
   .contact-card      { grid-template-columns: 1fr; padding: 36px 28px; }
   .footer-inner      { grid-template-columns: 1fr; gap: 40px; }
   .news-row-equal, .news-row-asymmetric { grid-template-columns: 1fr; gap: 16px; }
-  .news-card-modern  { min-height: 180px; }
+  .news-card-modern  { min-height: 196px; }
   .faq-layout        { grid-template-columns: 1fr; gap: 32px; }
   .faq-left .btn     { width: 100%; justify-content: center; }
   .faq-card-compact,
@@ -1935,10 +2267,37 @@ p { margin: 0; }
   .why-panels        { gap: 14px; }
   .wpc-panel--main   { height: 260px; }
   .wpc-panel--sm     { height: 180px; }
+
+  /* Phone + dashboard split */
+  .tools-split       { padding: 36px 0 120px; }
+  .tools-split-title { font-size: clamp(1.35rem, 5vw, 1.85rem); }
+  .tools-split-mask  { min-height: 400px; }
+  .tools-split-inner {
+    min-height: 360px;
+    padding: 28px 14px 88px;
+    align-items: flex-end;
+  }
+  .tools-split-img--laptop {
+    max-height: min(380px, 48vh);
+    max-width: min(480px, 90vw);
+    margin-left: auto;
+    margin-right: 0;
+    transform: translateX(clamp(4px, 1.2vw, 16px));
+  }
+  .tools-split-img--phone {
+    max-height: min(540px, 60vh);
+    max-width: min(400px, 88vw);
+    margin-right: auto;
+    margin-left: 0;
+    transform: translateX(calc(-1 * clamp(4px, 1.2vw, 16px)));
+    margin-bottom: -118px;
+  }
+  .tools-split-img { margin-bottom: -92px; }
   
   /* Life section */
   .life-slide        { flex: 0 0 88%; }
-  .life-carousel-wrapper::after { width: 80px; top: 68px; }
+  .life-carousel-wrapper::before,
+  .life-carousel-wrapper::after { width: 80px; top: 0; }
   .life { padding-bottom: 80px; } /* Extra space for swipe indicator */
   .life .section-header { margin-bottom: 20px; }
   .life-frame-bubble {
@@ -1969,7 +2328,7 @@ p { margin: 0; }
   /* What section */
   .what-cards-stack  { gap: 16px; }
   .what-card-img     { height: 180px; }
-  .what-card-content { padding: 12px 12px; min-height: 64px; }
+  .what-card-content { padding: 12px 12px; height: 68px; }
   .what-card h3      { font-size: 0.95rem; }
   
   /* Testimonial — tighter two columns; still large headshot */
@@ -1997,7 +2356,7 @@ p { margin: 0; }
   /* News */
   .news              { padding: 48px 0; }
   .news .section-header { margin-bottom: 32px; }
-  .news-card-modern  { min-height: 160px; }
+  .news-card-modern  { min-height: 176px; }
   .news-content-block { padding: 24px 20px; gap: 10px; }
   .news-card-modern h3 { font-size: 1.1rem; }
   .news-card-modern p { font-size: 0.88rem; }
@@ -2069,6 +2428,7 @@ p { margin: 0; }
 @media (max-width: 480px) {
   .section           { padding: 40px 0; }
   .section-header h2 { font-size: 1.5rem; }
+  .tools-split-title { font-size: 1.5rem; }
   .section-sub       { font-size: 0.9rem; }
   
   /* Hero */
@@ -2093,7 +2453,7 @@ p { margin: 0; }
   
   /* What */
   .what-card-img     { height: 160px; }
-  .what-card-content { padding: 10px 10px; min-height: 58px; }
+  .what-card-content { padding: 10px 10px; height: 62px; }
   .what-card h3      { font-size: 0.9rem; }
   
   /* Testimonial — stack: headshot + name, then quote */
@@ -2135,7 +2495,7 @@ p { margin: 0; }
   /* News */
   .news              { padding: 40px 0; }
   .news .section-header h2 { font-size: 1.6rem; }
-  .news-card-modern  { min-height: 140px; }
+  .news-card-modern  { min-height: 152px; }
   .news-content-block { padding: 20px 18px; }
   .news-card-modern h3 { font-size: 1rem; }
   .news-card-modern p { font-size: 0.85rem; }
