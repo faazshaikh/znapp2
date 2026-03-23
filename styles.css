@@ -1387,7 +1387,7 @@ p { margin: 0; }
   box-shadow:
     5px 5px 0 rgba(0, 0, 0, 0.9),
     0 10px 26px rgba(0, 0, 0, 0.12);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
   overflow: hidden;
   min-height: 220px;
   display: flex;
@@ -1403,6 +1403,9 @@ p { margin: 0; }
   object-position: center;
   z-index: 0;
   pointer-events: none;
+  transform: scale(1.01);
+  filter: saturate(1.05) contrast(1.03);
+  transition: transform 0.4s ease, filter 0.35s ease;
 }
 
 /* Translucent purple overlay */
@@ -1412,15 +1415,48 @@ p { margin: 0; }
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(125, 72, 156, 0.9) 0%,
-    rgba(165, 124, 192, 0.86) 100%
+    rgba(125, 72, 156, 0.72) 0%,
+    rgba(165, 124, 192, 0.66) 100%
   );
   z-index: 1;
+  transition: opacity 0.35s ease, background 0.35s ease;
+}
+
+/* Soft light sweep for comic-style hover energy */
+.news-card-modern::after {
+  content: "";
+  position: absolute;
+  inset: -15% -35%;
+  z-index: 1;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.12) 45%, transparent 70%);
+  transform: translateX(-28%);
+  opacity: 0;
+  transition: transform 0.45s ease, opacity 0.3s ease;
 }
 
 .news-card-modern:hover { 
   transform: translate(-2px, -2px); 
   box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.9), 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.news-card-modern:hover::before {
+  background: transparent;
+  opacity: 0;
+}
+
+.news-card-modern:hover::after {
+  transform: translateX(10%);
+  opacity: 1;
+}
+
+.news-card-modern:hover .news-bg-img {
+  transform: scale(1.06);
+  filter: saturate(1.16) contrast(1.08);
+}
+
+/* Keep copy legible while still revealing the full image on hover */
+.news-card-modern:hover .news-content-block {
+  background: linear-gradient(110deg, rgba(18, 12, 30, 0.10) 0%, rgba(18, 12, 30, 0.04) 100%);
 }
 
 .news-content-block {
@@ -1432,7 +1468,7 @@ p { margin: 0; }
   flex-direction: column;
   gap: 12px;
   /* Subtle ink card behind copy for readability */
-  background: linear-gradient(110deg, rgba(30, 20, 42, 0.34) 0%, rgba(20, 14, 30, 0.16) 100%);
+  background: linear-gradient(110deg, rgba(30, 20, 42, 0.24) 0%, rgba(20, 14, 30, 0.10) 100%);
 }
 
 .news-tag {
@@ -1470,6 +1506,55 @@ p { margin: 0; }
   font-family: var(--font-body);
   letter-spacing: 0.02em;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.44);
+}
+
+.news-tag,
+.news-card-modern h3,
+.news-card-modern p {
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+.news-card-modern:hover .news-tag,
+.news-card-modern:hover h3,
+.news-card-modern:hover p {
+  filter: blur(2.6px);
+  opacity: 0.28;
+}
+
+.news-learn-more {
+  margin-top: auto;
+  align-self: flex-end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 2px solid var(--black);
+  background: linear-gradient(135deg, var(--teal) 0%, #74e5dc 100%);
+  color: var(--black);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.88);
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  pointer-events: none;
+  transition: transform 0.22s ease, opacity 0.22s ease, box-shadow 0.22s ease;
+  position: relative;
+  z-index: 3;
+}
+
+.news-card-modern:hover .news-learn-more {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.news-learn-more:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.88);
 }
 
 /* ══════════════ 12. CTA SECTION (full-width modern comic) ══════════════ */
@@ -1641,7 +1726,7 @@ p { margin: 0; }
   box-shadow:
     5px 5px 0 rgba(0, 0, 0, 0.9),
     0 10px 26px rgba(0, 0, 0, 0.12);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
   min-height: 220px;
   display: flex;
   flex-direction: column;
