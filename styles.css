@@ -687,6 +687,15 @@ p { margin: 0; }
 /* ══════════════ 6. WHAT + CTA (combo) ══════════════ */
 .what { background: var(--white); padding: 60px 0; }
 
+/* Same headline treatment as centered section headers (e.g. Life, News) */
+.what-left h2 {
+  font-size: clamp(1.8rem, 3.8vw, 2.6rem);
+  line-height: 1.12;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--text);
+}
+
 .what-cards-stack {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -762,16 +771,27 @@ p { margin: 0; }
   overflow: visible;
 }
 
-/* Titles stay in the normal content container */
+/*
+ * Full-bleed title row so each headline lines up with the 50/50 viewport panels below
+ * (same breakout as .tools-split-bleed — not the 1140px container).
+ */
 .tools-split-head {
+  width: 100vw;
+  max-width: none;
+  position: relative;
+  margin-left: calc(50% - 50vw);
+  margin-right: 0;
   margin-bottom: 20px;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .tools-split-titles {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 12px;
-  align-items: start;
+  gap: 8px 0;
+  align-items: end;
+  width: 100%;
 }
 
 /* Full-bleed row — classic breakout; mask widths use 50vw so right column locks to viewport right */
@@ -797,29 +817,38 @@ p { margin: 0; }
   padding: 0;
 }
 
+/* Match “What do we do at ZNAPP!?” — Badaboom, sentence case, not italic / all-caps */
 .tools-split-title {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 3.8vw, 2.6rem);
-  font-style: italic;
+  font-style: normal;
   font-weight: 400;
   color: var(--text);
-  text-align: center;
   margin: 0;
-  padding: 0 10px;
   line-height: 1.12;
   letter-spacing: var(--letter-spacing-heading);
-  text-transform: uppercase;
-  justify-self: center;
+  text-transform: none;
+  max-width: 42ch;
 }
 
 .tools-split-title--left {
   grid-column: 1;
-  max-width: 15ch;
+  justify-self: start;
+  text-align: left;
+  padding: 0 clamp(16px, 4vw, 56px) 0 clamp(36px, 7vw, 120px);
 }
 
 .tools-split-title--right {
   grid-column: 2;
-  max-width: 14ch;
+  justify-self: end;
+  text-align: right;
+  padding: 0 clamp(16px, 4vw, 72px) 0 clamp(16px, 4vw, 56px);
+}
+
+@media (min-width: 1025px) {
+  .tools-split-titles .tools-split-title {
+    white-space: nowrap;
+  }
 }
 
 /* 50vw + overlap keeps edges close; strip/reveal balance = dramatic diagonal + visible lavender channel */
@@ -935,15 +964,35 @@ p { margin: 0; }
   z-index: 2;
   flex-shrink: 0;
   filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.2));
-  /* Sit on lower area of panel, then hang past bottom border */
-  margin-bottom: -88px;
+  /* Hang past the bottom frame — only the art overlaps; boxes unchanged */
+  margin-bottom: -128px;
 }
 
-/* Large, matched presence for phone & laptop */
-.tools-split-img--phone,
+/* Laptop: bounded by width like a real scene */
 .tools-split-img--laptop {
-  max-height: min(400px, 52vh);
-  max-width: min(480px, 46vw);
+  max-height: min(520px, 58vh);
+  max-width: min(600px, 52vw);
+  margin-left: auto;
+  margin-right: 0;
+  transform: translateX(clamp(8px, 1.8vw, 28px));
+}
+
+/*
+ * Phone is portrait — laptop “reads” big from width (~600px); push the handset up so its height
+ * approaches the laptop’s span and the silhouette fills the panel similarly.
+ */
+.tools-split-img--phone {
+  /* Prefer a wide handset first so it visually competes with the laptop’s ~600px span */
+  width: min(480px, 52vw);
+  max-width: min(480px, 52vw);
+  height: auto;
+  max-height: min(880px, 84vh);
+  object-fit: contain;
+  margin-right: auto;
+  margin-left: 0;
+  transform: translateX(calc(-1 * clamp(8px, 1.8vw, 28px)));
+  /* Match laptop’s bottom overlap; taller asset needs a deeper hang */
+  margin-bottom: -168px;
 }
 
 /* ══════════════ 10. REVIEW (comic-style testimonial) ══════════════ */
@@ -1973,6 +2022,12 @@ p { margin: 0; }
   .hero-visual-card  { min-height: 400px; }
   .what-cards-stack  { grid-template-columns: 1fr; }
   .what-card-img     { height: 240px; }
+  .tools-split-head {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
   .tools-split-titles {
     grid-template-columns: 1fr;
     gap: 12px;
@@ -1980,6 +2035,11 @@ p { margin: 0; }
   .tools-split-title--left,
   .tools-split-title--right {
     grid-column: 1;
+    justify-self: center;
+    text-align: center;
+    padding-left: clamp(12px, 4vw, 24px);
+    padding-right: clamp(12px, 4vw, 24px);
+    max-width: 100%;
   }
   .tools-split-panels {
     grid-template-columns: 1fr;
@@ -2007,13 +2067,23 @@ p { margin: 0; }
     padding: 32px 16px 88px;
     align-items: flex-end;
   }
-  .tools-split-img--phone,
   .tools-split-img--laptop {
-    max-height: min(360px, 45vh);
-    max-width: min(480px, 90vw);
+    max-height: min(440px, 50vh);
+    max-width: min(560px, 92vw);
+    margin-left: auto;
+    margin-right: 0;
+    transform: translateX(clamp(6px, 1.5vw, 20px));
+  }
+  .tools-split-img--phone {
+    max-height: min(640px, 68vh);
+    max-width: min(440px, 94vw);
+    margin-right: auto;
+    margin-left: 0;
+    transform: translateX(calc(-1 * clamp(6px, 1.5vw, 20px)));
+    margin-bottom: -132px;
   }
   .tools-split-img {
-    margin-bottom: -80px;
+    margin-bottom: -104px;
   }
   /* Stacked: full rectangles + continuous border (no diagonal) */
   .tools-split-mask--left::before,
@@ -2091,12 +2161,22 @@ p { margin: 0; }
     padding: 28px 14px 88px;
     align-items: flex-end;
   }
-  .tools-split-img--phone,
   .tools-split-img--laptop {
-    max-height: min(320px, 42vh);
-    max-width: min(400px, 88vw);
+    max-height: min(380px, 48vh);
+    max-width: min(480px, 90vw);
+    margin-left: auto;
+    margin-right: 0;
+    transform: translateX(clamp(4px, 1.2vw, 16px));
   }
-  .tools-split-img { margin-bottom: -72px; }
+  .tools-split-img--phone {
+    max-height: min(540px, 60vh);
+    max-width: min(400px, 88vw);
+    margin-right: auto;
+    margin-left: 0;
+    transform: translateX(calc(-1 * clamp(4px, 1.2vw, 16px)));
+    margin-bottom: -118px;
+  }
+  .tools-split-img { margin-bottom: -92px; }
   
   /* Life section */
   .life-slide        { flex: 0 0 88%; }
