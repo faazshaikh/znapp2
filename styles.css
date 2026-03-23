@@ -744,115 +744,172 @@ p { margin: 0; }
   flex: 1;
 }
 
-/* ══════════════ 8+9. PHONE + DASHBOARD (diagonal split panels) ══════════════ */
-.phone-dashboard { 
-  background: var(--bg); 
-  padding: 0;
-  overflow: hidden;
-  display: none; /* temporarily hide this section without removing markup */
+/* ══════════════ PHONE + DASHBOARD — diagonal split (titles above boxes) ══════════════ */
+.tools-split {
+  background:
+    radial-gradient(ellipse 70% 80% at 50% 0%, rgba(199, 180, 211, 0.35) 0%, transparent 55%),
+    var(--bg);
+  padding: 48px 0 160px;
+  overflow: visible;
 }
 
-.pd-wrapper {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
+/* Titles stay in the normal content container */
+.tools-split-head {
+  margin-bottom: 20px;
 }
 
-.pd-panels {
+.tools-split-titles {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  align-items: start;
+}
+
+/* Full width of section — right column width fix below keeps the right panel flush to the viewport */
+.tools-split-bleed {
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+  position: relative;
+}
+
+.tools-split-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(560px, 1fr);
+  /* No column gap — split is only the diagonal seam */
   gap: 0;
-  min-height: 600px;
-}
-
-/* Panel containers */
-.pd-panel {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Border layer using clip-path with comic styling */
-.pd-panel-border {
-  position: relative;
+  align-items: stretch;
   width: 100%;
-  height: 100%;
-  background: var(--white);
-  border: 2px solid rgba(0, 0, 0, 0.82);
-  box-shadow:
-    4px 4px 0 rgba(0, 0, 0, 0.15),
-    0 10px 30px rgba(0, 0, 0, 0.07);
-}
-
-/* Left panel - diagonal angles inward from top-right to bottom-left */
-.pd-panel-left .pd-panel-border {
-  clip-path: polygon(
-    0 0,
-    96% 0,
-    88% 100%,
-    0 100%
-  );
-  border-right: none;
-}
-
-/* Right panel - diagonal angles inward from top-left to bottom-right */
-.pd-panel-right .pd-panel-border {
-  clip-path: polygon(
-    12% 0,
-    100% 0,
-    100% 100%,
-    4% 100%
-  );
-  border-left: none;
-}
-
-/* Content inside panels */
-.pd-panel-content {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 48px;
-  padding: 80px 60px;
-}
-
-.pd-panel h2 {
   margin: 0;
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
+}
+
+.tools-split-title {
   font-family: var(--font-display);
-  text-align: center;
+  font-size: clamp(1.8rem, 3.8vw, 2.6rem);
+  font-style: italic;
+  font-weight: 400;
   color: var(--text);
-  line-height: 1.2;
+  text-align: center;
+  margin: 0;
+  padding: 0 10px;
+  line-height: 1.12;
   letter-spacing: var(--letter-spacing-heading);
+  text-transform: uppercase;
+  justify-self: center;
 }
 
-.pd-device-container {
+.tools-split-title--left {
+  grid-column: 1;
+  max-width: 15ch;
+}
+
+.tools-split-title--right {
+  grid-column: 2;
+  max-width: 14ch;
+}
+
+/*
+ * Overlap at the seam: left bleeds right with negative margin-right only.
+ * IMPORTANT: negative margin-left on the right column pulled the whole panel left (~52px gap on viewport right).
+ * Fix: extend width by the same amount so the outer right edge stays flush with the screen.
+ */
+.tools-split-mask--left {
+  grid-column: 1;
+  margin-right: -52px;
+  z-index: 1;
+}
+
+.tools-split-mask--right {
+  grid-column: 2;
+  width: calc(100% + 52px);
+  margin-left: -52px;
+  z-index: 2;
+}
+
+/* Black “frame” behind inner so border reads on diagonal cuts too */
+.tools-split-mask {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  min-height: 560px;
+  /* drop-shadow + %-clip past 100% caused stray pixels; shadow lives on ::after only */
+  filter: none;
+}
+
+.tools-split-mask::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--black);
+  pointer-events: none;
+}
+
+/* Dramatic parallel split 72/28 — much steeper than 88/12; overlap keeps the seam tight */
+.tools-split-mask--left::before {
+  clip-path: polygon(0 0, 100% 0, 72% 100%, 0 100%);
+}
+
+.tools-split-mask--right::before {
+  clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Inner = layout only (no clip) so devices sit ON the panel */
+.tools-split-inner {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  margin: 3px;
+  min-height: 554px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  width: 100%;
-  flex: 1;
+  padding: 40px 20px 120px;
+  background: transparent;
+  overflow: visible;
 }
 
-.pd-phone-img {
-  width: 100%;
-  max-width: 220px;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15));
+/* Clipped gradient + comic edge */
+.tools-split-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(165deg, #ffffff 0%, #f3eef9 48%, #e8dff5 100%);
+  box-shadow:
+    6px 6px 0 rgba(0, 0, 0, 0.92),
+    0 0 0 1px rgba(132, 61, 179, 0.1);
+  pointer-events: none;
 }
 
-.pd-laptop-img {
-  width: 100%;
-  max-width: 480px;
+.tools-split-mask--left .tools-split-inner::after {
+  clip-path: polygon(0 0, 100% 0, 72% 100%, 0 100%);
+}
+
+.tools-split-mask--right .tools-split-inner::after {
+  clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.tools-split-img {
+  display: block;
+  width: auto;
   height: auto;
+  max-width: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15));
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.2));
+  /* Sit on lower area of panel, then hang past bottom border */
+  margin-bottom: -110px;
+}
+
+/* Large, matched presence for phone & laptop */
+.tools-split-img--phone,
+.tools-split-img--laptop {
+  max-height: min(480px, 56vh);
+  max-width: min(520px, 46vw);
 }
 
 /* ══════════════ 10. REVIEW (comic-style testimonial) ══════════════ */
@@ -1879,7 +1936,53 @@ p { margin: 0; }
   .hero-visual-card  { min-height: 400px; }
   .what-cards-stack  { grid-template-columns: 1fr; }
   .what-card-img     { height: 240px; }
-  .pd-split          { grid-template-columns: 1fr; gap: 40px; }
+  .tools-split-titles {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .tools-split-title--left,
+  .tools-split-title--right {
+    grid-column: 1;
+  }
+  .tools-split-panels {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 16px 0;
+  }
+  .tools-split-mask--left,
+  .tools-split-mask--right {
+    grid-column: 1;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+  .tools-split-mask {
+    min-height: 420px;
+  }
+  .tools-split-inner {
+    min-height: 400px;
+    padding: 32px 16px 100px;
+    align-items: flex-end;
+  }
+  .tools-split-img--phone,
+  .tools-split-img--laptop {
+    max-height: min(360px, 45vh);
+    max-width: min(480px, 90vw);
+  }
+  .tools-split-img {
+    margin-bottom: -80px;
+  }
+  /* Stacked: full rectangles + continuous border (no diagonal) */
+  .tools-split-mask--left::before,
+  .tools-split-mask--right::before {
+    clip-path: none;
+    border-radius: 12px;
+  }
+  .tools-split-mask--left .tools-split-inner::after,
+  .tools-split-mask--right .tools-split-inner::after {
+    clip-path: none;
+    border-radius: 9px;
+  }
   .cta-inner         { flex-direction: column; align-items: flex-start; gap: 28px; }
   .cta-actions-modern { width: 100%; flex-direction: column; }
   .cta-actions-modern .btn { width: 100%; justify-content: center; }
@@ -1935,6 +2038,22 @@ p { margin: 0; }
   .why-panels        { gap: 14px; }
   .wpc-panel--main   { height: 260px; }
   .wpc-panel--sm     { height: 180px; }
+
+  /* Phone + dashboard split */
+  .tools-split       { padding: 36px 0 120px; }
+  .tools-split-title { font-size: clamp(1.35rem, 5vw, 1.85rem); }
+  .tools-split-mask  { min-height: 440px; }
+  .tools-split-inner {
+    min-height: 400px;
+    padding: 28px 14px 100px;
+    align-items: flex-end;
+  }
+  .tools-split-img--phone,
+  .tools-split-img--laptop {
+    max-height: min(320px, 42vh);
+    max-width: min(400px, 88vw);
+  }
+  .tools-split-img { margin-bottom: -72px; }
   
   /* Life section */
   .life-slide        { flex: 0 0 88%; }
@@ -2069,6 +2188,7 @@ p { margin: 0; }
 @media (max-width: 480px) {
   .section           { padding: 40px 0; }
   .section-header h2 { font-size: 1.5rem; }
+  .tools-split-title { font-size: 1.5rem; }
   .section-sub       { font-size: 0.9rem; }
   
   /* Hero */
