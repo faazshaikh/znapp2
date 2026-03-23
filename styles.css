@@ -746,10 +746,19 @@ p { margin: 0; }
 
 /* ══════════════ PHONE + DASHBOARD — diagonal split (titles above boxes) ══════════════ */
 .tools-split {
+  /* overlap = how tucked together they are (px). strip = diagonal “run” — bigger = bolder cut. reveal = nudge cuts apart so lavender still shows through (not a hairline). */
+  --split-overlap: 32px;
+  --split-strip: 76px;
+  --split-reveal: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background:
     radial-gradient(ellipse 70% 80% at 50% 0%, rgba(199, 180, 211, 0.35) 0%, transparent 55%),
     var(--bg);
-  padding: 48px 0 160px;
+  padding: 48px 0 120px;
+  padding-left: 0;
+  padding-right: 0;
   overflow: visible;
 }
 
@@ -765,23 +774,27 @@ p { margin: 0; }
   align-items: start;
 }
 
-/* Full width of section — right column width fix below keeps the right panel flush to the viewport */
+/* Full-bleed row — classic breakout; mask widths use 50vw so right column locks to viewport right */
 .tools-split-bleed {
-  width: 100%;
-  max-width: 100%;
-  overflow: visible;
+  width: 100vw;
+  max-width: none;
   position: relative;
+  margin-left: calc(50% - 50vw);
+  margin-right: 0;
+  overflow: visible;
+  box-sizing: border-box;
 }
 
 .tools-split-panels {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: minmax(560px, 1fr);
-  /* No column gap — split is only the diagonal seam */
+  grid-template-rows: minmax(440px, 1fr);
   gap: 0;
   align-items: stretch;
+  justify-items: stretch;
   width: 100%;
   margin: 0;
+  padding: 0;
 }
 
 .tools-split-title {
@@ -809,31 +822,30 @@ p { margin: 0; }
   max-width: 14ch;
 }
 
-/*
- * Overlap at the seam: left bleeds right with negative margin-right only.
- * IMPORTANT: negative margin-left on the right column pulled the whole panel left (~52px gap on viewport right).
- * Fix: extend width by the same amount so the outer right edge stays flush with the screen.
- */
+/* 50vw + overlap keeps edges close; strip/reveal balance = dramatic diagonal + visible lavender channel */
 .tools-split-mask--left {
   grid-column: 1;
-  margin-right: -52px;
+  width: calc(50vw + var(--split-overlap));
+  max-width: none;
+  margin-right: calc(-1 * var(--split-overlap));
   z-index: 1;
 }
 
 .tools-split-mask--right {
   grid-column: 2;
-  width: calc(100% + 52px);
-  margin-left: -52px;
+  justify-self: start;
+  width: calc(50vw + var(--split-overlap));
+  max-width: none;
+  margin-left: calc(-1 * var(--split-overlap));
+  margin-right: 0;
   z-index: 2;
 }
 
-/* Black “frame” behind inner so border reads on diagonal cuts too */
+/* Black “frame” behind inner — do NOT set width here; it would override the 50vw rules on --left/--right */
 .tools-split-mask {
   position: relative;
-  width: 100%;
   min-width: 0;
-  min-height: 560px;
-  /* drop-shadow + %-clip past 100% caused stray pixels; shadow lives on ::after only */
+  min-height: 440px;
   filter: none;
 }
 
@@ -844,15 +856,27 @@ p { margin: 0; }
   z-index: 0;
   background: var(--black);
   pointer-events: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
-/* Dramatic parallel split 72/28 — much steeper than 88/12; overlap keeps the seam tight */
+/* Parallel split: strip+reveal in px so angle + gap stay consistent across widths */
 .tools-split-mask--left::before {
-  clip-path: polygon(0 0, 100% 0, 72% 100%, 0 100%);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - var(--split-strip) - var(--split-reveal)) 100%,
+    0 100%
+  );
 }
 
 .tools-split-mask--right::before {
-  clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
+  clip-path: polygon(
+    calc(var(--split-strip) + var(--split-reveal)) 0,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
 }
 
 /* Inner = layout only (no clip) so devices sit ON the panel */
@@ -861,11 +885,11 @@ p { margin: 0; }
   z-index: 1;
   box-sizing: border-box;
   margin: 3px;
-  min-height: 554px;
+  min-height: 434px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 40px 20px 120px;
+  padding: 32px 20px 88px;
   background: transparent;
   overflow: visible;
 }
@@ -884,11 +908,21 @@ p { margin: 0; }
 }
 
 .tools-split-mask--left .tools-split-inner::after {
-  clip-path: polygon(0 0, 100% 0, 72% 100%, 0 100%);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - var(--split-strip) - var(--split-reveal)) 100%,
+    0 100%
+  );
 }
 
 .tools-split-mask--right .tools-split-inner::after {
-  clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
+  clip-path: polygon(
+    calc(var(--split-strip) + var(--split-reveal)) 0,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
 }
 
 .tools-split-img {
@@ -902,14 +936,14 @@ p { margin: 0; }
   flex-shrink: 0;
   filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.2));
   /* Sit on lower area of panel, then hang past bottom border */
-  margin-bottom: -110px;
+  margin-bottom: -88px;
 }
 
 /* Large, matched presence for phone & laptop */
 .tools-split-img--phone,
 .tools-split-img--laptop {
-  max-height: min(480px, 56vh);
-  max-width: min(520px, 46vw);
+  max-height: min(400px, 52vh);
+  max-width: min(480px, 46vw);
 }
 
 /* ══════════════ 10. REVIEW (comic-style testimonial) ══════════════ */
@@ -1932,6 +1966,9 @@ p { margin: 0; }
 
 /* Tablet and below - 1024px */
 @media (max-width: 1024px) {
+  .tools-split {
+    --split-overlap: 0;
+  }
   .hero-grid         { grid-template-columns: 1fr; gap: 40px; }
   .hero-visual-card  { min-height: 400px; }
   .what-cards-stack  { grid-template-columns: 1fr; }
@@ -1949,6 +1986,12 @@ p { margin: 0; }
     grid-template-rows: auto auto;
     gap: 16px 0;
   }
+  .tools-split-bleed {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
   .tools-split-mask--left,
   .tools-split-mask--right {
     grid-column: 1;
@@ -1957,11 +2000,11 @@ p { margin: 0; }
     width: 100%;
   }
   .tools-split-mask {
-    min-height: 420px;
+    min-height: 380px;
   }
   .tools-split-inner {
-    min-height: 400px;
-    padding: 32px 16px 100px;
+    min-height: 360px;
+    padding: 32px 16px 88px;
     align-items: flex-end;
   }
   .tools-split-img--phone,
@@ -2042,10 +2085,10 @@ p { margin: 0; }
   /* Phone + dashboard split */
   .tools-split       { padding: 36px 0 120px; }
   .tools-split-title { font-size: clamp(1.35rem, 5vw, 1.85rem); }
-  .tools-split-mask  { min-height: 440px; }
+  .tools-split-mask  { min-height: 400px; }
   .tools-split-inner {
-    min-height: 400px;
-    padding: 28px 14px 100px;
+    min-height: 360px;
+    padding: 28px 14px 88px;
     align-items: flex-end;
   }
   .tools-split-img--phone,
