@@ -132,7 +132,7 @@ p { margin: 0; }
 }
 .btn-secondary:hover { border-color: var(--purple); color: var(--purple); background: rgba(132,61,179,0.04); }
 
-.btn-lg { height: 52px; font-size: 1rem; padding: 0 30px; border-radius: 12px; }
+.btn-lg { height: 52px; font-size: 0.9rem; padding: 0 30px; border-radius: 12px; }
 
 /* ── 1. HEADER ── */
 .header {
@@ -434,7 +434,7 @@ p { margin: 0; }
   position: sticky; top: 88px;
 }
 .why-left h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.08; }
-.why-tagline { color: var(--text-muted); font-size: 0.95rem; line-height: 1.65; }
+.why-tagline { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
 
 /* ── 3 comic panels: individual cards, gap between them ── */
 .why-panels {
@@ -792,319 +792,203 @@ p { margin: 0; }
   flex: 1;
 }
 
-/* ══════════════ PHONE + DASHBOARD — diagonal split (titles above boxes) ══════════════ */
+/* ══════════════ PHONE + DASHBOARD — unified comic card ══════════════ */
 .tools-split {
-  /* overlap = how tucked together they are (px). strip = diagonal “run” — bigger = bolder cut. reveal = nudge cuts apart so lavender still shows through (not a hairline). */
-  --split-overlap: 32px;
-  --split-strip: 76px;
-  --split-reveal: 16px;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  position: relative;
-  isolation: isolate;
   background: var(--bg);
-  padding: 48px 0 120px;
-  padding-left: 0;
-  padding-right: 0;
-  overflow: visible;
+  padding: 60px 0 110px;
 }
 
-/* Background: full-bleed art (assets/tools-split-bg-znapp.svg) + NewsFLASH-style overlay */
-.tools-split-bg-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.tools-split-bg-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  z-index: 0;
-}
-
-/* Matches .news-card-modern::before purple wash; light scrim on top keeps black headlines readable */
-.tools-split-bg-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(237, 233, 244, 0.5) 0%,
-      rgba(237, 233, 244, 0.2) 40%,
-      rgba(237, 233, 244, 0.45) 100%
-    ),
-    linear-gradient(
-      135deg,
-      rgba(157, 106, 186, 0.72) 0%,
-      rgba(199, 180, 211, 0.68) 100%
-    );
-}
-
-.tools-split > *:not(.tools-split-bg-layer) {
-  position: relative;
-  z-index: 2;
-}
-
-/*
- * Full-bleed title row so each headline lines up with the 50/50 viewport panels below
- * (same breakout as .tools-split-bleed — not the 1140px container).
- */
-.tools-split-head {
-  width: 100vw;
-  max-width: none;
-  position: relative;
-  margin-left: calc(50% - 50vw);
-  margin-right: 0;
+.tools-split-header {
   margin-bottom: 28px;
-  padding: 0;
-  box-sizing: border-box;
 }
 
-.tools-split-titles {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 0;
-  align-items: end;
-  width: 100%;
-}
-
-/* Full-bleed row — classic breakout; mask widths use 50vw so right column locks to viewport right */
-.tools-split-bleed {
-  width: 100vw;
-  max-width: none;
+.tools-unified-card {
   position: relative;
-  margin-left: calc(50% - 50vw);
-  margin-right: 0;
-  overflow: visible;
-  box-sizing: border-box;
-}
-
-.tools-split-panels {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: minmax(440px, 1fr);
-  gap: 0;
+  grid-template-columns: 1fr 1px 1fr;
   align-items: stretch;
-  justify-items: stretch;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+  gap: 0;
+  min-height: 430px;
+  border-radius: 10px;
+  border: 3px solid rgba(0, 0, 0, 0.9);
+  background:
+    radial-gradient(ellipse 95% 70% at 90% 10%, rgba(132, 61, 179, 0.08) 0%, transparent 52%),
+    radial-gradient(ellipse 88% 68% at 10% 92%, rgba(48, 213, 200, 0.06) 0%, transparent 46%),
+    linear-gradient(165deg, #ffffff 0%, #f3eef9 48%, #e8dff5 100%);
+  box-shadow:
+    5px 5px 0 rgba(0, 0, 0, 0.9),
+    0 12px 28px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
 }
 
-/* Match “What do we do at ZNAPP!?” — Badaboom; light comic ink + lift (site purple accent) */
-.tools-split-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3.8vw, 2.6rem);
-  font-style: normal;
-  font-weight: 400;
-  color: var(--text);
-  margin: 0;
-  line-height: 1.12;
-  letter-spacing: var(--letter-spacing-heading);
-  text-transform: none;
-  max-width: 42ch;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.45),
-    1px 1px 0 rgba(132, 61, 179, 0.14),
-    2px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-.tools-split-title--left {
-  grid-column: 1;
-  justify-self: start;
-  text-align: left;
-  padding: 0 clamp(16px, 4vw, 56px) 0 clamp(36px, 7vw, 120px);
-}
-
-.tools-split-title--right {
-  grid-column: 2;
-  justify-self: end;
-  text-align: right;
-  padding: 0 clamp(16px, 4vw, 72px) 0 clamp(16px, 4vw, 56px);
-}
-
-@media (min-width: 1025px) {
-  .tools-split-titles .tools-split-title {
-    white-space: nowrap;
-  }
-}
-
-/* 50vw + overlap keeps edges close; strip/reveal balance = dramatic diagonal + visible lavender channel */
-.tools-split-mask--left {
-  grid-column: 1;
-  width: calc(50vw + var(--split-overlap));
-  max-width: none;
-  margin-right: calc(-1 * var(--split-overlap));
-  z-index: 1;
-}
-
-.tools-split-mask--right {
-  grid-column: 2;
-  justify-self: start;
-  width: calc(50vw + var(--split-overlap));
-  max-width: none;
-  margin-left: calc(-1 * var(--split-overlap));
-  margin-right: 0;
-  z-index: 2;
-}
-
-/* Black “frame” behind inner — do NOT set width here; it would override the 50vw rules on --left/--right */
-.tools-split-mask {
-  position: relative;
+.tools-unified-side {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 16px;
+  padding: 24px 20px;
   min-width: 0;
-  min-height: 440px;
-  filter: none;
 }
 
-.tools-split-mask::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  /* Slight depth on the ink frame — same clip-path as before */
-  background: linear-gradient(168deg, #141414 0%, var(--black) 45%, #0a0a0a 100%);
-  pointer-events: none;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+.tools-unified-side--laptop {
+  grid-template-columns: minmax(270px, 1.1fr) minmax(0, 0.9fr);
 }
 
-/* Parallel split: strip+reveal in px so angle + gap stay consistent across widths */
-.tools-split-mask--left::before {
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    calc(100% - var(--split-strip) - var(--split-reveal)) 100%,
-    0 100%
+.tools-unified-side--laptop .tools-unified-media {
+  align-items: center;
+  justify-content: center;
+}
+
+.tools-unified-divider {
+  align-self: stretch;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.06) 0%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.06) 100%
   );
 }
 
-.tools-split-mask--right::before {
-  clip-path: polygon(
-    calc(var(--split-strip) + var(--split-reveal)) 0,
-    100% 0,
-    100% 100%,
-    0 100%
-  );
-}
-
-/* Inner = layout only (no clip) so devices sit ON the panel */
-.tools-split-inner {
-  position: relative;
-  z-index: 1;
-  box-sizing: border-box;
-  margin: 3px;
-  min-height: 434px;
+.tools-unified-media {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 32px 20px 88px;
-  background: transparent;
-  overflow: visible;
+  min-height: 300px;
 }
 
-/* Clipped gradient + comic edge (aligned with .btn-comic / card shadow language) */
-.tools-split-inner::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 90% 70% at 90% 8%, rgba(132, 61, 179, 0.07) 0%, transparent 52%),
-    radial-gradient(ellipse 80% 60% at 5% 95%, rgba(48, 213, 200, 0.05) 0%, transparent 48%),
-    linear-gradient(165deg, #ffffff 0%, #f5f1fb 44%, #ebe4f4 100%);
-  box-shadow:
-    5px 5px 0 rgba(0, 0, 0, 0.9),
-    0 0 0 1px rgba(132, 61, 179, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.75);
-  pointer-events: none;
-}
-
-.tools-split-mask--left .tools-split-inner::after {
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    calc(100% - var(--split-strip) - var(--split-reveal)) 100%,
-    0 100%
-  );
-}
-
-.tools-split-mask--right .tools-split-inner::after {
-  clip-path: polygon(
-    calc(var(--split-strip) + var(--split-reveal)) 0,
-    100% 0,
-    100% 100%,
-    0 100%
-  );
-}
-
-.tools-split-img {
+.tools-unified-img {
   display: block;
   width: auto;
   height: auto;
   max-width: 100%;
   object-fit: contain;
+  filter:
+    drop-shadow(0 16px 24px rgba(132, 61, 179, 0.14))
+    drop-shadow(0 8px 14px rgba(0, 0, 0, 0.16));
+}
+
+.tools-unified-img--phone {
+  max-height: min(390px, 58vh);
+  max-width: 300px;
+}
+
+.tools-unified-img--laptop {
+  max-height: min(430px, 62vh);
+  max-width: min(700px, 100%);
+}
+
+.tools-unified-copy {
+  min-width: 0;
+}
+
+.tools-unified-copy h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.06;
+  letter-spacing: var(--letter-spacing-heading);
+  color: var(--text);
+}
+
+.tools-unified-copy p {
+  margin: 0 0 12px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.58;
+  color: var(--text-muted);
+}
+
+.tools-unified-points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 7px;
+}
+
+.tools-unified-points li {
   position: relative;
-  z-index: 2;
-  flex-shrink: 0;
-  filter:
-    drop-shadow(0 14px 28px rgba(132, 61, 179, 0.12))
-    drop-shadow(0 8px 16px rgba(0, 0, 0, 0.14));
-  transition: filter 0.22s ease;
-  /* Hang past the bottom frame — only the art overlaps; boxes unchanged */
-  margin-bottom: -128px;
+  padding-left: 20px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
 }
 
-/* Don’t use transform here — phone/laptop already use translateX for layout */
-.tools-split-img:hover {
-  filter:
-    drop-shadow(0 18px 36px rgba(132, 61, 179, 0.18))
-    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.1));
+.tools-unified-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--teal);
+  border: 1px solid rgba(0, 0, 0, 0.72);
+  transform: translateY(-50%);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .tools-split-img {
-    transition: none;
+@media (max-width: 1024px) {
+  .tools-split {
+    padding: 52px 0 92px;
   }
-  .tools-split-img:hover {
-    filter:
-      drop-shadow(0 14px 28px rgba(132, 61, 179, 0.12))
-      drop-shadow(0 8px 16px rgba(0, 0, 0, 0.14));
+
+  .tools-unified-card {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .tools-unified-divider {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.06));
+  }
+
+  .tools-unified-side {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 18px 16px;
+    gap: 12px;
+  }
+
+  .tools-unified-media {
+    min-height: 230px;
+  }
+
+  .tools-unified-points {
+    justify-items: center;
+  }
+
+  .tools-unified-points li {
+    padding-left: 18px;
   }
 }
 
-/* Laptop: bounded by width like a real scene */
-.tools-split-img--laptop {
-  max-height: min(520px, 58vh);
-  max-width: min(600px, 52vw);
-  margin-left: auto;
-  margin-right: 0;
-  transform: translateX(clamp(8px, 1.8vw, 28px));
-}
+@media (max-width: 768px) {
+  .tools-split {
+    padding: 40px 0 78px;
+  }
 
-/*
- * Phone is portrait — laptop “reads” big from width (~600px); push the handset up so its height
- * approaches the laptop’s span and the silhouette fills the panel similarly.
- */
-.tools-split-img--phone {
-  /* Prefer a wide handset first so it visually competes with the laptop’s ~600px span */
-  width: min(480px, 52vw);
-  max-width: min(480px, 52vw);
-  height: auto;
-  max-height: min(880px, 84vh);
-  object-fit: contain;
-  margin-right: auto;
-  margin-left: 0;
-  transform: translateX(calc(-1 * clamp(8px, 1.8vw, 28px)));
-  /* Match laptop’s bottom overlap; taller asset needs a deeper hang */
-  margin-bottom: -168px;
+  .tools-unified-card {
+    border-width: 2.5px;
+    box-shadow:
+      4px 4px 0 rgba(0, 0, 0, 0.9),
+      0 10px 22px rgba(0, 0, 0, 0.12);
+  }
+
+  .tools-unified-img--phone {
+    max-height: 315px;
+    max-width: 240px;
+  }
+
+  .tools-unified-img--laptop {
+    max-height: 320px;
+    max-width: 520px;
+  }
+
+  .tools-unified-copy p {
+    font-size: 0.92rem;
+  }
 }
 
 /* ══════════════ 10. REVIEW (comic-style testimonial) ══════════════ */

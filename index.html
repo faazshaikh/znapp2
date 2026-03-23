@@ -307,52 +307,59 @@
       </div>
     </section>
 
-    <!-- ═══ PHONE + DASHBOARD — diagonal split (titles above panels) ═══ -->
+    <!-- ═══ PHONE + DASHBOARD — unified comic card ═══ -->
     <section class="section tools-split" id="phone">
-      <!-- On-brand placeholder: routes + ZNAPP palette (no external stock) -->
-      <div class="tools-split-bg-layer" aria-hidden="true">
-        <img
-          src="assets/tools-split-bg-znapp.svg"
-          alt=""
-          class="tools-split-bg-img"
-          loading="lazy"
-          decoding="async"
-          width="1600"
-          height="1000"
-        />
-        <div class="tools-split-bg-overlay"></div>
-      </div>
-      <div class="tools-split-head">
-        <div class="tools-split-titles">
-          <h2 class="tools-split-title tools-split-title--left">Your phone is your tool</h2>
-          <h2 class="tools-split-title tools-split-title--right">Everything on your dashboard</h2>
+      <div class="container">
+        <div class="section-header tools-split-header">
+          <h2>Your phone and dashboard, synced.</h2>
+          <p class="section-sub">Everything you need on the road and in your portal, laid out in one clear view.</p>
         </div>
-      </div>
-      <div class="tools-split-bleed">
-        <div class="tools-split-panels">
-          <div class="tools-split-mask tools-split-mask--left">
-            <div class="tools-split-inner">
+
+        <article class="tools-unified-card">
+          <div class="tools-unified-side tools-unified-side--phone">
+            <div class="tools-unified-media">
               <img
                 src="assets/smartphone-and-mobile-phone-free-png.png"
                 alt="Smartphone with the ZNAPP app"
-                class="tools-split-img tools-split-img--phone"
+                class="tools-unified-img tools-unified-img--phone"
                 width="350"
                 height="350"
               />
             </div>
+            <div class="tools-unified-copy">
+              <h3>Drive with the phone app</h3>
+              <p>Accept trips fast, follow route guidance, and stay updated in real time while you are on the road.</p>
+              <ul class="tools-unified-points">
+                <li>Fast trip acceptance</li>
+                <li>Live route guidance</li>
+                <li>Instant driver updates</li>
+              </ul>
+            </div>
           </div>
-          <div class="tools-split-mask tools-split-mask--right">
-            <div class="tools-split-inner">
+
+          <div class="tools-unified-divider" aria-hidden="true"></div>
+
+          <div class="tools-unified-side tools-unified-side--laptop">
+            <div class="tools-unified-media">
               <img
                 src="pngimg.com - laptop_PNG101816.png"
                 alt="Laptop with the ZNAPP dashboard"
-                class="tools-split-img tools-split-img--laptop"
+                class="tools-unified-img tools-unified-img--laptop"
                 width="800"
                 height="500"
               />
             </div>
+            <div class="tools-unified-copy">
+              <h3>Review everything in dashboard</h3>
+              <p>Track earnings, plan shifts, and understand performance from one clean operational view.</p>
+              <ul class="tools-unified-points">
+                <li>Weekly earnings breakdown</li>
+                <li>Shift and route planning</li>
+                <li>Performance insights</li>
+              </ul>
+            </div>
           </div>
-        </div>
+        </article>
       </div>
     </section>
 
