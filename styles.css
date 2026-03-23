@@ -1291,6 +1291,7 @@ p { margin: 0; }
   object-position: center;
   z-index: 0;
   pointer-events: none;
+  transition: transform 0.35s ease, filter 0.35s ease;
 }
 
 /* Translucent purple overlay */
@@ -1304,11 +1305,22 @@ p { margin: 0; }
     rgba(165, 124, 192, 0.86) 100%
   );
   z-index: 1;
+  transition: opacity 0.28s ease, background 0.28s ease;
 }
 
 .news-card-modern:hover { 
   transform: translate(-2px, -2px); 
   box-shadow: 7px 7px 0 rgba(0, 0, 0, 0.9), 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.news-card-modern:hover .news-bg-img {
+  transform: scale(1.03);
+  filter: saturate(1.1) contrast(1.04);
+}
+
+.news-card-modern:hover::before {
+  background: transparent;
+  opacity: 0;
 }
 
 .news-content-block {
@@ -1321,6 +1333,7 @@ p { margin: 0; }
   gap: 12px;
   /* Subtle ink card behind copy for readability */
   background: linear-gradient(110deg, rgba(30, 20, 42, 0.34) 0%, rgba(20, 14, 30, 0.16) 100%);
+  transition: background 0.25s ease;
 }
 
 .news-tag {
@@ -1358,6 +1371,59 @@ p { margin: 0; }
   font-family: var(--font-body);
   letter-spacing: 0.02em;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.44);
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+.news-tag,
+.news-card-modern h3 {
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+
+.news-card-modern:hover .news-content-block {
+  background: linear-gradient(110deg, rgba(30, 20, 42, 0.28) 0%, rgba(20, 14, 30, 0.12) 100%);
+}
+
+.news-card-modern:hover .news-tag,
+.news-card-modern:hover h3,
+.news-card-modern:hover p {
+  filter: blur(2.6px);
+  opacity: 0.28;
+}
+
+.news-learn-more {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translate(-50%, 8px);
+  height: 40px;
+  padding: 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 2px solid rgba(0, 0, 0, 0.9);
+  background: linear-gradient(135deg, var(--teal) 0%, #52e2d7 100%);
+  color: var(--black);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease, filter 0.2s ease;
+  z-index: 3;
+}
+
+.news-learn-more:hover {
+  filter: brightness(1.04);
+}
+
+.news-card-modern:hover .news-learn-more {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
 }
 
 /* ══════════════ 12. CTA SECTION (full-width modern comic) ══════════════ */
