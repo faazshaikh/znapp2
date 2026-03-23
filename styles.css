@@ -2267,32 +2267,14 @@ p { margin: 0; }
   .life-slide        { flex: 0 0 88%; }
   .life-carousel-wrapper::before,
   .life-carousel-wrapper::after { width: 80px; top: 0; }
-  .life { padding-bottom: 80px; } /* Extra space for swipe indicator */
+  .life { padding-bottom: 48px; }
   .life .section-header { margin-bottom: 20px; }
   .life-frame-bubble {
     padding: 9px 10px;
     font-size: 0.88rem;
   }
   
-  /* Swipe indicator for life carousel */
-  .life-carousel-wrapper::before {
-    content: "";
-    position: absolute;
-    bottom: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 35px;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 35"><text x="5" y="22" font-family="Arial Black, sans-serif" font-size="16" font-weight="900" fill="%239D6ABA" letter-spacing="1">SWIPE</text><path d="M 85 17 L 105 17 M 105 17 L 98 12 M 105 17 L 98 22" stroke="%239D6ABA" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>') center/contain no-repeat;
-    pointer-events: none;
-    z-index: 10;
-    animation: swipeHint 2s ease-in-out infinite;
-  }
-  
-  @keyframes swipeHint {
-    0%, 100% { opacity: 0.7; transform: translateX(-50%); }
-    50% { opacity: 1; transform: translateX(-45%); }
-  }
+  .life-carousel-wrapper::before { content: none; }
   
   /* What section */
   .what-cards-stack  { gap: 16px; }
@@ -2331,7 +2313,7 @@ p { margin: 0; }
   .news-card-modern p { font-size: 0.88rem; }
   
   /* FAQ */
-  .faq               { padding: 48px 0 80px; } /* Extra bottom padding for swipe indicator */
+  .faq               { padding: 48px 0 56px; }
   .faq-layout        { gap: 28px; }
   .faq-card-compact,
   .faq-read-more-card { flex: 0 0 85%; min-height: 140px; }
@@ -2359,20 +2341,7 @@ p { margin: 0; }
     padding-bottom: 2px;
   }
   
-  /* Swipe indicator for FAQ carousel */
-  .faq-carousel-wrapper::before {
-    content: "";
-    position: absolute;
-    bottom: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 35px;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 35"><text x="5" y="22" font-family="Arial Black, sans-serif" font-size="16" font-weight="900" fill="%239D6ABA" letter-spacing="1">SWIPE</text><path d="M 85 17 L 105 17 M 105 17 L 98 12 M 105 17 L 98 22" stroke="%239D6ABA" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>') center/contain no-repeat;
-    pointer-events: none;
-    z-index: 10;
-    animation: swipeHint 2s ease-in-out infinite;
-  }
+  .faq-carousel-wrapper::before { content: none; }
   
   /* CTA */
   .cta-fullwidth     { padding: 48px 0; }
@@ -2418,7 +2387,7 @@ p { margin: 0; }
   
   /* Life */
   .life-slide        { flex: 0 0 92%; }
-  .life { padding-bottom: 80px; } /* Extra space for swipe indicator */
+  .life { padding-bottom: 48px; }
   
   /* What */
   .what-card-img     { height: 160px; }
@@ -2471,7 +2440,7 @@ p { margin: 0; }
   .news-tag          { height: 24px; font-size: 0.68rem; padding: 0 12px; }
   
   /* FAQ */
-  .faq               { padding: 40px 0 80px; } /* Extra bottom padding for swipe indicator */
+  .faq               { padding: 40px 0 52px; }
   .faq-left h2       { font-size: 1.5rem; }
   .faq-desc          { font-size: 0.9rem; }
   .faq-card-compact,
