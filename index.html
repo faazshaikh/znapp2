@@ -164,7 +164,6 @@
 
         <!-- Right: headline + signup -->
         <div class="hero-signup">
-          <div class="hero-badge">Driver Community</div>
           <h1>Drive your city with <span class="accent">ZNAPP!</span></h1>
             <p class="hero-sub">A rideshare built around roads, routes, and municipalities, not just apps. Get matched to local trips, see every dollar, and stay close to home.</p>
           <form class="signup-form" action="#" method="post">
@@ -233,29 +232,44 @@
           <div class="life-carousel" role="region" aria-label="Road Hero journey steps">
             
             <!-- Frame 1: Apply -->
-            <article class="life-frame">
-              <img src="assets/driver-comic.png" alt="Apply to become a Road Hero" class="life-frame-img">
-            </article>
+            <div class="life-slide">
+              <div class="life-frame-bubble">Step 1: Apply in minutes!</div>
+              <article class="life-frame">
+                <img src="assets/driver-comic.png" alt="Apply to become a Road Hero" class="life-frame-img">
+              </article>
+            </div>
 
             <!-- Frame 2: Get ready -->
-            <article class="life-frame">
-              <img src="assets/driver-comic.png" alt="Get ready to drive" class="life-frame-img">
-            </article>
+            <div class="life-slide">
+              <div class="life-frame-bubble">Step 2: Get road-ready fast.</div>
+              <article class="life-frame">
+                <img src="assets/driver-comic.png" alt="Get ready to drive" class="life-frame-img">
+              </article>
+            </div>
 
             <!-- Frame 3: Hit the road -->
-            <article class="life-frame">
-              <img src="assets/driver-comic.png" alt="Hit the road and start driving" class="life-frame-img">
-            </article>
+            <div class="life-slide">
+              <div class="life-frame-bubble">Step 3: Start your first drive!</div>
+              <article class="life-frame">
+                <img src="assets/driver-comic.png" alt="Hit the road and start driving" class="life-frame-img">
+              </article>
+            </div>
 
             <!-- Frame 4: Earn & grow -->
-            <article class="life-frame">
-              <img src="assets/driver-comic.png" alt="Earn and grow as a driver" class="life-frame-img">
-            </article>
+            <div class="life-slide">
+              <div class="life-frame-bubble">Step 4: Track, earn, and grow.</div>
+              <article class="life-frame">
+                <img src="assets/driver-comic.png" alt="Earn and grow as a driver" class="life-frame-img">
+              </article>
+            </div>
 
             <!-- Frame 5: Join the community -->
-            <article class="life-frame">
-              <img src="assets/driver-comic.png" alt="Join the Road Hero community" class="life-frame-img">
-            </article>
+            <div class="life-slide">
+              <div class="life-frame-bubble">Step 5: Join the Road Hero crew!</div>
+              <article class="life-frame">
+                <img src="assets/driver-comic.png" alt="Join the Road Hero community" class="life-frame-img">
+              </article>
+            </div>
 
           </div>
         </div>
@@ -329,30 +343,34 @@
       <div class="testimonial-fullwidth">
         
         <div class="review-carousel">
-          <!-- Slide 1 -->
+          <!-- Slide 1 (was 2nd) -->
           <div class="review-slide active">
             <div class="lyft-bubble">
-              <p class="quote-large">Driving for ZNAPP! is easy and you don't deal with people!</p>
-              <div class="author-meta">
-                <div class="author-avatar-large">TS</div>
+              <div class="author-column">
+                <div class="author-avatar-large" aria-hidden="true">MR</div>
+                <div class="author-info">
+                  <div class="author-name-large">Maria R.</div>
+                  <div class="author-subtitle">Driving with ZNAPP! since 2025</div>
+                </div>
+              </div>
+              <div class="quote-column">
+                <p class="quote-large">Signed up in minutes and was on the road the same day. Best decision I made!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2 (was 1st) -->
+          <div class="review-slide">
+            <div class="lyft-bubble">
+              <div class="author-column">
+                <div class="author-avatar-large" aria-hidden="true">TS</div>
                 <div class="author-info">
                   <div class="author-name-large">Tom Sad</div>
                   <div class="author-subtitle">Driving with ZNAPP! since 2023</div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <!-- Slide 2 -->
-          <div class="review-slide">
-            <div class="lyft-bubble">
-              <p class="quote-large">Signed up in minutes and was on the road the same day. Best decision I made!</p>
-              <div class="author-meta">
-                <div class="author-avatar-large">MR</div>
-                <div class="author-info">
-                  <div class="author-name-large">Maria R.</div>
-                  <div class="author-subtitle">Driving with ZNAPP! since 2025</div>
-                </div>
+              <div class="quote-column">
+                <p class="quote-large">Driving for ZNAPP! is easy and you don't deal with people!</p>
               </div>
             </div>
           </div>
@@ -360,13 +378,15 @@
           <!-- Slide 3 -->
           <div class="review-slide">
             <div class="lyft-bubble">
-              <p class="quote-large">The earnings are transparent and I always know exactly what I'm making. No surprises.</p>
-              <div class="author-meta">
-                <div class="author-avatar-large">JK</div>
+              <div class="author-column">
+                <div class="author-avatar-large" aria-hidden="true">JK</div>
                 <div class="author-info">
                   <div class="author-name-large">James K.</div>
                   <div class="author-subtitle">Driving with ZNAPP! since 2024</div>
                 </div>
+              </div>
+              <div class="quote-column">
+                <p class="quote-large">The earnings are transparent and I always know exactly what I'm making. No surprises.</p>
               </div>
             </div>
           </div>
@@ -446,20 +466,40 @@
         }, 3000);
       });
 
-      // FAQ scroll and expand/collapse
+      // FAQ scroll: left fade when scrolled; hide right preview fade at end (full last card visible)
       (function() {
-        const scrollContainer = document.querySelector('.faq-cards-scroll');
-        const wrapper = document.querySelector('.faq-carousel-wrapper');
-        
-        // Show/hide left gradient based on scroll position
-        if (scrollContainer && wrapper) {
-          scrollContainer.addEventListener('scroll', function() {
-            if (this.scrollLeft > 20) {
+        function initFaqScrollFade() {
+          const scrollContainer = document.querySelector('.faq-cards-scroll');
+          const wrapper = document.querySelector('.faq-carousel-wrapper');
+          if (!scrollContainer || !wrapper) return;
+
+          function updateFaqScrollFade() {
+            const el = scrollContainer;
+            const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth);
+            const epsilon = 8;
+
+            if (el.scrollLeft > 20) {
               wrapper.classList.add('scrolled');
             } else {
               wrapper.classList.remove('scrolled');
             }
-          });
+
+            if (maxScroll <= epsilon || el.scrollLeft >= maxScroll - epsilon) {
+              wrapper.classList.add('at-end');
+            } else {
+              wrapper.classList.remove('at-end');
+            }
+          }
+
+          scrollContainer.addEventListener('scroll', updateFaqScrollFade);
+          window.addEventListener('resize', updateFaqScrollFade);
+          updateFaqScrollFade();
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initFaqScrollFade);
+        } else {
+          initFaqScrollFade();
         }
       })();
     </script>
@@ -475,6 +515,7 @@
           <!-- Row 1: Equal width cards -->
           <div class="news-row news-row-equal">
             <article class="news-card-modern">
+              <img src="https://picsum.photos/id/1011/1200/700" alt="" class="news-bg-img" loading="lazy" decoding="async">
               <div class="news-content-block">
                 <div class="news-tag">Update</div>
                 <h3>New driver promo campaign</h3>
@@ -483,6 +524,7 @@
             </article>
             
             <article class="news-card-modern">
+              <img src="https://picsum.photos/id/1040/1200/700" alt="" class="news-bg-img" loading="lazy" decoding="async">
               <div class="news-content-block">
                 <div class="news-tag">Feature</div>
                 <h3>Cleaner signup flow</h3>
@@ -494,6 +536,7 @@
           <!-- Row 2: Wide left, narrow right -->
           <div class="news-row news-row-asymmetric">
             <article class="news-card-modern">
+              <img src="https://picsum.photos/id/1035/1200/700" alt="" class="news-bg-img" loading="lazy" decoding="async">
               <div class="news-content-block">
                 <div class="news-tag">Story</div>
                 <h3>Meet the Road Heroes</h3>
@@ -502,6 +545,7 @@
             </article>
             
             <article class="news-card-modern">
+              <img src="https://picsum.photos/id/1062/1200/700" alt="" class="news-bg-img" loading="lazy" decoding="async">
               <div class="news-content-block">
                 <div class="news-tag">Launch</div>
                 <h3>City &amp; municipal pilots</h3>
@@ -544,40 +588,50 @@
           
           <div class="faq-carousel-wrapper">
             <div class="faq-cards-scroll">
+              <!-- Keep 4–5 featured FAQs here; full archive will link from Read more (page TBD). -->
               <article class="faq-card-compact" data-faq="1">
                 <div class="faq-card-header">
                   <h3>How do I join the ZNAPP! driver community?</h3>
-                  <button class="faq-toggle" aria-label="Open FAQ">+</button>
+                  <button type="button" class="faq-toggle" aria-label="Open FAQ">+</button>
                 </div>
               </article>
               
               <article class="faq-card-compact" data-faq="2">
                 <div class="faq-card-header">
                   <h3>What do I need to start driving?</h3>
-                  <button class="faq-toggle" aria-label="Open FAQ">+</button>
+                  <button type="button" class="faq-toggle" aria-label="Open FAQ">+</button>
                 </div>
               </article>
               
               <article class="faq-card-compact" data-faq="3">
                 <div class="faq-card-header">
                   <h3>Where does ZNAPP! operate?</h3>
-                  <button class="faq-toggle" aria-label="Open FAQ">+</button>
+                  <button type="button" class="faq-toggle" aria-label="Open FAQ">+</button>
                 </div>
               </article>
               
               <article class="faq-card-compact" data-faq="4">
                 <div class="faq-card-header">
                   <h3>Is the platform mobile-friendly?</h3>
-                  <button class="faq-toggle" aria-label="Open FAQ">+</button>
+                  <button type="button" class="faq-toggle" aria-label="Open FAQ">+</button>
                 </div>
               </article>
               
               <article class="faq-card-compact" data-faq="5">
                 <div class="faq-card-header">
                   <h3>How do I earn money?</h3>
-                  <button class="faq-toggle" aria-label="Open FAQ">+</button>
+                  <button type="button" class="faq-toggle" aria-label="Open FAQ">+</button>
                 </div>
               </article>
+
+              <!-- Replace href when the full FAQ page exists -->
+              <a class="faq-read-more-card" href="#" aria-label="Read more frequently asked questions (full FAQ page coming soon)">
+                <span class="faq-read-more-inner">
+                  <span class="faq-read-more-arrow" aria-hidden="true">→</span>
+                  <span class="faq-read-more-label">Read more</span>
+                  <span class="faq-read-more-hint">All questions</span>
+                </span>
+              </a>
             </div>
           </div>
         </div>
@@ -728,7 +782,7 @@
       const closeBtn = document.querySelector('.faq-modal-close');
       const overlay = document.querySelector('.faq-modal-overlay');
 
-      // Open modal
+      // Open modal (featured cards only)
       document.querySelectorAll('.faq-card-compact').forEach(card => {
         card.addEventListener('click', function(e) {
           e.preventDefault();
@@ -741,6 +795,13 @@
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
           }
+        });
+      });
+
+      // “Read more” — full FAQ page not wired yet; prevent jump to # and keep for future route
+      document.querySelectorAll('.faq-read-more-card').forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
         });
       });
 

@@ -61,6 +61,8 @@
   --container:    1140px;
   --font-display: "Badaboom BB", "Comic Sans MS", cursive;
   --font-body:    "Komika Text", -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Default tracking for semantic headings site-wide */
+  --letter-spacing-heading: 0.04em;
 }
 
 /* ── RESET ── */
@@ -80,10 +82,11 @@ body {
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   margin: 0; font-weight: 400;
-  letter-spacing: 0.01em; line-height: 1.1;
+  letter-spacing: var(--letter-spacing-heading);
+  line-height: 1.1;
 }
 p { margin: 0; }
 
@@ -566,9 +569,11 @@ p { margin: 0; }
 
 /* ══════════════ 5. LIFE / CAROUSEL ══════════════ */
 .life { background: var(--bg); padding: 60px 0; }
+.life .section-header { margin-bottom: 24px; }
 
 .life-carousel-wrapper { 
-  overflow: hidden; 
+  overflow-x: hidden;
+  overflow-y: visible;
   position: relative;
 }
 
@@ -576,7 +581,8 @@ p { margin: 0; }
   content: ""; 
   position: absolute; 
   right: 0; 
-  top: 0; 
+  /* Start below speech bubbles so the fade doesn’t wash out bubble text */
+  top: 76px;
   bottom: 0; 
   width: 120px;
   pointer-events: none;
@@ -590,17 +596,27 @@ p { margin: 0; }
   overflow-x: auto; 
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  padding-top: 0;
   padding-bottom: 12px; 
   scrollbar-width: none;
 }
 
 .life-carousel::-webkit-scrollbar { display: none; }
 
+/* Slide = bubble (in flow) + frame — avoids overflow clipping from overflow-x: auto */
+.life-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex: 0 0 calc((100% - 20px) / 2.4); /* 2 full frames + slightly more of third */
+  scroll-snap-align: start;
+  min-width: 0;
+}
+
 /* Large comic frames - show 2 full + 1 cascaded preview */
 .life-frame {
   position: relative;
-  flex: 0 0 calc((100% - 20px) / 2.4); /* 2 full frames + slightly more of third */
-  scroll-snap-align: start;
+  width: 100%;
   border-radius: 8px;
   background: var(--white);
   border: 3px solid rgba(0, 0, 0, 0.9);
@@ -625,6 +641,47 @@ p { margin: 0; }
   object-fit: cover;
   object-position: center;
   display: block;
+}
+
+.life-frame-bubble {
+  position: relative;
+  align-self: flex-start;
+  margin: 0 0 10px 0;
+  max-width: 100%;
+  z-index: 3;
+  background: var(--white);
+  border: 3px solid rgba(0, 0, 0, 0.9);
+  border-radius: 14px;
+  box-shadow:
+    4px 4px 0 rgba(0, 0, 0, 0.9),
+    0 8px 18px rgba(0, 0, 0, 0.14);
+  padding: 10px 12px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--black);
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+
+.life-frame-bubble::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  bottom: -12px;
+  border-top: 12px solid rgba(0, 0, 0, 0.9);
+  border-right: 10px solid transparent;
+}
+
+.life-frame-bubble::before {
+  content: "";
+  position: absolute;
+  left: 25px;
+  bottom: -8px;
+  border-top: 9px solid var(--white);
+  border-right: 8px solid transparent;
+  z-index: 1;
 }
 
 /* ══════════════ 6. WHAT + CTA (combo) ══════════════ */
@@ -660,11 +717,11 @@ p { margin: 0; }
 }
 
 .what-card-content {
-  padding: 20px 18px;
+  padding: 14px 16px;
   background: var(--white);
   flex-shrink: 0;
   border-bottom: 3px solid rgba(0,0,0,0.9);
-  min-height: 90px;
+  min-height: 68px;
   display: flex;
   align-items: center;
 }
@@ -672,8 +729,9 @@ p { margin: 0; }
 .what-card h3 { 
   font-size: 1.05rem; 
   margin: 0;
-  font-family: var(--font-display);
-  color: var(--text);
+  font-family: var(--font-body);
+  color: var(--black);
+  font-weight: 700;
   line-height: 1.3;
 }
 
@@ -770,6 +828,7 @@ p { margin: 0; }
   text-align: center;
   color: var(--text);
   line-height: 1.2;
+  letter-spacing: var(--letter-spacing-heading);
 }
 
 .pd-device-container {
@@ -854,10 +913,10 @@ p { margin: 0; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Comic panel style review card */
+/* Comic panel style review card — two columns: headshot + name | quote */
 .lyft-bubble {
   position: relative;
-  padding: 48px 56px;
+  padding: 40px 48px;
   background: var(--white);
   border-radius: 8px;
   border: 3px solid rgba(0, 0, 0, 0.9);
@@ -866,86 +925,109 @@ p { margin: 0; }
     0 12px 36px rgba(0, 0, 0, 0.16);
   max-width: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
+  display: grid;
+  /* Wider profile column = divider sits further right */
+  grid-template-columns: minmax(175px, 0.46fr) minmax(0, 1fr);
+  gap: 0 0;
+  align-items: stretch;
   min-height: 280px;
 }
 
-/* Quote icon at top */
-.lyft-bubble::before {
+/* Left: larger headshot + name */
+.author-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+  min-width: 0;
+  padding-right: 36px;
+  border-right: 2px solid var(--border-color);
+  justify-content: center;
+}
+
+/* Right: quote — stretch full row height; center quote + mark as one block */
+.quote-column {
+  position: relative;
+  min-width: 0;
+  padding: 0 0 0 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 0;
+}
+
+/* Quote mark in flex flow so it centers with the paragraph (not pinned to top) */
+.quote-column::before {
   content: """;
-  position: absolute;
-  top: 20px;
-  left: 36px;
-  font-size: 4.5rem;
-  line-height: 1;
+  position: static;
+  font-size: clamp(3rem, 5.5vw, 4.5rem);
+  line-height: 0.85;
   color: var(--purple);
   font-family: Georgia, serif;
   opacity: 0.3;
+  pointer-events: none;
+  margin-bottom: 0.1em;
 }
 
-/* Quote text */
+/* Quote text — larger so it balances the big headshot + card */
 .quote-large {
   position: relative;
   z-index: 1;
-  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
-  line-height: 1.65;
+  font-size: clamp(1.55rem, 2.9vw, 2.15rem);
+  line-height: 1.55;
   font-style: italic;
   color: var(--text);
   margin: 0;
+  padding: 0 0.75rem;
+  max-width: 40ch;
   font-family: var(--font-body);
   font-weight: 400;
-  text-align: left;
-  letter-spacing: -0.01em;
+  text-align: center;
+  letter-spacing: 0.03em;
 }
 
-/* Author metadata inside card at bottom */
-.author-meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding-top: 20px;
-  border-top: 2px solid var(--border-color);
-}
-
-/* Square avatar badge */
+/* Large square avatar / headshot */
 .author-avatar-large {
-  width: 56px;
-  height: 56px;
-  border-radius: 8px;
+  width: 132px;
+  height: 132px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
   background: linear-gradient(135deg, var(--purple) 0%, var(--teal) 100%);
   color: var(--white);
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 1.2rem;
-  border: 2.5px solid var(--black);
-  box-shadow: 3px 3px 0 var(--black);
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  border: 3px solid var(--black);
+  box-shadow: 4px 4px 0 var(--black);
   flex-shrink: 0;
 }
 
 .author-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  text-align: left;
+  gap: 6px;
+  text-align: center;
+  width: 100%;
 }
 
 .author-name-large {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-family: var(--font-body);
   color: var(--text);
   font-style: normal;
+  letter-spacing: var(--letter-spacing-heading);
 }
 
 .author-subtitle {
   color: var(--text-muted);
   font-size: 0.88rem;
   font-family: var(--font-body);
-  font-style: normal;
+  font-style: italic;
 }
 
 /* Navigation controls at bottom */
@@ -1048,7 +1130,7 @@ p { margin: 0; }
   position: relative;
   padding: 0;
   border-radius: 8px;
-  background: var(--white);
+  background: #d9cbe8;
   border: 3px solid rgba(0, 0, 0, 0.9);
   box-shadow:
     5px 5px 0 rgba(0, 0, 0, 0.9),
@@ -1058,6 +1140,17 @@ p { margin: 0; }
   min-height: 200px;
   display: flex;
   align-items: stretch;
+}
+
+.news-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* Translucent purple overlay */
@@ -1111,7 +1204,7 @@ p { margin: 0; }
   color: var(--white);
   font-family: var(--font-display);
   line-height: 1.2;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.07em;
 }
 
 .news-card-modern p { 
@@ -1120,6 +1213,7 @@ p { margin: 0; }
   font-size: 0.92rem;
   margin: 0;
   font-family: var(--font-body);
+  letter-spacing: 0.02em;
 }
 
 /* ══════════════ 12. CTA SECTION (full-width modern comic) ══════════════ */
@@ -1146,6 +1240,7 @@ p { margin: 0; }
   margin-bottom: 12px;
   font-family: var(--font-display);
   line-height: 1.1;
+  letter-spacing: var(--letter-spacing-heading);
 }
 
 .cta-phrase {
@@ -1308,7 +1403,7 @@ p { margin: 0; }
   color: var(--text);
   margin: 0;
   line-height: 1.25;
-  letter-spacing: 0.01em;
+  letter-spacing: var(--letter-spacing-heading);
 }
 
 .faq-card-modern p {
@@ -1364,6 +1459,7 @@ p { margin: 0; }
   font-size: clamp(1.8rem, 3.2vw, 2.6rem);
   margin: 0;
   font-family: var(--font-display);
+  letter-spacing: var(--letter-spacing-heading);
 }
 
 .faq-desc {
@@ -1401,7 +1497,7 @@ p { margin: 0; }
   position: relative;
 }
 
-/* Gradient fade only on right edge */
+/* Gradient fade only on right edge (hidden when scrolled to end — see .at-end) */
 .faq-carousel-wrapper::after {
   content: "";
   position: absolute;
@@ -1413,6 +1509,12 @@ p { margin: 0; }
   /* Match the FAQ section tint so the preview edge isn't white */
   background: linear-gradient(to right, transparent, var(--bg));
   z-index: 2;
+  opacity: 1;
+  transition: opacity 0.28s ease;
+}
+
+.faq-carousel-wrapper.at-end::after {
+  opacity: 0;
 }
 
 /* Left gradient appears when scrolled */
@@ -1441,6 +1543,9 @@ p { margin: 0; }
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 12px;
+  /* Room for thick comic border + shadow on last card (esp. hover) so nothing clips */
+  padding-right: 20px;
+  padding-left: 2px;
   background: var(--bg); /* ensure right-edge preview sits on the same tinted background */
   scrollbar-width: none;
 }
@@ -1464,12 +1569,79 @@ p { margin: 0; }
   cursor: pointer;
 }
 
+.faq-read-more-card {
+  flex: 0 0 calc((100% - 32px) / 3);
+  scroll-snap-align: start;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 3px dashed rgba(0, 0, 0, 0.55);
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow:
+    4px 4px 0 rgba(0, 0, 0, 0.85),
+    0 8px 20px rgba(0, 0, 0, 0.08);
+  color: var(--text);
+  cursor: pointer;
+  /* Keep hover inside scrollport — no translate (was clipping against overflow) */
+  transition: box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease, border-style 0.18s ease;
+}
+
+.faq-read-more-card:hover {
+  background: var(--white);
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.9);
+  /* Same offset as default so shadow doesn’t grow past the card edge */
+  box-shadow:
+    4px 4px 0 rgba(0, 0, 0, 0.9),
+    0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.faq-read-more-card:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 3px;
+}
+
+.faq-read-more-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.faq-read-more-arrow {
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--purple);
+}
+
+.faq-read-more-label {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.faq-read-more-hint {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
 .faq-card-header {
   padding: 28px 26px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 52px;
+  align-items: start;
+  column-gap: 12px;
   height: 100%;
 }
 
@@ -1480,7 +1652,7 @@ p { margin: 0; }
   color: var(--text);
   margin: 0;
   line-height: 1.35;
-  letter-spacing: 0.005em;
+  letter-spacing: var(--letter-spacing-heading);
   flex: 1;
 }
 
@@ -1493,7 +1665,7 @@ p { margin: 0; }
   color: var(--white);
   display: grid;
   place-items: center;
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 400;
   line-height: 1;
   border: 2px solid var(--black);
@@ -1589,6 +1761,7 @@ p { margin: 0; }
   margin: 0 0 24px 0;
   line-height: 1.3;
   padding-right: 40px;
+  letter-spacing: var(--letter-spacing-heading);
 }
 
 .faq-modal-body p {
@@ -1632,7 +1805,11 @@ p { margin: 0; }
     5px 5px 0 rgba(0, 0, 0, 0.9),
     0 10px 26px rgba(0, 0, 0, 0.12);
 }
-.contact-info h2 { font-size: clamp(1.4rem, 2.8vw, 2rem); margin-bottom: 10px; }
+.contact-info h2 {
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  margin-bottom: 10px;
+  letter-spacing: var(--letter-spacing-heading);
+}
 .contact-info p { color: var(--text-muted); margin-bottom: 20px; line-height: 1.7; font-size: 0.95rem; }
 .contact-btns { display: flex; gap: 10px; }
 
@@ -1712,7 +1889,8 @@ p { margin: 0; }
   .news-card-modern  { min-height: 180px; }
   .faq-layout        { grid-template-columns: 1fr; gap: 32px; }
   .faq-left .btn     { width: 100%; justify-content: center; }
-  .faq-card-compact  { flex: 0 0 calc((100% - 16px) / 2); }
+  .faq-card-compact,
+  .faq-read-more-card { flex: 0 0 calc((100% - 16px) / 2); }
   .testimonial-fullwidth { max-width: 100%; padding: 0 32px; }
   .lyft-bubble       { padding: 40px 44px; }
 }
@@ -1759,9 +1937,14 @@ p { margin: 0; }
   .wpc-panel--sm     { height: 180px; }
   
   /* Life section */
-  .life-frame        { flex: 0 0 88%; }
-  .life-carousel-wrapper::after { width: 80px; }
+  .life-slide        { flex: 0 0 88%; }
+  .life-carousel-wrapper::after { width: 80px; top: 68px; }
   .life { padding-bottom: 80px; } /* Extra space for swipe indicator */
+  .life .section-header { margin-bottom: 20px; }
+  .life-frame-bubble {
+    padding: 9px 10px;
+    font-size: 0.88rem;
+  }
   
   /* Swipe indicator for life carousel */
   .life-carousel-wrapper::before {
@@ -1786,18 +1969,25 @@ p { margin: 0; }
   /* What section */
   .what-cards-stack  { gap: 16px; }
   .what-card-img     { height: 180px; }
-  .what-card-content { padding: 16px 14px; min-height: 80px; }
+  .what-card-content { padding: 12px 12px; min-height: 64px; }
   .what-card h3      { font-size: 0.95rem; }
   
-  /* Testimonial */
+  /* Testimonial — tighter two columns; still large headshot */
   .testimonial       { padding: 48px 0; }
   .testimonial-fullwidth { padding: 0 24px; gap: 32px; }
   .review-carousel   { min-height: 320px; }
-  .lyft-bubble       { padding: 32px 24px; gap: 24px; min-height: 240px; }
-  .lyft-bubble::before { font-size: 3.5rem; top: 16px; left: 20px; }
-  .quote-large       { font-size: 1.1rem; line-height: 1.6; }
-  .author-meta       { padding-top: 16px; gap: 12px; }
-  .author-avatar-large { width: 48px; height: 48px; font-size: 1rem; }
+  .lyft-bubble {
+    grid-template-columns: minmax(120px, 0.46fr) minmax(0, 1fr);
+    gap: 0;
+    padding: 28px 22px;
+    min-height: auto;
+    align-items: stretch;
+  }
+  .author-column { padding-right: 22px; }
+  .quote-column { padding: 0 0 0 22px; }
+  .quote-column::before { font-size: 3rem; }
+  .quote-large       { font-size: 1.25rem; line-height: 1.55; padding: 0 0.5rem; }
+  .author-avatar-large { width: 112px; height: 112px; font-size: 1.85rem; }
   .author-name-large { font-size: 0.95rem; }
   .author-subtitle   { font-size: 0.85rem; }
   .review-nav        { gap: 16px; margin-top: 8px; }
@@ -1815,8 +2005,13 @@ p { margin: 0; }
   /* FAQ */
   .faq               { padding: 48px 0 80px; } /* Extra bottom padding for swipe indicator */
   .faq-layout        { gap: 28px; }
-  .faq-card-compact  { flex: 0 0 85%; min-height: 140px; }
-  .faq-card-header   { padding: 20px 18px; gap: 14px; }
+  .faq-card-compact,
+  .faq-read-more-card { flex: 0 0 85%; min-height: 140px; }
+  .faq-card-header   {
+    padding: 20px 18px;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    column-gap: 10px;
+  }
   .faq-card-compact h3 { font-size: 1rem; }
   .faq-toggle        { 
     width: 44px; 
@@ -1893,23 +2088,43 @@ p { margin: 0; }
   .wpc-panel--sm     { height: 160px; }
   
   /* Life */
-  .life-frame        { flex: 0 0 92%; }
+  .life-slide        { flex: 0 0 92%; }
   .life { padding-bottom: 80px; } /* Extra space for swipe indicator */
   
   /* What */
   .what-card-img     { height: 160px; }
-  .what-card-content { padding: 14px 12px; min-height: 75px; }
+  .what-card-content { padding: 10px 10px; min-height: 58px; }
   .what-card h3      { font-size: 0.9rem; }
   
-  /* Testimonial */
+  /* Testimonial — stack: headshot + name, then quote */
   .testimonial       { padding: 40px 0; }
   .testimonial-fullwidth { padding: 0 20px; gap: 28px; }
   .review-carousel   { min-height: 280px; }
-  .lyft-bubble       { padding: 24px 18px; gap: 20px; min-height: 220px; }
-  .lyft-bubble::before { font-size: 3rem; top: 12px; left: 16px; }
-  .quote-large       { font-size: 1rem; line-height: 1.55; }
-  .author-meta       { padding-top: 14px; gap: 10px; }
-  .author-avatar-large { width: 44px; height: 44px; font-size: 0.95rem; }
+  .lyft-bubble {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 24px 18px;
+    min-height: auto;
+  }
+  .author-column {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    text-align: left;
+    padding-right: 0;
+    padding-bottom: 20px;
+    border-right: none;
+    border-bottom: 2px solid var(--border-color);
+  }
+  .author-info { text-align: left; align-items: flex-start; }
+  .quote-column {
+    padding: 22px 0 0;
+    justify-content: center;
+  }
+  .quote-column::before { font-size: 2.5rem; }
+  .quote-large       { font-size: 1.12rem; line-height: 1.55; padding: 0 0.25rem; max-width: 100%; }
+  .author-avatar-large { width: 100px; height: 100px; font-size: 1.65rem; }
   .author-name-large { font-size: 0.9rem; }
   .author-subtitle   { font-size: 0.8rem; }
   .review-nav        { gap: 12px; margin-top: 8px; }
@@ -1930,8 +2145,13 @@ p { margin: 0; }
   .faq               { padding: 40px 0 80px; } /* Extra bottom padding for swipe indicator */
   .faq-left h2       { font-size: 1.5rem; }
   .faq-desc          { font-size: 0.9rem; }
-  .faq-card-compact  { flex: 0 0 90%; min-height: 130px; }
-  .faq-card-header   { padding: 18px 16px; gap: 12px; }
+  .faq-card-compact,
+  .faq-read-more-card { flex: 0 0 90%; min-height: 130px; }
+  .faq-card-header   {
+    padding: 18px 16px;
+    grid-template-columns: minmax(0, 1fr) 40px;
+    column-gap: 10px;
+  }
   .faq-card-compact h3 { font-size: 0.95rem; }
   .faq-toggle        { 
     width: 40px; 
