@@ -7,7 +7,7 @@
   <meta name="description" content="ZNAPP! is a roads-first rideshare network for cities and municipalities. Join local routes, move people and goods, and get paid clearly for every mile." />
   <link rel="icon" type="image/png" href="img/branding/favicon-znapp.png" sizes="32x32" />
   <link rel="apple-touch-icon" href="img/branding/favicon-znapp.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=12" />
 </head>
 <body>
   <a href="#signup" class="skip-link">Skip to main content</a>
@@ -20,8 +20,8 @@
       </a>
       <nav class="nav" aria-label="Primary">
         <a href="index.html">Homepage</a>
-        <a href="#signup">Drive with ZNAPP!</a>
-        <a href="#news">NewsFLASH</a>
+        <a href="drive-with-znapp.html">Drive with ZNAPP!</a>
+        <a href="newsflash.html">NewsFLASH</a>
         <a href="#phone">Driver Portal</a>
         <a href="#what">Who the ZNAPP!</a>
         <a href="#faq">FAQ &amp; Support</a>
@@ -273,6 +273,11 @@
 
           </div>
         </div>
+        <div class="hp-carousel-nav">
+          <button class="hp-carousel-arrow" id="lifeCarouselPrev" aria-label="Previous">&#8592;</button>
+          <div class="hp-carousel-dots" id="lifeCarouselDots"></div>
+          <button class="hp-carousel-arrow" id="lifeCarouselNext" aria-label="Next">&#8594;</button>
+        </div>
       </div>
     </section>
 
@@ -315,51 +320,64 @@
           <p class="section-sub">Everything you need on the road and in your portal, laid out in one clear view.</p>
         </div>
 
-        <article class="tools-unified-card">
-          <div class="tools-unified-side tools-unified-side--phone">
-            <div class="tools-unified-media">
-              <img
-                src="img/devices/phone-app.png"
-                alt="Smartphone with the ZNAPP app"
-                class="tools-unified-img tools-unified-img--phone"
-                width="350"
-                height="350"
-              />
-            </div>
-            <div class="tools-unified-copy">
-              <h3>Drive with the phone app</h3>
-              <p>Accept trips fast, follow route guidance, and stay updated in real time while you are on the road.</p>
-              <ul class="tools-unified-points">
-                <li>Fast trip acceptance</li>
-                <li>Live route guidance</li>
-                <li>Instant driver updates</li>
-              </ul>
-            </div>
-          </div>
+        <div class="tools-device-carousel-wrap">
+          <article class="tools-unified-card">
+            <div class="tools-carousel-viewport">
+              <div class="tools-carousel-track">
 
-          <div class="tools-unified-divider" aria-hidden="true"></div>
+                <!-- SLIDE 1: Phone beside text -->
+                <div class="tools-device-slide">
+                  <div class="tools-unified-media">
+                    <img
+                      src="img/devices/phone-app.png"
+                      alt="ZNAPP driver app on smartphone"
+                      class="tools-unified-img tools-unified-img--phone"
+                      width="350" height="700"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="tools-unified-copy">
+                    <h3>Drive with the phone app</h3>
+                    <p>Accept trips fast, follow route guidance, and stay updated in real time while you are on the road.</p>
+                    <ul class="tools-unified-points">
+                      <li>Fast trip acceptance</li>
+                      <li>Live route guidance</li>
+                      <li>Instant driver updates</li>
+                    </ul>
+                  </div>
+                </div>
 
-          <div class="tools-unified-side tools-unified-side--laptop">
-            <div class="tools-unified-media">
-              <img
-                src="img/devices/laptop-dashboard.png"
-                alt="Laptop with the ZNAPP dashboard"
-                class="tools-unified-img tools-unified-img--laptop"
-                width="800"
-                height="500"
-              />
+                <!-- SLIDE 2: Laptop beside text -->
+                <div class="tools-device-slide">
+                  <div class="tools-unified-media">
+                    <img
+                      src="img/devices/laptop-dashboard.png"
+                      alt="ZNAPP dashboard on laptop"
+                      class="tools-unified-img tools-unified-img--laptop"
+                      width="800" height="500"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="tools-unified-copy">
+                    <h3>Review everything in dashboard</h3>
+                    <p>Track earnings, plan shifts, and understand performance from one clean operational view.</p>
+                    <ul class="tools-unified-points">
+                      <li>Weekly earnings breakdown</li>
+                      <li>Shift and route planning</li>
+                      <li>Performance insights</li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
             </div>
-            <div class="tools-unified-copy">
-              <h3>Review everything in dashboard</h3>
-              <p>Track earnings, plan shifts, and understand performance from one clean operational view.</p>
-              <ul class="tools-unified-points">
-                <li>Weekly earnings breakdown</li>
-                <li>Shift and route planning</li>
-                <li>Performance insights</li>
-              </ul>
-            </div>
+          </article>
+          <div class="tools-carousel-nav">
+            <button class="tools-carousel-arrow" id="toolsPrev" aria-label="Previous">&#8592;</button>
+            <div class="tools-carousel-dots" id="toolsDots"></div>
+            <button class="tools-carousel-arrow" id="toolsNext" aria-label="Next">&#8594;</button>
           </div>
-        </article>
+        </div>
       </div>
     </section>
 
@@ -516,6 +534,71 @@
             }
           }
 
+          // Arrows + dots
+          const lifePrev = document.getElementById('lifeCarouselPrev');
+          const lifeNext = document.getElementById('lifeCarouselNext');
+          const lifeDotsWrap = document.getElementById('lifeCarouselDots');
+          // One press = one slide. Use actual slide offsets, not viewport width.
+          var lifeSlides = Array.from(scrollContainer.querySelectorAll('.life-slide'));
+          var lifeCur = 0;
+          var lifeOffsets = [];
+          function syncLifeOffsets() {
+            lifeOffsets = lifeSlides.map(function(slide) { return slide.offsetLeft; });
+          }
+          function nearestLifeIndex(scrollLeft) {
+            var nearest = 0;
+            var bestDist = Infinity;
+            lifeOffsets.forEach(function(offset, i) {
+              var dist = Math.abs(offset - scrollLeft);
+              if (dist < bestDist) {
+                bestDist = dist;
+                nearest = i;
+              }
+            });
+            return nearest;
+          }
+          function buildLifeDots(){
+            if(!lifeDotsWrap) return;
+            lifeDotsWrap.innerHTML='';
+            lifeSlides.forEach(function(_, i){
+              var d=document.createElement('button');
+              d.className='hp-carousel-dot'+(i===0?' active':'');
+              d.setAttribute('aria-label','Step '+(i+1));
+              d.addEventListener('click',function(){ lifeGo(i); });
+              lifeDotsWrap.appendChild(d);
+            });
+          }
+          function lifeGo(n){
+            lifeCur = Math.max(0, Math.min(lifeSlides.length - 1, n));
+            scrollContainer.scrollTo({left: lifeOffsets[lifeCur] || 0, behavior:'smooth'});
+          }
+          function updateLifeNav(){
+            if(lifePrev) lifePrev.disabled = lifeCur === 0;
+            if(lifeNext) lifeNext.disabled = lifeCur === lifeSlides.length - 1;
+            if(lifeDotsWrap){ lifeDotsWrap.querySelectorAll('.hp-carousel-dot').forEach(function(d,i){d.classList.toggle('active',i===lifeCur);}); }
+          }
+          // Track scroll position to sync lifeCur
+          var lifeScrollTimer;
+          scrollContainer.addEventListener('scroll', function(){
+            clearTimeout(lifeScrollTimer);
+            lifeScrollTimer = setTimeout(function(){
+              lifeCur = nearestLifeIndex(scrollContainer.scrollLeft);
+              updateLifeNav();
+            }, 60);
+          });
+          if(lifePrev) lifePrev.addEventListener('click',function(){ lifeGo(lifeCur-1); });
+          if(lifeNext) lifeNext.addEventListener('click',function(){ lifeGo(lifeCur+1); });
+          syncLifeOffsets();
+          buildLifeDots();
+          scrollContainer.addEventListener('scroll', updateLifeNav);
+          window.addEventListener('resize', function(){
+            syncLifeOffsets();
+            lifeCur = nearestLifeIndex(scrollContainer.scrollLeft);
+            buildLifeDots();
+            updateLifeNav();
+          });
+          updateLifeNav();
+
           scrollContainer.addEventListener('scroll', updateLifePreviewFade);
           window.addEventListener('resize', updateLifePreviewFade);
           updateLifePreviewFade();
@@ -553,6 +636,96 @@
             }
           }
 
+          // Arrows + dots — only show dots for reachable scroll positions
+          const faqPrev = document.getElementById('faqCarouselPrev');
+          const faqNext = document.getElementById('faqCarouselNext');
+          const faqDotsWrap = document.getElementById('faqCarouselDots');
+          var faqItems = Array.from(scrollContainer.querySelectorAll('.faq-card-compact, .faq-read-more-card'));
+          var faqCur = 0;
+          var faqOffsets = [];
+          var faqStops = []; // only the reachable item indices (one dot each)
+
+          function syncFaqOffsets() {
+            faqOffsets = faqItems.map(function(item) { return item.offsetLeft; });
+            var maxScroll = Math.max(0, scrollContainer.scrollWidth - scrollContainer.clientWidth);
+            // keep only offsets that are actually reachable (≤ maxScroll + small epsilon)
+            faqStops = [];
+            faqOffsets.forEach(function(offset, i) {
+              if (offset <= maxScroll + 4) faqStops.push(i);
+            });
+            if (faqStops.length === 0) faqStops = [0];
+          }
+
+          function nearestFaqStop(scrollLeft) {
+            var nearest = faqStops[0];
+            var bestDist = Infinity;
+            faqStops.forEach(function(itemIdx) {
+              var dist = Math.abs(faqOffsets[itemIdx] - scrollLeft);
+              if (dist < bestDist) { bestDist = dist; nearest = itemIdx; }
+            });
+            return nearest;
+          }
+
+          function buildFaqDots() {
+            if (!faqDotsWrap) return;
+            faqDotsWrap.innerHTML = '';
+            faqStops.forEach(function(itemIdx, dotIdx) {
+              var d = document.createElement('button');
+              d.className = 'hp-carousel-dot' + (dotIdx === 0 ? ' active' : '');
+              d.setAttribute('aria-label', 'FAQ item ' + (dotIdx + 1));
+              d.addEventListener('click', function() { faqGo(itemIdx); });
+              faqDotsWrap.appendChild(d);
+            });
+          }
+
+          function faqGo(itemIdx) {
+            faqCur = itemIdx;
+            scrollContainer.scrollTo({ left: faqOffsets[faqCur] || 0, behavior: 'smooth' });
+          }
+
+          function updateFaqNav() {
+            var stopPos = faqStops.indexOf(faqCur);
+            if (stopPos === -1) stopPos = faqStops.length - 1; // beyond last stop = at end
+            if (faqPrev) faqPrev.disabled = stopPos === 0;
+            if (faqNext) faqNext.disabled = stopPos >= faqStops.length - 1;
+            if (faqDotsWrap) {
+              faqDotsWrap.querySelectorAll('.hp-carousel-dot').forEach(function(d, i) {
+                d.classList.toggle('active', i === stopPos);
+              });
+            }
+          }
+
+          var faqScrollTimer;
+          scrollContainer.addEventListener('scroll', function() {
+            clearTimeout(faqScrollTimer);
+            faqScrollTimer = setTimeout(function() {
+              faqCur = nearestFaqStop(scrollContainer.scrollLeft);
+              updateFaqNav();
+            }, 60);
+          });
+
+          if (faqPrev) faqPrev.addEventListener('click', function() {
+            var stopPos = faqStops.indexOf(faqCur);
+            if (stopPos === -1) stopPos = faqStops.length - 1;
+            if (stopPos > 0) faqGo(faqStops[stopPos - 1]);
+          });
+          if (faqNext) faqNext.addEventListener('click', function() {
+            var stopPos = faqStops.indexOf(faqCur);
+            if (stopPos === -1) stopPos = faqStops.length - 1;
+            if (stopPos < faqStops.length - 1) faqGo(faqStops[stopPos + 1]);
+          });
+
+          syncFaqOffsets();
+          buildFaqDots();
+          scrollContainer.addEventListener('scroll', updateFaqNav);
+          window.addEventListener('resize', function() {
+            syncFaqOffsets();
+            faqCur = nearestFaqStop(scrollContainer.scrollLeft);
+            buildFaqDots();
+            updateFaqNav();
+          });
+          updateFaqNav();
+
           scrollContainer.addEventListener('scroll', updateFaqScrollFade);
           window.addEventListener('resize', updateFaqScrollFade);
           updateFaqScrollFade();
@@ -564,8 +737,60 @@
           initFaqScrollFade();
         }
       })();
-    </script>
 
+      // Tools device carousel
+
+    (function(){
+      var track = document.querySelector('.tools-carousel-track');
+      var vp    = document.querySelector('.tools-carousel-viewport');
+      var wrap  = document.querySelector('.tools-device-carousel-wrap');
+      var prev  = document.getElementById('toolsPrev');
+      var next  = document.getElementById('toolsNext');
+      var dotsWrap = document.getElementById('toolsDots');
+      if(!track || !vp) return;
+      var cur = 0;
+      var slides = track.querySelectorAll('.tools-device-slide');
+      var total = slides.length;
+      function buildDots(){
+        dotsWrap.innerHTML = '';
+        for(var i=0;i<total;i++){(function(i){
+          var d=document.createElement('button');
+          d.className='tools-carousel-dot'+(i===0?' active':'');
+          d.setAttribute('aria-label','Slide '+(i+1));
+          d.addEventListener('click',function(){go(i);});
+          dotsWrap.appendChild(d);
+        })(i);}
+      }
+      function updateDots(){
+        var dots=dotsWrap.querySelectorAll('.tools-carousel-dot');
+        dots.forEach(function(d,i){d.classList.toggle('active',i===cur);});
+      }
+      function go(n){
+        cur=Math.max(0,Math.min(total-1,n));
+        track.style.transform='translateX(-'+cur*100+'%)';
+        prev.disabled=cur===0;
+        next.disabled=cur===total-1;
+        updateDots();
+        if(wrap){ wrap.classList.toggle('tdc-scrolled',cur>0); wrap.classList.toggle('tdc-end',cur===total-1); }
+      }
+      buildDots();
+      prev.addEventListener('click',function(){go(cur-1);});
+      next.addEventListener('click',function(){go(cur+1);});
+      go(0);
+
+      /* swipe */
+      var sx=null;
+      vp.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+      vp.addEventListener('touchend',function(e){
+        if(sx===null)return;
+        var dx=e.changedTouches[0].clientX-sx;
+        if(Math.abs(dx)>40){dx<0?go(cur+1):go(cur-1);}
+        sx=null;
+      },{passive:true});
+    })();
+
+
+    </script>
     <!-- ═══ 11. NEWSFLASH ═══ -->
     <section class="section news" id="news">
       <div class="container">
@@ -652,6 +877,7 @@
             </div>
           </div>
           
+          <div class="faq-right-col">
           <div class="faq-carousel-wrapper">
             <div class="faq-cards-scroll">
               <!-- Keep 4–5 featured FAQs here; full archive will link from Read more (page TBD). -->
@@ -700,6 +926,12 @@
               </a>
             </div>
           </div>
+          <div class="hp-carousel-nav">
+            <button class="hp-carousel-arrow" id="faqCarouselPrev" aria-label="Previous">&#8592;</button>
+            <div class="hp-carousel-dots" id="faqCarouselDots"></div>
+            <button class="hp-carousel-arrow" id="faqCarouselNext" aria-label="Next">&#8594;</button>
+          </div>
+          </div><!-- end faq-right-col -->
         </div>
       </div>
     </section>

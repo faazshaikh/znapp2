@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NewsFLASH! | ZNAPP!</title>
+  <meta name="description" content="Latest news, stories, videos and updates from ZNAPP!" />
+  <link rel="icon" type="image/png" href="img/branding/favicon-znapp.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="img/branding/favicon-znapp.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .nf-hero{background:var(--bg);padding:72px 0 0;border-bottom:3px solid rgba(0,0,0,.9)}
+    .nf-hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;border:3px solid rgba(0,0,0,.9);border-radius:var(--radius-lg) var(--radius-lg) 0 0;overflow:hidden;box-shadow:6px 6px 0 rgba(0,0,0,.9)}
+    .nf-hero-copy{padding:52px 48px;background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 100%);display:flex;flex-direction:column;justify-content:center;gap:16px}
+    .nf-hero-copy .section-label{color:var(--teal)}
+    .nf-hero-copy h1{font-family:var(--font-display);font-size:clamp(2.8rem,5.5vw,4.4rem);color:var(--white);letter-spacing:var(--letter-spacing-heading);line-height:1.02;margin:0}
+    .nf-hero-copy h1 .accent{color:var(--teal)}
+    .nf-hero-copy p{font-family:var(--font-body);font-size:1.05rem;color:rgba(255,255,255,.85);line-height:1.7;margin:0;max-width:38ch}
+    .nf-hero-img{position:relative;min-height:380px;overflow:hidden}
+    .nf-hero-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .nf-hero-img-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(132,61,179,.55) 0%,rgba(48,213,200,.18) 100%)}
+    .nf-featured-badge{position:absolute;top:20px;left:20px;height:28px;padding:0 14px;border-radius:999px;background:var(--teal);border:2px solid rgba(0,0,0,.9);font-family:var(--font-body);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;display:inline-flex;align-items:center;color:var(--black)}
+    .nf-filter-bar{background:var(--bg);padding:20px 0;border-bottom:2px solid var(--border-color)}
+    .nf-filter-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+    .nf-filter-scroll::-webkit-scrollbar{display:none}
+    .nf-filter-btn{flex-shrink:0;height:36px;padding:0 18px;border-radius:999px;border:2px solid rgba(0,0,0,.8);background:var(--card);font-family:var(--font-body);font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;cursor:pointer;transition:background .18s,color .18s,transform .15s;color:var(--text);box-shadow:2px 2px 0 rgba(0,0,0,.8)}
+    .nf-filter-btn:hover,.nf-filter-btn.active{background:var(--purple);color:var(--white);transform:translate(-1px,-1px);box-shadow:3px 3px 0 rgba(0,0,0,.8)}
+    .nf-section{padding:80px 0}
+    .nf-section--alt{background:var(--bg-alt)}
+    .nf-carousel-wrap{position:relative;margin-top:48px}
+    .nf-carousel-wrap::before,.nf-carousel-wrap::after{content:'';position:absolute;top:0;bottom:0;width:88px;pointer-events:none;z-index:2;transition:opacity .28s ease}
+    .nf-carousel-wrap::before{left:0;background:linear-gradient(to right,var(--bg) 20%,transparent 100%);opacity:0}
+    .nf-carousel-wrap::after{right:0;background:linear-gradient(to left,var(--bg) 20%,transparent 100%);opacity:1}
+    .nf-carousel-wrap.nf-faded-left::before{opacity:.75}
+    .nf-carousel-wrap.nf-faded-right::after{opacity:0}
+    .nf-section--alt .nf-carousel-wrap::before{background:linear-gradient(to right,var(--bg-alt) 20%,transparent 100%)}
+    .nf-section--alt .nf-carousel-wrap::after{background:linear-gradient(to left,var(--bg-alt) 20%,transparent 100%)}
+    .nf-carousel-viewport{overflow:hidden}
+    .nf-carousel-track{display:flex;gap:24px;transition:transform .36s cubic-bezier(.4,0,.2,1)}
+    .nf-carousel-track>*{flex:0 0 auto;min-width:0}
+    .nf-carousel-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px}
+    .nf-carousel-arrow{width:44px;height:44px;border-radius:50%;border:2.5px solid rgba(0,0,0,.9);background:var(--card);box-shadow:3px 3px 0 rgba(0,0,0,.9);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s,transform .15s}
+    .nf-carousel-arrow:hover{background:var(--purple);color:var(--white);transform:translate(-1px,-1px)}
+    .nf-carousel-arrow:disabled{opacity:.3;pointer-events:none}
+    .nf-carousel-dots{display:flex;gap:8px;align-items:center}
+    .nf-carousel-dot{width:10px;height:10px;border-radius:50%;border:2px solid rgba(0,0,0,.7);background:transparent;cursor:pointer;padding:0;transition:background .18s,transform .15s}
+    .nf-carousel-dot.active{background:var(--purple);transform:scale(1.3)}
+    .nf-blog-card{background:var(--card);border:3px solid rgba(0,0,0,.9);border-radius:var(--radius);box-shadow:5px 5px 0 rgba(0,0,0,.9);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s ease,box-shadow .2s ease}
+    .nf-blog-card:hover{box-shadow:7px 7px 0 rgba(0,0,0,.9)}
+    .nf-blog-thumb{position:relative;height:200px;overflow:hidden}
+    .nf-blog-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+    .nf-blog-card:hover .nf-blog-thumb img{transform:scale(1.04)}
+    .nf-blog-body{padding:24px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
+    .nf-cat-tag{display:inline-flex;height:24px;padding:0 12px;border-radius:999px;border:1.5px solid rgba(0,0,0,.7);font-family:var(--font-body);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;align-items:center;width:fit-content}
+    .nf-cat-tag--update{background:rgba(132,61,179,.15);color:var(--purple-dark)}
+    .nf-cat-tag--story{background:rgba(48,213,200,.2);color:#1a7a74}
+    .nf-cat-tag--feature{background:rgba(255,200,60,.25);color:#7a5500}
+    .nf-cat-tag--launch{background:rgba(48,213,200,.9);color:var(--black)}
+    .nf-blog-body h3{font-family:var(--font-display);font-size:1.15rem;letter-spacing:var(--letter-spacing-heading);line-height:1.15;margin:0;color:var(--text)}
+    .nf-blog-card--featured .nf-blog-body h3{font-size:clamp(1.5rem,2.8vw,2rem)}
+    .nf-blog-body p{font-family:var(--font-body);font-size:.88rem;color:var(--text-muted);line-height:1.6;margin:0}
+    .nf-blog-meta{font-family:var(--font-body);font-size:.78rem;color:var(--text-muted);margin-top:auto;padding-top:12px;border-top:1px solid var(--border-color);display:flex;align-items:center;gap:8px}
+    .nf-blog-meta-dot{width:4px;height:4px;border-radius:50%;background:var(--purple-light)}
+    .nf-read-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-body);font-size:.85rem;font-weight:700;color:var(--purple);text-decoration:none;margin-top:4px;transition:gap .18s}
+    .nf-read-link:hover{gap:10px}
+    /* testimonials use carousel, no grid needed */
+    .nf-testimonial-card{background:var(--card);border:3px solid rgba(0,0,0,.9);border-radius:var(--radius);box-shadow:5px 5px 0 rgba(0,0,0,.9);padding:32px 28px;display:flex;flex-direction:column;gap:18px;transition:transform .2s ease,box-shadow .2s ease}
+    .nf-testimonial-card:hover{box-shadow:7px 7px 0 rgba(0,0,0,.9)}
+    .nf-quote-mark{font-family:var(--font-display);font-size:5rem;color:var(--teal);line-height:.6;display:block;margin-bottom:4px}
+    .nf-testimonial-text{font-family:var(--font-body);font-size:1rem;color:var(--text);line-height:1.72;margin:0;font-style:italic}
+    .nf-testimonial-author{display:flex;align-items:center;gap:12px;margin-top:auto}
+    .nf-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--purple) 0%,var(--teal) 100%);border:2px solid rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1rem;color:var(--white);flex-shrink:0}
+    .nf-author-name{font-family:var(--font-body);font-weight:700;font-size:.9rem;color:var(--text)}
+    .nf-author-sub{font-family:var(--font-body);font-size:.78rem;color:var(--text-muted)}
+    .nf-stars{color:var(--teal);font-size:1rem;letter-spacing:2px}
+    /* videos use carousel */
+    .nf-video-card{background:var(--card);border:3px solid rgba(0,0,0,.9);border-radius:var(--radius);box-shadow:5px 5px 0 rgba(0,0,0,.9);overflow:hidden;transition:transform .2s ease,box-shadow .2s ease;cursor:pointer}
+    .nf-video-card:hover{box-shadow:7px 7px 0 rgba(0,0,0,.9)}
+    .nf-video-thumb{position:relative;overflow:hidden;height:200px}
+    .nf-video-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+    .nf-video-card:hover .nf-video-thumb img{transform:scale(1.04)}
+    .nf-play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.28);transition:background .2s}
+    .nf-video-card:hover .nf-play-btn{background:rgba(0,0,0,.18)}
+    .nf-video-card:hover .nf-play-circle{transform:scale(1.08)}
+    .nf-video-body{padding:20px 20px 22px}
+    .nf-video-body h3{font-family:var(--font-display);font-size:1.05rem;letter-spacing:var(--letter-spacing-heading);margin:0 0 6px;color:var(--text)}
+    .nf-video-body p{font-family:var(--font-body);font-size:.85rem;color:var(--text-muted);margin:0;line-height:1.55}
+    .nf-video-duration{position:absolute;bottom:10px;right:12px;background:rgba(0,0,0,.75);color:#fff;font-family:var(--font-body);font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:4px}
+    .nf-other-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:48px}
+    .nf-other-card{background:var(--card);border:3px solid rgba(0,0,0,.9);border-radius:var(--radius);box-shadow:5px 5px 0 rgba(0,0,0,.9);padding:32px 28px;display:flex;gap:20px;align-items:flex-start;transition:transform .2s ease,box-shadow .2s ease;text-decoration:none;color:inherit}
+    .nf-other-card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.9)}
+    .nf-other-icon{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--purple) 0%,var(--teal) 100%);border:2.5px solid rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+    .nf-other-body h3{font-family:var(--font-display);font-size:1.2rem;letter-spacing:var(--letter-spacing-heading);margin:0 0 8px}
+    .nf-other-body p{font-family:var(--font-body);font-size:.88rem;color:var(--text-muted);line-height:1.6;margin:0 0 14px}
+    .nf-contact{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 60%,#30b8c8 100%);padding:88px 0}
+    .nf-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+    .nf-contact-copy h2{font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);color:var(--white);letter-spacing:var(--letter-spacing-heading);margin:0 0 16px}
+    .nf-contact-copy p{font-family:var(--font-body);font-size:1rem;color:rgba(255,255,255,.85);line-height:1.7;margin:0 0 28px}
+    .nf-contact-links{display:flex;flex-direction:column;gap:14px}
+    .nf-contact-link{display:flex;align-items:center;gap:14px;font-family:var(--font-body);font-size:.95rem;color:rgba(255,255,255,.88);text-decoration:none;padding:14px 18px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:var(--radius);transition:background .18s,border-color .18s,transform .15s}
+    .nf-contact-link:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.45);transform:translateX(4px)}
+    .nf-contact-link-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+    .nf-contact-form-card{background:var(--white);border:3px solid rgba(0,0,0,.9);border-radius:var(--radius-lg);box-shadow:6px 6px 0 rgba(0,0,0,.9);padding:40px 36px}
+    .nf-contact-form-card h3{font-family:var(--font-display);font-size:1.6rem;letter-spacing:var(--letter-spacing-heading);margin:0 0 24px}
+    .nf-form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+    .nf-form-field label{font-family:var(--font-body);font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted)}
+    .nf-form-field input,.nf-form-field textarea,.nf-form-field select{width:100%;padding:12px 16px;border:2px solid var(--border-hi);border-radius:8px;font-family:var(--font-body);font-size:.9rem;background:var(--bg);color:var(--text);transition:border-color .2s;outline:none}
+    .nf-form-field input:focus,.nf-form-field textarea:focus,.nf-form-field select:focus{border-color:var(--purple)}
+    .nf-form-field textarea{resize:vertical;min-height:100px}
+    .nf-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .nf-hero-copy .btn-comic,.nf-hero-copy .btn-secondary-cta{height:52px;padding:0 28px;font-size:.95rem;border-radius:10px}
+    .nf-hero-copy .btn-comic{background:var(--teal);color:var(--black);border:2.5px solid var(--black);box-shadow:4px 4px 0 rgba(0,0,0,.85)}
+    .nf-hero-copy .btn-comic:hover{background:#52e2d7;transform:translate(-2px,-2px);box-shadow:6px 6px 0 rgba(0,0,0,.85)}
+    .nav a.active{color:var(--purple);font-weight:700}
+    @media(max-width:1024px){.nf-hero-inner{grid-template-columns:1fr}.nf-hero-img{min-height:280px}.nf-contact-grid{grid-template-columns:1fr;gap:40px}}
+    @media(max-width:768px){.nf-hero-copy{padding:36px 28px}.nf-other-grid{grid-template-columns:1fr}.nf-form-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" aria-label="ZNAPP home"><img src="img/branding/znapp-full-logo.png" alt="ZNAPP!" /></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html">Homepage</a>
+        <a href="drive-with-znapp.html">Drive with ZNAPP!</a>
+        <a href="newsflash.html" class="active">NewsFLASH</a>
+        <a href="index.html#phone">Driver Portal</a>
+        <a href="index.html#what">Who the ZNAPP!</a>
+        <a href="index.html#faq">FAQ &amp; Support</a>
+      </nav>
+      <a href="drive-with-znapp.html#apply-form" class="btn btn-comic">Sign up</a>
+      <button class="mobile-toggle" aria-label="Menu" type="button"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="nf-hero">
+      <div class="container">
+        <div class="nf-hero-inner">
+          <div class="nf-hero-copy">
+            <span class="section-label">Latest from ZNAPP!</span>
+            <h1>NewsFLASH<span class="accent">!</span></h1>
+            <p>Driver stories, platform updates, city pilots, and everything happening inside the ZNAPP! community.</p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+              <a href="#blogs" class="btn btn-comic">Read blogs</a>
+              <a href="#contact-znapp" class="btn btn-secondary-cta">Contact us</a>
+            </div>
+          </div>
+          <div class="nf-hero-img">
+            <img src="https://picsum.photos/id/1011/900/600" alt="Road at dawn" loading="lazy" />
+            <div class="nf-hero-img-overlay"></div>
+            <span class="nf-featured-badge">Featured story</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="nf-filter-bar">
+      <div class="container">
+        <div class="nf-filter-scroll">
+          <button class="nf-filter-btn active" data-filter="all">All</button>
+          <button class="nf-filter-btn" data-filter="update">Updates</button>
+          <button class="nf-filter-btn" data-filter="story">Driver Stories</button>
+          <button class="nf-filter-btn" data-filter="feature">Features</button>
+          <button class="nf-filter-btn" data-filter="launch">Launches</button>
+          <button class="nf-filter-btn" data-filter="insight">Insights</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="nf-section section" id="blogs">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Blogs</span>
+          <h2>Latest posts</h2>
+          <p class="section-sub">News, stories, and updates straight from the ZNAPP! team.</p>
+        </div>
+        <!-- CAROUSEL: to add a post copy an article block and paste inside .nf-carousel-track -->
+        <div class="nf-carousel-wrap" data-carousel data-visible="3">
+          <div class="nf-carousel-viewport">
+            <div class="nf-carousel-track">
+              <article class="nf-blog-card" data-category="story">
+                <div class="nf-blog-thumb"><img src="https://picsum.photos/id/1040/600/400" alt="Driver on the road" loading="lazy" /></div>
+                <div class="nf-blog-body">
+                  <span class="nf-cat-tag nf-cat-tag--story">Driver Story</span>
+                  <h3>From night-shift worker to Road Hero: Marcus's story</h3>
+                  <p>Marcus signed up with ZNAPP! after losing his overnight job. Three months later he's earning more than ever.</p>
+                  <a href="#" class="nf-read-link">Read the story &#8594;</a>
+                  <div class="nf-blog-meta"><span>Marcus T.</span><span class="nf-blog-meta-dot"></span><span>Mar 28, 2026</span><span class="nf-blog-meta-dot"></span><span>5 min read</span></div>
+                </div>
+              </article>
+              <article class="nf-blog-card" data-category="update">
+                <div class="nf-blog-thumb"><img src="https://picsum.photos/id/1011/600/400" alt="City roads" loading="lazy" /></div>
+                <div class="nf-blog-body">
+                  <span class="nf-cat-tag nf-cat-tag--update">Update</span>
+                  <h3>New driver promo campaign launches this April</h3>
+                  <p>Bonuses, referral incentives, and a new onboarding track for first-time drivers.</p>
+                  <a href="#" class="nf-read-link">Read more &#8594;</a>
+                  <div class="nf-blog-meta"><span>ZNAPP! Team</span><span class="nf-blog-meta-dot"></span><span>Apr 1, 2026</span></div>
+                </div>
+              </article>
+              <article class="nf-blog-card" data-category="feature">
+                <div class="nf-blog-thumb"><img src="https://picsum.photos/id/1035/600/400" alt="App on phone" loading="lazy" /></div>
+                <div class="nf-blog-body">
+                  <span class="nf-cat-tag nf-cat-tag--feature">Feature</span>
+                  <h3>Cleaner signup flow &mdash; from interest to approval in 48 hrs</h3>
+                  <p>Our redesigned onboarding cuts friction and gets new drivers road-ready faster.</p>
+                  <a href="#" class="nf-read-link">Read more &#8594;</a>
+                  <div class="nf-blog-meta"><span>Product Team</span><span class="nf-blog-meta-dot"></span><span>Mar 20, 2026</span></div>
+                </div>
+              </article>
+              <article class="nf-blog-card" data-category="launch">
+                <div class="nf-blog-thumb"><img src="https://picsum.photos/id/1062/600/400" alt="City hall" loading="lazy" /></div>
+                <div class="nf-blog-body">
+                  <span class="nf-cat-tag nf-cat-tag--launch">Launch</span>
+                  <h3>City &amp; municipal pilots: 3 new cities confirmed</h3>
+                  <p>ZNAPP! is officially partnering with local governments in three new metro areas.</p>
+                  <a href="#" class="nf-read-link">Read more &#8594;</a>
+                  <div class="nf-blog-meta"><span>Partnerships</span><span class="nf-blog-meta-dot"></span><span>Mar 15, 2026</span></div>
+                </div>
+              </article>
+              <article class="nf-blog-card" data-category="insight">
+                <div class="nf-blog-thumb"><img src="https://picsum.photos/id/1060/600/400" alt="Driver earnings" loading="lazy" /></div>
+                <div class="nf-blog-body">
+                  <span class="nf-cat-tag nf-cat-tag--feature">Insight</span>
+                  <h3>What our drivers actually earn: Q1 2026 data report</h3>
+                  <p>Real numbers, real drivers. No marketing spin &mdash; just transparent data.</p>
+                  <a href="#" class="nf-read-link">Read more &#8594;</a>
+                  <div class="nf-blog-meta"><span>Data Team</span><span class="nf-blog-meta-dot"></span><span>Mar 10, 2026</span></div>
+                </div>
+              </article>
+            </div>
+          </div>
+          <div class="nf-carousel-nav">
+            <button class="nf-carousel-arrow" data-dir="prev" aria-label="Previous">&#8592;</button>
+            <div class="nf-carousel-dots"></div>
+            <button class="nf-carousel-arrow" data-dir="next" aria-label="Next">&#8594;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nf-section nf-section--alt section" id="testimonials">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Testimonials</span>
+          <h2>What Road Heroes say</h2>
+          <p class="section-sub">Direct quotes from drivers in the ZNAPP! community.</p>
+        </div>
+        <!-- CAROUSEL: copy a div.nf-testimonial-card block and paste inside .nf-carousel-track to add new testimonials -->
+        <div class="nf-carousel-wrap" data-carousel data-visible="3">
+          <div class="nf-carousel-viewport">
+            <div class="nf-carousel-track">
+              <div class="nf-testimonial-card">
+                <span class="nf-quote-mark">&ldquo;</span>
+                <p class="nf-testimonial-text">I signed up expecting another gig app. What I got was a platform that actually cares about where I live. ZNAPP! genuinely changed how I think about driving for a living.</p>
+                <div class="nf-testimonial-author">
+                  <div class="nf-avatar">MR</div>
+                  <div><div class="nf-author-name">Maria R.</div><div class="nf-author-sub">Driver since 2025 &middot; Chicago, IL</div><div class="nf-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div>
+                </div>
+              </div>
+              <div class="nf-testimonial-card">
+                <span class="nf-quote-mark">&ldquo;</span>
+                <p class="nf-testimonial-text">Signed up in minutes and was on the road the same day. The pay is clear before every trip &mdash; no guessing.</p>
+                <div class="nf-testimonial-author">
+                  <div class="nf-avatar">TS</div>
+                  <div><div class="nf-author-name">Tom S.</div><div class="nf-author-sub">Driver since 2023</div><div class="nf-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div>
+                </div>
+              </div>
+              <div class="nf-testimonial-card">
+                <span class="nf-quote-mark">&ldquo;</span>
+                <p class="nf-testimonial-text">The municipal contracts are real. I drive school runs for the city and the pay is solid. It feels like actual work, not gig scrambling.</p>
+                <div class="nf-testimonial-author">
+                  <div class="nf-avatar">DJ</div>
+                  <div><div class="nf-author-name">Diana J.</div><div class="nf-author-sub">Driver since 2024</div><div class="nf-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div></div>
+                </div>
+              </div>
+              <div class="nf-testimonial-card">
+                <span class="nf-quote-mark">&ldquo;</span>
+                <p class="nf-testimonial-text">I work full time and drive weekends. The app never pushes me &mdash; I log on when I want and there's always local demand.</p>
+                <div class="nf-testimonial-author">
+                  <div class="nf-avatar">LK</div>
+                  <div><div class="nf-author-name">Leon K.</div><div class="nf-author-sub">Driver since 2025</div><div class="nf-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="nf-carousel-nav">
+            <button class="nf-carousel-arrow" data-dir="prev" aria-label="Previous">&#8592;</button>
+            <div class="nf-carousel-dots"></div>
+            <button class="nf-carousel-arrow" data-dir="next" aria-label="Next">&#8594;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nf-section section" id="videos">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Videos</span>
+          <h2>Watch &amp; learn</h2>
+          <p class="section-sub">Driver spotlights, platform walkthroughs, and community moments.</p>
+        </div>
+        <!-- CAROUSEL: copy a div.nf-video-card block and paste inside .nf-carousel-track to add new videos -->
+        <div class="nf-carousel-wrap" data-carousel data-visible="3">
+          <div class="nf-carousel-viewport">
+            <div class="nf-carousel-track">
+              <div class="nf-video-card">
+                <div class="nf-video-thumb">
+                  <img src="https://picsum.photos/id/1025/600/380" alt="Driver video" loading="lazy" />
+                  <div class="nf-play-btn"><div class="nf-play-circle">&#9654;</div></div>
+                  <span class="nf-video-duration">4:22</span>
+                </div>
+                <div class="nf-video-body">
+                  <span class="nf-cat-tag nf-cat-tag--story" style="display:inline-flex;margin-bottom:8px">Driver Story</span>
+                  <h3>A day in the life: driving with ZNAPP! in the city</h3>
+                  <p>Follow Road Hero Marcus through a full day &mdash; from morning pickup to evening earnings report.</p>
+                </div>
+              </div>
+              <div class="nf-video-card">
+                <div class="nf-video-thumb">
+                  <img src="https://picsum.photos/id/1031/600/380" alt="App walkthrough" loading="lazy" />
+                  <div class="nf-play-btn"><div class="nf-play-circle">&#9654;</div></div>
+                  <span class="nf-video-duration">2:10</span>
+                </div>
+                <div class="nf-video-body">
+                  <span class="nf-cat-tag nf-cat-tag--update" style="display:inline-flex;margin-bottom:8px">Tutorial</span>
+                  <h3>App walkthrough: from signup to first trip</h3>
+                  <p>Everything you need to know about the ZNAPP! driver app in under 3 minutes.</p>
+                </div>
+              </div>
+              <div class="nf-video-card">
+                <div class="nf-video-thumb">
+                  <img src="https://picsum.photos/id/1043/600/380" alt="Municipal pilot" loading="lazy" />
+                  <div class="nf-play-btn"><div class="nf-play-circle">&#9654;</div></div>
+                  <span class="nf-video-duration">3:45</span>
+                </div>
+                <div class="nf-video-body">
+                  <span class="nf-cat-tag nf-cat-tag--launch" style="display:inline-flex;margin-bottom:8px">Launch</span>
+                  <h3>ZNAPP! &amp; the city: how municipal pilots work</h3>
+                  <p>A behind-the-scenes look at our government partnerships.</p>
+                </div>
+              </div>
+              <div class="nf-video-card">
+                <div class="nf-video-thumb">
+                  <img src="https://picsum.photos/id/1039/600/380" alt="Community highlights" loading="lazy" />
+                  <div class="nf-play-btn"><div class="nf-play-circle">&#9654;</div></div>
+                  <span class="nf-video-duration">1:58</span>
+                </div>
+                <div class="nf-video-body">
+                  <span class="nf-cat-tag nf-cat-tag--story" style="display:inline-flex;margin-bottom:8px">Community</span>
+                  <h3>Community highlights: Q1 2026</h3>
+                  <p>Best moments, milestones, and driver wins from the quarter.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="nf-carousel-nav">
+            <button class="nf-carousel-arrow" data-dir="prev" aria-label="Previous">&#8592;</button>
+            <div class="nf-carousel-dots"></div>
+            <button class="nf-carousel-arrow" data-dir="next" aria-label="Next">&#8594;</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nf-section nf-section--alt section" id="other-content">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">More from ZNAPP!</span>
+          <h2>Other content</h2>
+          <p class="section-sub">Reports, guides, press resources, and community tools.</p>
+        </div>
+        <div class="nf-other-grid">
+          <a href="#" class="nf-other-card"><div class="nf-other-icon">&#128202;</div><div class="nf-other-body"><h3>Earnings &amp; data reports</h3><p>Quarterly driver earnings breakdowns, trip data, and platform growth stats. All numbers are real and unfiltered.</p><span class="nf-read-link">View reports &#8594;</span></div></a>
+          <a href="#" class="nf-other-card"><div class="nf-other-icon">&#128240;</div><div class="nf-other-body"><h3>Press &amp; media kit</h3><p>Logos, brand guidelines, approved photography, and official press releases for media partners and journalists.</p><span class="nf-read-link">Download kit &#8594;</span></div></a>
+          <a href="#" class="nf-other-card"><div class="nf-other-icon">&#128506;</div><div class="nf-other-body"><h3>City &amp; route map</h3><p>See where ZNAPP! operates, which municipal contracts are active, and where we're expanding next.</p><span class="nf-read-link">Explore the map &#8594;</span></div></a>
+          <a href="#" class="nf-other-card"><div class="nf-other-icon">&#128140;</div><div class="nf-other-body"><h3>Driver newsletter</h3><p>Weekly roundup of platform updates, bonus opportunities, community stories, and local news &mdash; delivered to your inbox.</p><span class="nf-read-link">Subscribe &#8594;</span></div></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="nf-contact" id="contact-znapp">
+      <div class="container">
+        <div class="nf-contact-grid">
+          <div class="nf-contact-copy">
+            <span class="section-label" style="color:var(--teal)">Get in touch</span>
+            <h2>Contact ZNAPP!</h2>
+            <p>Whether you're a driver, journalist, city partner, or just curious &mdash; we're here. Reach us through any channel below or send a message directly.</p>
+            <div class="nf-contact-links">
+              <a href="mailto:hello@znapp.com" class="nf-contact-link"><div class="nf-contact-link-icon">&#9993;</div><div><div style="font-weight:700;font-family:var(--font-body)">General enquiries</div><div style="font-size:.82rem;opacity:.75">hello@znapp.com</div></div></a>
+              <a href="mailto:press@znapp.com" class="nf-contact-link"><div class="nf-contact-link-icon">&#128240;</div><div><div style="font-weight:700;font-family:var(--font-body)">Press &amp; media</div><div style="font-size:.82rem;opacity:.75">press@znapp.com</div></div></a>
+              <a href="mailto:cities@znapp.com" class="nf-contact-link"><div class="nf-contact-link-icon">&#127970;</div><div><div style="font-weight:700;font-family:var(--font-body)">City partnerships</div><div style="font-size:.82rem;opacity:.75">cities@znapp.com</div></div></a>
+              <a href="mailto:drivers@znapp.com" class="nf-contact-link"><div class="nf-contact-link-icon">&#128663;</div><div><div style="font-weight:700;font-family:var(--font-body)">Driver support</div><div style="font-size:.82rem;opacity:.75">drivers@znapp.com</div></div></a>
+            </div>
+          </div>
+          <div class="nf-contact-form-card">
+            <h3>Send a message</h3>
+            <form action="#" method="post">
+              <div class="nf-form-row">
+                <div class="nf-form-field"><label for="cf-name">Name</label><input type="text" id="cf-name" name="name" placeholder="Your name" required /></div>
+                <div class="nf-form-field"><label for="cf-email">Email</label><input type="email" id="cf-email" name="email" placeholder="you@email.com" required /></div>
+              </div>
+              <div class="nf-form-field">
+                <label for="cf-subject">Topic</label>
+                <select id="cf-subject" name="subject"><option value="">Select a topic&hellip;</option><option>General enquiry</option><option>Driver support</option><option>Press &amp; media</option><option>City partnership</option><option>Feedback</option></select>
+              </div>
+              <div class="nf-form-field"><label for="cf-message">Message</label><textarea id="cf-message" name="message" placeholder="What's on your mind?" required></textarea></div>
+              <button type="submit" class="btn btn-comic btn-lg" style="width:100%;justify-content:center">Send message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand"><img src="img/branding/znapp-full-logo.png" alt="ZNAPP!" class="footer-logo" /><p>A driver-first platform with fast onboarding, clear earnings, and a local community that supports you.</p></div>
+      <div class="footer-col"><h4>Quick Links</h4><a href="index.html#why">Why ZNAPP</a><a href="index.html#life">Road Hero Life</a><a href="index.html#what">What We Do</a><a href="index.html#faq">FAQ</a></div>
+      <div class="footer-col"><h4>Connect</h4><a href="#">Instagram</a><a href="#">TikTok</a><a href="#">X / Twitter</a><a href="#">LinkedIn</a></div>
+    </div>
+    <div class="container footer-bottom"><p>&copy; 2026 ZNAPP! All rights reserved.</p></div>
+  </footer>
+
+  <script>
+    /* mobile menu */
+    (function(){var t=document.querySelector('.mobile-toggle'),n=document.querySelector('.nav');if(t&&n){t.addEventListener('click',function(){this.classList.toggle('active');n.classList.toggle('mobile-open');});n.querySelectorAll('a').forEach(function(l){l.addEventListener('click',function(){t.classList.remove('active');n.classList.remove('mobile-open');});});document.addEventListener('click',function(e){if(!n.contains(e.target)&&!t.contains(e.target)){t.classList.remove('active');n.classList.remove('mobile-open');}});}})();
+
+    /* category filter */
+    (function(){var btns=document.querySelectorAll('.nf-filter-btn');btns.forEach(function(btn){btn.addEventListener('click',function(){btns.forEach(function(b){b.classList.remove('active');});btn.classList.add('active');var f=btn.dataset.filter;document.querySelectorAll('[data-category]').forEach(function(c){c.style.display=(f==='all'||c.dataset.category===f)?'':'none';});document.querySelectorAll('[data-carousel]').forEach(function(w){if(w._c)w._c.resize();});});});})();
+
+    /* carousel engine */
+    (function(){
+      var GAP=24;
+      function init(wrap){
+        var track=wrap.querySelector('.nf-carousel-track');
+        var vp=wrap.querySelector('.nf-carousel-viewport');
+        var dots=wrap.querySelector('.nf-carousel-dots');
+        var prev=wrap.querySelector('[data-dir=prev]');
+        var next=wrap.querySelector('[data-dir=next]');
+        var cur=0;
+        function vis(){var w=wrap.offsetWidth,d=parseInt(wrap.dataset.visible)||3;return w<600?1:w<900?2:d;}
+        function slides(){return[].filter.call(track.children,function(e){return e.style.display!=='none';});}
+        function pages(){return Math.max(1,slides().length-vis()+1);}
+        function sw(){return(vp.offsetWidth-GAP*(vis()-1))/vis();}
+        function setSizes(){var w=sw();[].forEach.call(track.children,function(e){e.style.width=w+'px';});track.style.gap=GAP+'px';}
+        function buildDots(){dots.innerHTML='';for(var i=0;i<pages();i++){(function(i){var d=document.createElement('button');d.className='nf-carousel-dot'+(i===cur?' active':'');d.setAttribute('aria-label','Page '+(i+1));d.addEventListener('click',function(){go(i);});dots.appendChild(d);})(i);}}
+        function upd(){
+          prev.disabled=cur===0;
+          next.disabled=cur>=pages()-1;
+          [].forEach.call(dots.querySelectorAll('.nf-carousel-dot'),function(d,i){d.classList.toggle('active',i===cur);});
+          wrap.classList.toggle('nf-faded-left', cur>0);
+          wrap.classList.toggle('nf-faded-right', cur>=pages()-1);
+        }
+        function go(i){cur=Math.max(0,Math.min(i,pages()-1));track.style.transform='translateX(-'+(cur*(sw()+GAP))+'px)';upd();}
+        function resize(){setSizes();cur=Math.min(cur,pages()-1);go(cur);buildDots();}
+        prev.addEventListener('click',function(){go(cur-1);});
+        next.addEventListener('click',function(){go(cur+1);});
+        var sx=0;
+        vp.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+        vp.addEventListener('touchend',function(e){var d=sx-e.changedTouches[0].clientX;if(Math.abs(d)>40){d>0?go(cur+1):go(cur-1);}});
+        resize();
+        wrap._c={resize:resize};
+      }
+      document.querySelectorAll('[data-carousel]').forEach(init);
+      window.addEventListener('resize',function(){document.querySelectorAll('[data-carousel]').forEach(function(w){if(w._c)w._c.resize();});});
+    })();
+  </script>
+</body>
+</html>
