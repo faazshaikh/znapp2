@@ -4,583 +4,498 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FAQ &amp; Support | ZNAPP!</title>
-  <meta name="description" content="Get answers to common questions about driving with ZNAPP!, earnings, requirements, and how to get support fast." />
+  <meta name="description" content="Get answers fast. Browse FAQs by topic, call our team, or send us a message — ZNAPP! support is built for drivers." />
   <link rel="icon" type="image/png" href="img/branding/favicon-znapp.png" sizes="32x32" />
   <link rel="apple-touch-icon" href="img/branding/favicon-znapp.png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* ── PAGE-LEVEL TOKENS ── */
-    :root {
-      --faq-border: 3px solid rgba(0,0,0,.9);
-      --faq-shadow: 5px 5px 0 rgba(0,0,0,.9);
-    }
+    .nav a.active { color: var(--purple); font-weight: 700; }
 
-    /* ── HERO ── */
+    /* ══ HERO ══ */
     .fs-hero {
-      background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 52%, #30b8c8 100%);
-      padding: 88px 0 100px;
+      background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 52%, #1fb8ac 100%);
+      padding: 96px 0 108px;
       position: relative;
       overflow: hidden;
+      text-align: center;
     }
     .fs-hero::before {
-      content: "";
-      position: absolute;
-      top: -120px; right: -120px;
-      width: 500px; height: 500px;
-      border-radius: 50%;
-      border: 52px solid rgba(255,255,255,.06);
-      pointer-events: none;
+      content:""; position:absolute; top:-140px; right:-140px;
+      width:520px; height:520px; border-radius:50%;
+      border:56px solid rgba(255,255,255,.055); pointer-events:none;
     }
     .fs-hero::after {
-      content: "";
-      position: absolute;
-      bottom: -80px; left: -80px;
-      width: 340px; height: 340px;
-      border-radius: 50%;
-      border: 36px solid rgba(48,213,200,.1);
-      pointer-events: none;
+      content:""; position:absolute; bottom:-90px; left:-90px;
+      width:360px; height:360px; border-radius:50%;
+      border:40px solid rgba(48,213,200,.09); pointer-events:none;
     }
-    .fs-hero-inner {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
+    .fs-hero-inner { position:relative; z-index:1; max-width:700px; margin:0 auto; }
+    .fs-hero-inner .section-label { color:rgba(255,255,255,.68); margin-bottom:18px; display:inline-flex; }
+    .fs-hero-inner h1 {
+      font-family:var(--font-display); font-size:clamp(3rem,6vw,4.6rem);
+      color:var(--white); line-height:1.02; letter-spacing:var(--letter-spacing-heading); margin:0 0 20px;
     }
-    .fs-hero-copy .section-label { color: rgba(255,255,255,.72); }
-    .fs-hero-copy h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2.6rem,5.5vw,4rem);
-      color: var(--white);
-      line-height: 1.04;
-      letter-spacing: var(--letter-spacing-heading);
-      margin: 16px 0 20px;
+    .fs-hero-inner h1 .accent { color:var(--teal); }
+    .fs-hero-inner p {
+      font-family:var(--font-body); font-size:1.1rem;
+      color:rgba(255,255,255,.82); line-height:1.72; margin:0 0 40px;
+      letter-spacing:0.025em;
     }
-    .fs-hero-copy h1 .accent { color: var(--teal); }
-    .fs-hero-copy p {
-      font-family: var(--font-body);
-      font-size: 1.08rem;
-      color: rgba(255,255,255,.86);
-      line-height: 1.72;
-      margin: 0 0 32px;
-      max-width: 40ch;
-    }
-    .fs-hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-
-    /* Quick-link chips */
-    .fs-hero-chips {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .fs-chip {
-      background: rgba(255,255,255,.1);
-      border: 2px solid rgba(255,255,255,.22);
-      border-radius: var(--radius);
-      backdrop-filter: blur(14px);
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      text-decoration: none;
-      transition: background .2s, transform .18s, box-shadow .18s;
-      box-shadow: 3px 3px 0 rgba(0,0,0,.18);
-    }
-    .fs-chip:hover {
-      background: rgba(255,255,255,.18);
-      transform: translate(-2px,-2px);
-      box-shadow: 5px 5px 0 rgba(0,0,0,.25);
-    }
-    .fs-chip-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      background: linear-gradient(135deg,var(--purple) 0%,var(--teal) 100%);
-      border: 2px solid rgba(0,0,0,.5);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-    .fs-chip-text { flex: 1; }
-    .fs-chip-title {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: var(--white);
-      letter-spacing: var(--letter-spacing-heading);
-      display: block;
-      margin-bottom: 2px;
-    }
-    .fs-chip-sub {
-      font-family: var(--font-body);
-      font-size: .82rem;
-      color: rgba(255,255,255,.65);
-    }
-    .fs-chip-arrow {
-      font-size: 1.2rem;
-      color: var(--teal);
-      font-weight: 900;
-    }
-
-    /* ── SEARCH BAR ── */
-    .fs-search-band {
-      background: var(--white);
-      border-bottom: var(--faq-border);
-      padding: 28px 0;
-    }
-    .fs-search-wrap {
-      max-width: 640px;
-      margin: 0 auto;
-      position: relative;
-    }
-    .fs-search-wrap input {
-      width: 100%;
-      height: 56px;
-      padding: 0 56px 0 52px;
-      border: var(--faq-border);
-      border-radius: 12px;
-      font-family: var(--font-body);
+    .fs-hero-actions { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+    .fs-hero-actions .btn {
+      height: 54px;
+      padding: 0 36px;
       font-size: 1rem;
-      background: var(--bg);
-      color: var(--text);
-      box-shadow: var(--faq-shadow);
-      transition: border-color .2s, box-shadow .2s;
-      box-sizing: border-box;
+      border-radius: 12px;
+      min-width: 160px;
+      justify-content: center;
     }
-    .fs-search-wrap input:focus {
-      outline: none;
-      border-color: var(--purple);
-      box-shadow: 5px 5px 0 rgba(0,0,0,.9), 0 0 0 3px rgba(132,61,179,.18);
-    }
-    .fs-search-wrap input::placeholder { color: var(--gray); }
-    .fs-search-icon {
-      position: absolute;
-      left: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.15rem;
-      pointer-events: none;
-      opacity: .55;
-    }
-    .fs-search-clear {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      font-size: 1.2rem;
-      cursor: pointer;
-      color: var(--gray);
-      line-height: 1;
-      display: none;
-    }
-    .fs-search-wrap input:not(:placeholder-shown) ~ .fs-search-clear { display: block; }
-
-    /* ── CATEGORY TABS ── */
-    .fs-cats {
-      background: var(--bg);
-      padding: 72px 0 0;
-    }
-    .fs-cat-tabs {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
-    .fs-cat-btn {
-      height: 38px;
-      padding: 0 20px;
-      border-radius: 999px;
-      border: 2.5px solid rgba(0,0,0,.8);
-      background: var(--card);
-      font-family: var(--font-body);
-      font-size: .82rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      cursor: pointer;
-      transition: background .18s, color .18s, transform .15s;
-      box-shadow: 2px 2px 0 rgba(0,0,0,.8);
-      color: var(--text);
-    }
-    .fs-cat-btn:hover, .fs-cat-btn.active {
-      background: var(--purple);
-      color: var(--white);
-      transform: translate(-1px,-1px);
-      box-shadow: 3px 3px 0 rgba(0,0,0,.8);
-    }
-
-    /* ── FAQ ACCORDION ── */
-    .fs-accordion {
-      display: grid;
-      gap: 14px;
-      padding-bottom: 80px;
-    }
-    .fs-faq-item {
-      background: var(--card);
-      border: var(--faq-border);
-      border-radius: var(--radius);
-      box-shadow: var(--faq-shadow);
-      overflow: hidden;
-      transition: box-shadow .2s;
-    }
-    .fs-faq-item[hidden] { display: none; }
-    .fs-faq-q {
-      width: 100%;
-      background: none;
-      border: none;
-      padding: 24px 28px;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      cursor: pointer;
-      text-align: left;
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      color: var(--text);
-      letter-spacing: var(--letter-spacing-heading);
-      line-height: 1.25;
-      transition: background .18s;
-    }
-    .fs-faq-q:hover { background: rgba(132,61,179,.04); }
-    .fs-faq-q[aria-expanded="true"] { background: rgba(132,61,179,.06); }
-    .fs-faq-num {
-      flex-shrink: 0;
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple) 0%, var(--teal) 100%);
-      border: 2px solid rgba(0,0,0,.75);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-display);
-      font-size: .9rem;
-      color: var(--white);
-      flex-shrink: 0;
-      letter-spacing: 0;
-    }
-    .fs-faq-q-text { flex: 1; }
-    .fs-faq-icon {
-      flex-shrink: 0;
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: var(--purple);
-      color: var(--white);
-      border: 2px solid rgba(0,0,0,.8);
-      box-shadow: 2px 2px 0 rgba(0,0,0,.8);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem;
-      line-height: 1;
-      transition: background .2s, transform .25s;
-      font-family: var(--font-body);
-    }
-    .fs-faq-q[aria-expanded="true"] .fs-faq-icon {
+    /* Browse FAQs — teal fill, black text, letter spaced */
+    .fs-hero-actions .btn-comic {
       background: var(--teal);
-      transform: rotate(45deg);
+      color: var(--black);
+      border-color: var(--black);
+      letter-spacing: 0.08em;
     }
-    .fs-faq-body {
-      padding: 0 28px 24px 82px;
-      font-family: var(--font-body);
-      font-size: .97rem;
-      color: var(--text-muted);
-      line-height: 1.75;
-      display: none;
+    .fs-hero-actions .btn-comic:hover {
+      background: #18a89e;
+      color: var(--black);
     }
-    .fs-faq-body.open { display: block; }
-    .fs-faq-body ul {
-      margin: 12px 0 0;
-      padding-left: 20px;
-      display: grid;
-      gap: 7px;
-    }
-    .fs-faq-body ul li { color: var(--text-muted); }
-    .fs-faq-body strong { color: var(--purple); font-weight: 700; }
-
-    /* No results message */
-    .fs-no-results {
-      text-align: center;
-      padding: 60px 0;
-      display: none;
-    }
-    .fs-no-results.visible { display: block; }
-    .fs-no-results p {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      color: var(--text-muted);
-      letter-spacing: .04em;
-    }
-
-    /* ── CALL BAND ── */
-    .fs-call {
-      background: linear-gradient(135deg, var(--purple) 0%, var(--teal) 100%);
-      padding: 60px 0;
-    }
-    .fs-call-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-    .fs-call-copy h2 {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem, 3.2vw, 2.4rem);
-      color: var(--white);
-      letter-spacing: var(--letter-spacing-heading);
-      margin: 0 0 12px;
-      line-height: 1.1;
-    }
-    .fs-call-copy p {
-      font-family: var(--font-body);
+    /* Contact Us — match same size, keep ghost style */
+    .fs-hero-actions .btn-secondary-cta {
+      height: 54px;
+      padding: 0 36px;
       font-size: 1rem;
-      color: rgba(255,255,255,.88);
-      line-height: 1.7;
-      margin: 0;
-      max-width: 38ch;
-    }
-    .fs-call-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .fs-call-btn {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 18px 24px;
-      background: rgba(255,255,255,.12);
-      border: 2.5px solid rgba(255,255,255,.35);
-      border-radius: var(--radius);
-      backdrop-filter: blur(12px);
-      text-decoration: none;
-      transition: background .2s, transform .18s, box-shadow .18s;
-      box-shadow: 3px 3px 0 rgba(0,0,0,.18);
-    }
-    .fs-call-btn:hover {
-      background: rgba(255,255,255,.22);
-      transform: translate(-2px,-2px);
-      box-shadow: 5px 5px 0 rgba(0,0,0,.22);
-    }
-    .fs-call-btn-icon {
-      width: 44px; height: 44px;
-      border-radius: 10px;
-      background: var(--white);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-      flex-shrink: 0;
-      border: 2px solid rgba(0,0,0,.5);
-    }
-    .fs-call-btn-text { flex: 1; }
-    .fs-call-btn-label {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      color: var(--white);
-      letter-spacing: .04em;
-      display: block;
-    }
-    .fs-call-btn-sub {
-      font-family: var(--font-body);
-      font-size: .8rem;
-      color: rgba(255,255,255,.72);
-    }
-    .fs-call-btn-arrow {
-      font-size: 1.1rem;
-      color: var(--teal);
-      font-weight: 900;
+      border-radius: 12px;
+      min-width: 160px;
+      letter-spacing: 0.08em;
     }
 
-    /* ── CONTACT FORM ── */
-    .fs-contact {
-      background: var(--bg);
-      padding: 88px 0;
+    /* ══ FAQ SECTION ══ */
+    .fs-faq-section { background:var(--bg); padding:88px 0 100px; }
+    .fs-faq-layout {
+      display:grid; grid-template-columns:230px 1fr;
+      gap:52px; align-items:start;
     }
-    .fs-contact-layout {
+
+    /* Sidebar */
+    .fs-sidebar { position:sticky; top:84px; }
+    .fs-sidebar-heading {
+      font-family:var(--font-body); font-size:.72rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:.1em; color:var(--text-muted); margin:0 0 14px;
+    }
+    .fs-sidebar-nav { display:flex; flex-direction:column; gap:4px; }
+    .fs-sidebar-btn {
+      width:100%; background:none; border:none; padding:11px 16px;
+      text-align:left; font-family:var(--font-body); font-size:.8rem; font-weight:700;
+      letter-spacing:0.07em; text-transform:uppercase;
+      color:var(--text-muted); cursor:pointer; border-radius:8px;
+      transition:background .15s, color .15s;
+    }
+    .fs-sidebar-btn:hover { background:rgba(132,61,179,.07); color:var(--purple); }
+    .fs-sidebar-btn.active {
+      background:var(--purple); color:var(--white); box-shadow:2px 2px 0 rgba(0,0,0,.75);
+    }
+    .fs-sidebar-divider { border:none; border-top:1.5px solid var(--border-color); margin:16px 0; }
+    .fs-sidebar-support {
+      background:var(--card); border:2.5px solid rgba(0,0,0,.8);
+      border-radius:var(--radius); box-shadow:3px 3px 0 rgba(0,0,0,.8); padding:20px 18px;
+    }
+    .fs-sidebar-support p {
+      font-family:var(--font-body); font-size:.85rem; color:var(--text-muted);
+      line-height:1.6; margin:0 0 12px;
+    }
+    .fs-sidebar-support .btn { width:100%; justify-content:center; height:40px; font-size:.82rem; }
+
+    /* Accordion */
+    .fs-accordion { display:flex; flex-direction:column; gap:12px; }
+    .fs-item {
+      background:var(--card); border:3px solid rgba(0,0,0,.9);
+      border-radius:var(--radius); box-shadow:4px 4px 0 rgba(0,0,0,.9); overflow:hidden;
+    }
+    .fs-item[hidden] { display:none; }
+    .fs-q {
+      width:100%; background:none; border:none; padding:22px 24px;
+      display:flex; align-items:center; gap:16px;
+      cursor:pointer; text-align:left; transition:background .15s;
+    }
+    .fs-q:hover { background:rgba(132,61,179,.04); }
+    .fs-q[aria-expanded="true"] { background:rgba(132,61,179,.05); }
+    .fs-q-text {
+      flex:1; font-family:var(--font-body); font-size:1rem;
+      font-weight:700; color:var(--text); letter-spacing:0.06em; line-height:1.35;
+    }
+    .fs-q-icon {
+      flex-shrink:0; width:32px; height:32px; border-radius:50%;
+      background:var(--purple); color:var(--white);
+      border:2px solid rgba(0,0,0,.8); box-shadow:2px 2px 0 rgba(0,0,0,.8);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.25rem; line-height:1; font-family:var(--font-body);
+      transition:transform .28s cubic-bezier(.4,0,.2,1), background .2s;
+    }
+    .fs-q[aria-expanded="true"] .fs-q-icon { transform:rotate(45deg); background:var(--teal); }
+    .fs-a { max-height:0; overflow:hidden; transition:max-height .36s cubic-bezier(.4,0,.2,1); }
+    .fs-a-inner {
+      padding:0 24px 24px 24px; font-family:var(--font-body); font-size:.95rem;
+      color:var(--text-muted); line-height:1.8; letter-spacing:0.02em;
+    }
+    .fs-a-inner p { margin:0 0 10px; }
+    .fs-a-inner p:last-child { margin:0; }
+    .fs-a-inner ul { margin:10px 0 0; padding-left:0; list-style:none; display:grid; gap:8px; }
+    .fs-a-inner ul li { padding-left:22px; position:relative; color:var(--text-muted); }
+    .fs-a-inner ul li::before {
+      content:""; position:absolute; left:0; top:8px;
+      width:8px; height:8px; border-radius:50%;
+      background:var(--teal); border:1.5px solid rgba(0,0,0,.7);
+    }
+    .fs-a-inner strong { color:var(--purple); font-weight:700; }
+
+    /* ══ STILL NEED HELP — channels + form in one section (like Lyft/Uber) ══ */
+    .fs-still {
+      background: var(--bg-alt);
+      padding: 88px 0 100px;
+    }
+    .fs-still .section-header { margin-bottom: 56px; }
+
+    /* Two-column: left = channel cards, right = form */
+    .fs-still-layout {
       display: grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap: 64px;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 52px;
       align-items: start;
     }
-    .fs-contact-left { padding-top: 8px; }
-    .fs-contact-left h2 {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem,3.2vw,2.4rem);
-      letter-spacing: var(--letter-spacing-heading);
-      margin: 0 0 16px;
-      line-height: 1.08;
-    }
-    .fs-contact-left p {
+
+    /* Channel option cards stacked on left */
+    .fs-still-left-heading {
       font-family: var(--font-body);
-      font-size: .97rem;
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
       color: var(--text-muted);
-      line-height: 1.72;
-      margin: 0 0 32px;
+      margin: 0 0 16px;
     }
-    .fs-contact-meta {
-      display: grid;
-      gap: 14px;
-    }
-    .fs-meta-row {
+    .fs-channels { display: flex; flex-direction: column; gap: 14px; }
+    .fs-channel {
       display: flex;
       align-items: center;
-      gap: 14px;
-      font-family: var(--font-body);
-      font-size: .92rem;
-      color: var(--text);
-    }
-    .fs-meta-icon {
-      width: 40px; height: 40px;
-      border-radius: 10px;
+      gap: 18px;
+      padding: 20px 22px;
       background: var(--card);
+      border: 3px solid rgba(0,0,0,.9);
+      border-radius: var(--radius);
+      box-shadow: 4px 4px 0 rgba(0,0,0,.9);
+      text-decoration: none;
+      color: var(--text);
+      transition: transform .18s, box-shadow .18s;
+    }
+    .fs-channel:hover {
+      transform: translate(-2px,-2px);
+      box-shadow: 6px 6px 0 rgba(0,0,0,.9);
+    }
+    .fs-ch-icon {
+      width: 50px; height: 50px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--purple) 0%, var(--teal) 100%);
       border: 2px solid rgba(0,0,0,.8);
       box-shadow: 2px 2px 0 rgba(0,0,0,.8);
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
+      flex-shrink: 0; color: var(--white);
     }
+    .fs-ch-body { flex: 1; min-width: 0; }
+    .fs-ch-title {
+      font-family: var(--font-body);
+      font-size: .92rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      display: block;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .fs-ch-sub {
+      font-family: var(--font-body);
+      font-size: .8rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+    .fs-ch-arrow {
+      color: var(--purple);
+      flex-shrink: 0;
+      transition: transform .18s;
+      display: flex; align-items: center;
+    }
+    .fs-channel:hover .fs-ch-arrow { transform: translateX(4px); }
 
-    /* Comic-style form card */
+    /* Form card on right */
     .fs-form-card {
       background: var(--card);
-      border: var(--faq-border);
+      border: 3px solid rgba(0,0,0,.9);
       border-radius: var(--radius-lg);
-      box-shadow: var(--faq-shadow);
+      box-shadow: 6px 6px 0 rgba(0,0,0,.9);
       padding: 44px 40px;
     }
     .fs-form-card h3 {
       font-family: var(--font-display);
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       letter-spacing: var(--letter-spacing-heading);
-      margin: 0 0 28px;
+      margin: 0 0 8px;
       color: var(--text);
     }
-    .fs-form {
-      display: grid;
-      gap: 16px;
-    }
-    .fs-form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .fs-field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .fs-field label {
+    .fs-form-card .fs-form-subheading {
       font-family: var(--font-body);
-      font-size: .8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: var(--text);
+      font-size: .82rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 0 0 24px;
+    }
+    .fs-form { display: grid; gap: 16px; }
+    .fs-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .fs-field { display: flex; flex-direction: column; gap: 6px; }
+    .fs-field label {
+      font-family: var(--font-body); font-size: .78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em; color: var(--text);
     }
     .fs-field input,
     .fs-field select,
     .fs-field textarea {
-      height: 50px;
-      padding: 0 16px;
-      border: 2px solid var(--border-hi);
-      border-radius: 10px;
-      font-family: var(--font-body);
-      font-size: .95rem;
-      background: var(--bg);
-      color: var(--text);
+      height: 50px; padding: 0 16px;
+      border: 2px solid var(--border-hi); border-radius: 10px;
+      font-family: var(--font-body); font-size: .96rem;
+      background: var(--bg); color: var(--text);
+      width: 100%; box-sizing: border-box;
       transition: border-color .2s, box-shadow .2s;
-      width: 100%;
-      box-sizing: border-box;
     }
     .fs-field select { cursor: pointer; }
-    .fs-field textarea {
-      height: 120px;
-      padding: 14px 16px;
-      resize: vertical;
-    }
+    .fs-field textarea { height: 120px; padding: 14px 16px; resize: vertical; }
     .fs-field input:focus,
     .fs-field select:focus,
     .fs-field textarea:focus {
-      outline: none;
-      border-color: var(--purple);
-      box-shadow: 0 0 0 3px rgba(132,61,179,.15);
+      outline: none; border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(132,61,179,.14);
     }
     .fs-field input::placeholder,
     .fs-field textarea::placeholder { color: var(--gray); }
-    .fs-form-submit {
-      margin-top: 6px;
-    }
-    .fs-form-submit .btn {
-      width: 100%;
-      height: 54px;
-      font-size: 1.05rem;
-      justify-content: center;
-    }
+    .fs-submit .btn { width: 100%; height: 54px; font-size: 1.05rem; justify-content: center; }
     .fs-form-note {
-      font-family: var(--font-body);
-      font-size: .78rem;
-      color: var(--text-muted);
-      text-align: center;
-      margin-top: 10px;
+      font-family: var(--font-body); font-size: .78rem;
+      color: var(--text-muted); text-align: center; margin-top: 8px;
+      letter-spacing: 0.04em;
+    }
+    .fs-success {
+      display: none; flex-direction: column;
+      align-items: center; gap: 18px; text-align: center; padding: 36px 0 8px;
+    }
+    .fs-success.show { display: flex; }
+    .fs-success-ring {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple) 0%, var(--teal) 100%);
+      border: 3px solid rgba(0,0,0,.9); box-shadow: 4px 4px 0 rgba(0,0,0,.9);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white);
+    }
+    .fs-success h4 {
+      font-family: var(--font-display); font-size: 1.5rem;
+      letter-spacing: var(--letter-spacing-heading); margin: 0;
+    }
+    .fs-success p { font-family: var(--font-body); font-size: .95rem; color: var(--text-muted); margin: 0; }
+
+    /* ══ SEARCH + ACCORDION COLUMN ══ */
+    .fs-accordion-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
     }
 
-    /* ── SUCCESS STATE ── */
-    .fs-form-success {
-      display: none;
+    /* Search bar — sits above accordion */
+    .fs-search-wrap {
+      display: flex;
       flex-direction: column;
+      gap: 8px;
+    }
+    .fs-search-box {
+      position: relative;
+      width: 100%;
+      display: flex;
       align-items: center;
-      gap: 16px;
-      text-align: center;
-      padding: 32px 0;
-    }
-    .fs-form-success.visible { display: flex; }
-    .fs-success-icon {
-      width: 72px; height: 72px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--purple) 0%, var(--teal) 100%);
+      background: var(--card);
       border: 3px solid rgba(0,0,0,.9);
-      box-shadow: 4px 4px 0 rgba(0,0,0,.9);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem;
+      border-radius: 100px;
+      box-shadow: 4px 4px 0 rgba(0,0,0,.88);
+      overflow: hidden;
+      transition: box-shadow .18s, transform .18s;
     }
-    .fs-form-success h4 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      letter-spacing: var(--letter-spacing-heading);
+    .fs-search-box:focus-within {
+      box-shadow: 6px 6px 0 rgba(0,0,0,.88);
+      transform: translate(-1px,-1px);
+    }
+    .fs-search-icon {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 0 0 18px;
+      color: var(--purple);
+      pointer-events: none;
+    }
+    .fs-search-input {
+      flex: 1;
+      height: 50px;
+      padding: 0 14px;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: .96rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      -webkit-appearance: none;
+    }
+    .fs-search-input::placeholder { color: var(--gray); }
+    .fs-search-input::-webkit-search-cancel-button { display: none; }
+    .fs-search-clear {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 16px 0 8px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      transition: color .15s;
+    }
+    .fs-search-clear:hover { color: var(--purple); }
+    .fs-search-clear[hidden] { display: none; }
+    .fs-search-status {
+      font-family: var(--font-body);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      min-height: 1.1em;
       margin: 0;
+      padding-left: 4px;
     }
-    .fs-form-success p {
+
+    /* No results */
+    .fs-no-results {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
       font-family: var(--font-body);
       font-size: .95rem;
       color: var(--text-muted);
-      margin: 0;
+      letter-spacing: 0.03em;
+    }
+    .fs-no-results.show { display: block; }
+    .fs-no-results strong {
+      color: var(--purple); font-family: var(--font-display);
+      font-size: 1.4rem; display: block; margin-bottom: 8px;
+      letter-spacing: var(--letter-spacing-heading);
     }
 
-    /* ── RESPONSIVE ── */
+    /* Show more */
+    .fs-show-more-wrap {
+      display: flex;
+      justify-content: center;
+    }
+    .fs-show-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      border: 2.5px solid rgba(0,0,0,.85);
+      border-radius: 100px;
+      box-shadow: 3px 3px 0 rgba(0,0,0,.85);
+      padding: 10px 22px;
+      font-family: var(--font-body);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text);
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, background .15s;
+    }
+    .fs-show-more-btn:hover {
+      background: var(--purple);
+      color: var(--white);
+      transform: translate(-1px,-1px);
+      box-shadow: 5px 5px 0 rgba(0,0,0,.85);
+    }
+    .fs-show-more-btn svg { transition: transform .25s; }
+    .fs-show-more-btn[data-state="less"] svg { transform: rotate(180deg); }
+    .fs-show-more-btn:hover svg { transform: translateY(2px); }
+    .fs-show-more-btn[data-state="less"]:hover svg { transform: rotate(180deg) translateY(2px); }
+
+    /* Accordion actions row (show-more + collapse all) */
+    .fs-accordion-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .fs-show-more-wrap.hidden { display: none; }
+    .fs-collapse-wrap { display: flex; }
+    .fs-collapse-wrap.hidden { display: none; }
+    .fs-collapse-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: 2.5px solid rgba(0,0,0,.7);
+      border-radius: 100px;
+      padding: 10px 22px;
+      font-family: var(--font-body);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, color .15s, border-color .15s;
+    }
+    .fs-collapse-btn:hover {
+      color: var(--text);
+      border-color: rgba(0,0,0,.9);
+      box-shadow: 3px 3px 0 rgba(0,0,0,.75);
+      transform: translate(-1px,-1px);
+    }
+    .fs-collapse-btn svg { transition: transform .2s; }
+    .fs-collapse-btn:hover svg { transform: translateY(-2px); }
+
+    /* ══ RESPONSIVE ══ */
     @media (max-width: 1024px) {
-      .fs-hero-inner { grid-template-columns: 1fr; gap: 44px; }
-      .fs-call-inner { grid-template-columns: 1fr; gap: 40px; }
-      .fs-contact-layout { grid-template-columns: 1fr; gap: 40px; }
+      .fs-faq-layout { grid-template-columns: 1fr; gap: 36px; }
+      .fs-sidebar { position: static; }
+      .fs-sidebar-nav { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+      .fs-sidebar-btn { width: auto; }
+      .fs-still-layout { grid-template-columns: 1fr; gap: 40px; }
     }
     @media (max-width: 768px) {
-      .fs-hero { padding: 68px 0 80px; }
-      .fs-hero-copy h1 { font-size: 2.2rem; }
-      .fs-form-row { grid-template-columns: 1fr; }
+      .fs-search-input { font-size: .95rem; }
+      .fs-hero { padding: 72px 0 84px; }
+      .fs-hero-inner h1 { font-size: 2.4rem; }
+      .fs-faq-section { padding: 64px 0 80px; }
+      .fs-q { padding: 18px 20px; }
+      .fs-q-text { font-size: 1rem; }
       .fs-form-card { padding: 32px 24px; }
-      .fs-faq-body { padding-left: 28px; }
-      .fs-faq-q { padding: 20px 22px; font-size: 1rem; }
-      .fs-faq-num { display: none; }
+      .fs-form-row { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
-      .fs-hero { padding: 52px 0 64px; }
+      .fs-hero { padding: 56px 0 68px; }
       .fs-form-card { padding: 24px 18px; }
-      .fs-cat-tabs { gap: 8px; }
-      .fs-cat-btn { height: 34px; padding: 0 14px; font-size: .75rem; }
+      .fs-still { padding: 64px 0 80px; }
     }
-
-    /* Active nav link */
-    .nav a.active { color: var(--purple); font-weight: 700; }
   </style>
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to main content</a>
 
-  <!-- HEADER -->
   <header class="header">
     <div class="container header-inner">
       <a href="index.html" class="logo" aria-label="ZNAPP home">
@@ -603,366 +518,342 @@
 
   <main id="main">
 
-    <!-- ═══ HERO ═══ -->
+    <!-- HERO -->
     <section class="fs-hero">
       <div class="container">
         <div class="fs-hero-inner">
-          <div class="fs-hero-copy">
-            <span class="section-label">Help Center</span>
-            <h1>FAQ &amp; <span class="accent">Support</span></h1>
-            <p>Got questions? We've got answers. Browse the most common questions from drivers, or reach out directly and we'll get back to you fast.</p>
-            <div class="fs-hero-actions">
-              <a href="#faqs" class="btn btn-comic btn-lg">Browse FAQs</a>
-              <a href="#contact" class="btn btn-secondary-cta">Contact Us</a>
-            </div>
-          </div>
-
-          <!-- Quick-jump chips -->
-          <div class="fs-hero-chips">
-            <a href="#faqs" class="fs-chip">
-              <div class="fs-chip-icon">❓</div>
-              <div class="fs-chip-text">
-                <span class="fs-chip-title">Browse FAQs</span>
-                <span class="fs-chip-sub">Common questions answered fast</span>
-              </div>
-              <span class="fs-chip-arrow">→</span>
-            </a>
-            <a href="#call" class="fs-chip">
-              <div class="fs-chip-icon">📞</div>
-              <div class="fs-chip-text">
-                <span class="fs-chip-title">Call or Text Us</span>
-                <span class="fs-chip-sub">Reach a real person on the team</span>
-              </div>
-              <span class="fs-chip-arrow">→</span>
-            </a>
-            <a href="#contact" class="fs-chip">
-              <div class="fs-chip-icon">✉️</div>
-              <div class="fs-chip-text">
-                <span class="fs-chip-title">Send a Message</span>
-                <span class="fs-chip-sub">We reply within 24 hours</span>
-              </div>
-              <span class="fs-chip-arrow">→</span>
-            </a>
+          <span class="section-label">Help Center</span>
+          <h1>FAQ &amp; <span class="accent">Support</span></h1>
+          <p>Browse common driver questions by topic, or scroll down to call, text, or message our team directly.</p>
+          <div class="fs-hero-actions">
+            <a href="#faqs" class="btn btn-comic btn-lg">Browse FAQs</a>
+            <a href="#still-need-help" class="btn btn-secondary-cta">Contact Us</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══ SEARCH BAND ═══ -->
-    <div class="fs-search-band">
+    <!-- FAQ ACCORDION -->
+    <section class="fs-faq-section" id="faqs">
       <div class="container">
-        <div class="fs-search-wrap">
-          <span class="fs-search-icon">🔍</span>
-          <input
-            type="search"
-            id="faqSearch"
-            placeholder="Search questions…"
-            aria-label="Search FAQ"
-            autocomplete="off"
-          />
-          <button class="fs-search-clear" id="faqSearchClear" aria-label="Clear search">✕</button>
+        <div class="section-header">
+          <h2>Common questions</h2>
+          <p class="section-sub">Filter by topic to find what you need fast.</p>
         </div>
-      </div>
-    </div>
+        <div class="fs-faq-layout">
 
-    <!-- ═══ FAQ ACCORDION ═══ -->
-    <section class="fs-cats" id="faqs">
-      <div class="container">
-
-        <!-- Category filter tabs -->
-        <div class="fs-cat-tabs" role="tablist" aria-label="FAQ categories">
-          <button class="fs-cat-btn active" data-cat="all" role="tab" aria-selected="true">All</button>
-          <button class="fs-cat-btn" data-cat="getting-started" role="tab" aria-selected="false">Getting Started</button>
-          <button class="fs-cat-btn" data-cat="earnings" role="tab" aria-selected="false">Earnings &amp; Pay</button>
-          <button class="fs-cat-btn" data-cat="requirements" role="tab" aria-selected="false">Requirements</button>
-          <button class="fs-cat-btn" data-cat="app" role="tab" aria-selected="false">App &amp; Tech</button>
-          <button class="fs-cat-btn" data-cat="safety" role="tab" aria-selected="false">Safety</button>
-        </div>
-
-        <div class="fs-accordion" id="faqAccordion">
-
-          <!-- GETTING STARTED -->
-          <div class="fs-faq-item" data-cat="getting-started" data-q="how do i join the znapp driver community sign up">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">1</span>
-              <span class="fs-faq-q-text">How do I join the ZNAPP! driver community?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>Enter your email in the signup form on the homepage and we'll send you next steps. The whole process takes less than 5 minutes to kick off.</p>
-              <ul>
-                <li>Submit your email on the homepage</li>
-                <li>Receive your onboarding welcome email within minutes</li>
-                <li>Complete your driver profile and upload required documents</li>
-                <li>Pass a quick background check (we help arrange it)</li>
-                <li>Get approved and start driving — usually within 24–48 hours</li>
-              </ul>
+          <!-- Sticky sidebar -->
+          <aside class="fs-sidebar">
+            <p class="fs-sidebar-heading">Browse by topic</p>
+            <nav class="fs-sidebar-nav">
+              <button class="fs-sidebar-btn active" data-filter="all">All questions</button>
+              <button class="fs-sidebar-btn" data-filter="getting-started">Getting Started</button>
+              <button class="fs-sidebar-btn" data-filter="earnings">Earnings &amp; Pay</button>
+              <button class="fs-sidebar-btn" data-filter="requirements">Requirements</button>
+              <button class="fs-sidebar-btn" data-filter="app">App &amp; Tech</button>
+              <button class="fs-sidebar-btn" data-filter="safety">Safety</button>
+            </nav>
+            <hr class="fs-sidebar-divider" />
+            <div class="fs-sidebar-support">
+              <p>Still can't find it? Our team has you covered.</p>
+              <a href="#still-need-help" class="btn btn-comic">Contact us</a>
             </div>
-          </div>
+          </aside>
 
-          <div class="fs-faq-item" data-cat="getting-started" data-q="where does znapp operate cities locations">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">2</span>
-              <span class="fs-faq-q-text">Where does ZNAPP! currently operate?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>ZNAPP! is built around city and municipal partnerships, expanding route by route so drivers always have real local demand.</p>
-              <ul>
-                <li>Select metropolitan areas with active municipal contracts</li>
-                <li>Cities running road safety and asset-collection programs</li>
-                <li>Regions with community transportation initiatives</li>
-              </ul>
-              <p style="margin-top:12px"><strong>Not in your city yet?</strong> Sign up anyway — we'll notify you the moment ZNAPP! launches near you.</p>
-            </div>
-          </div>
+          <!-- Search + Accordion -->
+          <div class="fs-accordion-col">
 
-          <div class="fs-faq-item" data-cat="getting-started" data-q="how long does onboarding take approval time">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">3</span>
-              <span class="fs-faq-q-text">How long does onboarding take?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>Most drivers complete onboarding and get approved within <strong>24–48 hours</strong>. The steps are straightforward and our team is here to help if anything gets stuck.</p>
-            </div>
-          </div>
-
-          <!-- REQUIREMENTS -->
-          <div class="fs-faq-item" data-cat="requirements" data-q="what do i need to start driving requirements documents vehicle">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">4</span>
-              <span class="fs-faq-q-text">What do I need to start driving?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>You'll need a few basics — we walk you through every step during onboarding.</p>
-              <ul>
-                <li><strong>Driver's License</strong> — valid, not expired</li>
-                <li><strong>Vehicle Registration</strong> — current, in your name</li>
-                <li><strong>Insurance</strong> — proof of current auto insurance</li>
-                <li><strong>Background Check</strong> — we help you complete this</li>
-                <li><strong>Vehicle Inspection</strong> — basic safety check (we can arrange this)</li>
-                <li><strong>Smartphone</strong> — iPhone iOS 14+ or Android 8.0+</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="fs-faq-item" data-cat="requirements" data-q="what kind of car vehicle do i need year age">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">5</span>
-              <span class="fs-faq-q-text">What kind of vehicle do I need?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>We accept most personal vehicles in good working condition. Specific year and model requirements vary by city contract. Generally:</p>
-              <ul>
-                <li>4-door vehicles preferred for passenger routes</li>
-                <li>Trucks, vans, and SUVs accepted for certain contracts</li>
-                <li>Must pass a basic safety inspection</li>
-                <li>Must be registered and insured in your name</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="fs-faq-item" data-cat="requirements" data-q="background check criminal record">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">6</span>
-              <span class="fs-faq-q-text">What does the background check include?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>ZNAPP! runs a standard background check covering driving history and criminal record. We partner with a trusted third-party provider to make this easy and fast — usually takes less than 24 hours.</p>
-            </div>
-          </div>
-
-          <!-- EARNINGS -->
-          <div class="fs-faq-item" data-cat="earnings" data-q="how do i earn money pay per trip rate income">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">7</span>
-              <span class="fs-faq-q-text">How do I earn money with ZNAPP!?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>You earn for every trip you complete. You always see your payout before accepting — no surprises.</p>
-              <ul>
-                <li><strong>Passenger Rides</strong> — local trips and commuter routes</li>
-                <li><strong>Roadway Asset Collection</strong> — capture images while driving your normal routes</li>
-                <li><strong>Municipal Contracts</strong> — special city-approved transportation gigs</li>
-                <li><strong>Peak Bonuses</strong> — extra pay during high-demand hours</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="fs-faq-item" data-cat="earnings" data-q="when do i get paid payment schedule deposit bank">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">8</span>
-              <span class="fs-faq-q-text">When do I get paid?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>Earnings are deposited directly to your bank account on a <strong>weekly schedule</strong>. You can track every dollar in real time from the driver dashboard — no hidden fees, no vague breakdowns.</p>
-            </div>
-          </div>
-
-          <div class="fs-faq-item" data-cat="earnings" data-q="how much can i earn average weekly income salary">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">9</span>
-              <span class="fs-faq-q-text">How much can I realistically earn per week?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>Active drivers on ZNAPP! average <strong>$320+ per week</strong>. Earnings vary based on city, contract type, hours driven, and whether you pick up bonuses and asset-collection routes alongside rides.</p>
-            </div>
-          </div>
-
-          <!-- APP & TECH -->
-          <div class="fs-faq-item" data-cat="app" data-q="is the platform app mobile friendly ios android">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">10</span>
-              <span class="fs-faq-q-text">Is the ZNAPP! platform mobile-friendly?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>Absolutely. The entire driver experience is built mobile-first, optimized for fast tapping and real-time updates on the road.</p>
-              <ul>
-                <li>Available on iOS (14+) and Android (8.0+)</li>
-                <li>Real-time route updates and turn-by-turn navigation</li>
-                <li>One-tap trip acceptance</li>
-                <li>Live earnings dashboard</li>
-                <li>In-app support and messaging</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="fs-faq-item" data-cat="app" data-q="driver dashboard portal web login desktop">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">11</span>
-              <span class="fs-faq-q-text">What is the driver dashboard and how do I use it?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>The driver dashboard is your control center — accessible on desktop and synced with your phone app. From there you can:</p>
-              <ul>
-                <li>Review weekly and monthly earnings breakdowns</li>
-                <li>Plan shifts and view upcoming route opportunities</li>
-                <li>Track performance metrics and milestones</li>
-                <li>Access documents, support tickets, and account settings</li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- SAFETY -->
-          <div class="fs-faq-item" data-cat="safety" data-q="is znapp safe safety features driver protection">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">12</span>
-              <span class="fs-faq-q-text">What safety features does ZNAPP! have for drivers?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>Driver safety is a top priority. ZNAPP! is built in partnership with cities and municipalities — not just an app — so safety infrastructure is baked in.</p>
-              <ul>
-                <li>All riders are verified before any trip is accepted</li>
-                <li>Municipal route contracts come with city oversight</li>
-                <li>In-app emergency contact and real-time location sharing</li>
-                <li>24/7 driver support line for incidents on the road</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="fs-faq-item" data-cat="safety" data-q="roadway asset images data privacy collection">
-            <button class="fs-faq-q" aria-expanded="false">
-              <span class="fs-faq-num">13</span>
-              <span class="fs-faq-q-text">How does roadway asset image collection work?</span>
-              <span class="fs-faq-icon" aria-hidden="true">+</span>
-            </button>
-            <div class="fs-faq-body">
-              <p>When you drive your regular routes, the ZNAPP! app can automatically capture images of road conditions, signage, and infrastructure. This data is shared with city partners to improve road safety.</p>
-              <ul>
-                <li>Fully opt-in — you choose to participate</li>
-                <li>Runs automatically while you drive your normal routes</li>
-                <li>You earn additional pay on top of your trip earnings</li>
-                <li>No personal data is collected from images — only road-facing visuals</li>
-              </ul>
-            </div>
-          </div>
-
-        </div><!-- end accordion -->
-
-        <div class="fs-no-results" id="faqNoResults">
-          <p>No results for that search. Try different keywords or <a href="#contact" style="color:var(--purple)">contact us directly</a>.</p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ═══ CALL / CONTACT OPTIONS ═══ -->
-    <section class="fs-call" id="call">
-      <div class="container">
-        <div class="fs-call-inner">
-          <div class="fs-call-copy">
-            <span class="section-label" style="color:rgba(255,255,255,.7)">Talk to us</span>
-            <h2>Prefer to speak with a real person?</h2>
-            <p>Our driver support team is available by phone and text, Monday through Friday 8am–8pm. No bots, no runaround.</p>
-          </div>
-          <div class="fs-call-actions">
-            <a href="tel:+15551234567" class="fs-call-btn">
-              <div class="fs-call-btn-icon">📞</div>
-              <div class="fs-call-btn-text">
-                <span class="fs-call-btn-label">Call Us</span>
-                <span class="fs-call-btn-sub">+1 (555) 123-4567 · Mon–Fri 8am–8pm</span>
+            <!-- Search bar -->
+            <div class="fs-search-wrap">
+              <label for="faqSearch" class="visually-hidden">Search FAQs</label>
+              <div class="fs-search-box">
+                <span class="fs-search-icon" aria-hidden="true">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                </span>
+                <input type="search" id="faqSearch" class="fs-search-input" placeholder="Search questions…" autocomplete="off" />
+                <button class="fs-search-clear" id="faqSearchClear" aria-label="Clear search" hidden>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
               </div>
-              <span class="fs-call-btn-arrow">→</span>
-            </a>
-            <a href="sms:+15551234567" class="fs-call-btn">
-              <div class="fs-call-btn-icon">💬</div>
-              <div class="fs-call-btn-text">
-                <span class="fs-call-btn-label">Text Us</span>
-                <span class="fs-call-btn-sub">+1 (555) 123-4567 · We reply fast</span>
+              <p class="fs-search-status" id="faqSearchStatus" aria-live="polite"></p>
+            </div>
+
+            <!-- Accordion -->
+            <div class="fs-accordion">
+            <div class="fs-no-results" id="faqNoResults">
+              <strong>No results</strong>
+              Try different keywords, or browse by topic in the sidebar.
+            </div>
+
+            <div class="fs-item" data-cat="getting-started">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">How do I join the ZNAPP! driver community?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>Enter your email on the homepage and we'll send you next steps — the whole process kicks off in under 5 minutes.</p>
+                <ul>
+                  <li>Submit your email on the homepage sign-up form</li>
+                  <li>Receive a welcome email with your onboarding checklist</li>
+                  <li>Complete your driver profile and upload required documents</li>
+                  <li>Pass a background check — we help arrange it</li>
+                  <li>Get approved and start driving, usually within 24–48 hours</li>
+                </ul>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="getting-started">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">Where does ZNAPP! currently operate?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>ZNAPP! is built around city and municipal partnerships, expanding route by route so drivers always have real local demand.</p>
+                <ul>
+                  <li>Select metropolitan areas with active municipal contracts</li>
+                  <li>Cities running road safety and asset-collection programs</li>
+                  <li>Regions with community transportation initiatives</li>
+                </ul>
+                <p><strong>Not in your city yet?</strong> Sign up anyway — we'll notify you the moment ZNAPP! launches near you.</p>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="getting-started">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">How long does onboarding take?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>Most drivers complete onboarding and receive approval within <strong>24–48 hours</strong>. Our team is available to help if anything gets stuck.</p>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="requirements">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">What do I need to start driving?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>A few basics are required — we walk you through every step during onboarding so nothing gets missed.</p>
+                <ul>
+                  <li><strong>Driver's License</strong> — valid and not expired</li>
+                  <li><strong>Vehicle Registration</strong> — current, in your name</li>
+                  <li><strong>Insurance</strong> — proof of current auto insurance</li>
+                  <li><strong>Background Check</strong> — we help you complete this</li>
+                  <li><strong>Smartphone</strong> — iPhone iOS 14+ or Android 8.0+</li>
+                </ul>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="requirements">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">What kind of vehicle do I need?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>We accept most personal vehicles in good condition. Specific requirements vary by city contract — generally:</p>
+                <ul>
+                  <li>4-door vehicles preferred for passenger routes</li>
+                  <li>Trucks, vans, and SUVs accepted for certain contracts</li>
+                  <li>Must pass a basic safety inspection</li>
+                  <li>Must be registered and insured in your name</li>
+                </ul>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="requirements">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">What does the background check involve?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>A standard check covering driving history and criminal record through a trusted third-party provider. Most results come back within <strong>24 hours</strong>.</p>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="earnings">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">How do I earn money with ZNAPP!?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>You earn for every completed trip — and you always see your payout before accepting it. No surprises.</p>
+                <ul>
+                  <li><strong>Passenger Rides</strong> — local trips and commuter routes</li>
+                  <li><strong>Roadway Asset Collection</strong> — earn extra capturing road images on your normal routes</li>
+                  <li><strong>Municipal Contracts</strong> — special city-approved transportation gigs</li>
+                  <li><strong>Peak Bonuses</strong> — extra pay during high-demand hours</li>
+                </ul>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="earnings">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">When do I get paid?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>Earnings are deposited directly to your bank account on a <strong>weekly schedule</strong>. Track every dollar in real time from the driver dashboard — no hidden fees, no vague breakdowns.</p>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="earnings">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">How much can I realistically earn per week?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>Active drivers on ZNAPP! average <strong>$320+ per week</strong>. Earnings vary by city, contract type, hours driven, and bonuses or asset-collection routes on top of rides.</p>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="app">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">Is the ZNAPP! platform mobile-friendly?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>Absolutely. The entire driver experience is built mobile-first — optimized for fast tapping and real-time updates on the road.</p>
+                <ul>
+                  <li>Available on iOS (14+) and Android (8.0+)</li>
+                  <li>Real-time route updates and navigation</li>
+                  <li>One-tap trip acceptance and live earnings dashboard</li>
+                  <li>In-app support and messaging</li>
+                </ul>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="app">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">What is the driver dashboard?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>Your control center — accessible on desktop and synced with your phone in real time.</p>
+                <ul>
+                  <li>Weekly and monthly earnings breakdowns</li>
+                  <li>Shift planning and upcoming route opportunities</li>
+                  <li>Performance metrics, documents, and account settings</li>
+                </ul>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="safety">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">What safety features does ZNAPP! have for drivers?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>Driver safety is a top priority. ZNAPP! operates in partnership with cities and municipalities, so safety is built into every route.</p>
+                <ul>
+                  <li>All riders verified before any trip is accepted</li>
+                  <li>Municipal route contracts come with city oversight</li>
+                  <li>In-app emergency contact and live location sharing</li>
+                  <li>24/7 driver support line for incidents on the road</li>
+                </ul>
+              </div></div>
+            </div>
+
+            <div class="fs-item" data-cat="safety">
+              <button class="fs-q" aria-expanded="false">
+                <span class="fs-q-text">How does roadway asset image collection work?</span>
+                <span class="fs-q-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="fs-a"><div class="fs-a-inner">
+                <p>While you drive, the ZNAPP! app can capture road-facing images to share with city partners for infrastructure improvements.</p>
+                <ul>
+                  <li>Fully opt-in — you choose whether to participate</li>
+                  <li>Runs automatically in the background as you drive normally</li>
+                  <li>You earn additional pay on top of your normal trip earnings</li>
+                  <li>No personal data collected — road-facing visuals only</li>
+                </ul>
+              </div></div>
+            </div>
+
+            </div><!-- end accordion -->
+
+            <!-- Show more / Collapse all -->
+            <div class="fs-accordion-actions">
+              <div class="fs-show-more-wrap" id="faqShowMoreWrap">
+                <button class="fs-show-more-btn" id="faqShowMore" data-state="more">
+                  <span id="faqShowMoreLabel">Show all questions</span>
+                  <svg id="faqShowMoreIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
               </div>
-              <span class="fs-call-btn-arrow">→</span>
-            </a>
-            <a href="mailto:support@znapp.io" class="fs-call-btn">
-              <div class="fs-call-btn-icon">✉️</div>
-              <div class="fs-call-btn-text">
-                <span class="fs-call-btn-label">Email Support</span>
-                <span class="fs-call-btn-sub">support@znapp.io · 24-hour reply</span>
+              <div class="fs-collapse-wrap hidden" id="faqCollapseWrap">
+                <button class="fs-collapse-btn" id="faqCollapseAll">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                  <span>Collapse all</span>
+                </button>
               </div>
-              <span class="fs-call-btn-arrow">→</span>
-            </a>
-          </div>
+            </div>
+
+          </div><!-- end .fs-accordion-col -->
         </div>
       </div>
     </section>
 
-    <!-- ═══ CONTACT FORM ═══ -->
-    <section class="fs-contact" id="contact">
+    <!-- STILL NEED HELP — channel cards + contact form side by side -->
+    <section class="fs-still" id="still-need-help">
       <div class="container">
-        <div class="fs-contact-layout">
+        <div class="section-header">
+          <h2>Still need help?</h2>
+          <p class="section-sub">Pick the option that works best for you — call, text, or send us a message.</p>
+        </div>
 
-          <div class="fs-contact-left">
-            <span class="section-label">Send a message</span>
-            <h2>We'll get back to you within 24 hours</h2>
-            <p>Whether it's a question about your account, a trip issue, or just want to say hi — drop us a message and someone from the team will respond directly.</p>
-            <div class="fs-contact-meta">
-              <div class="fs-meta-row">
-                <div class="fs-meta-icon">📍</div>
-                <span>Based in the US, serving cities nationwide</span>
-              </div>
-              <div class="fs-meta-row">
-                <div class="fs-meta-icon">🕐</div>
-                <span>Support hours: Mon–Fri, 8am–8pm local time</span>
-              </div>
-              <div class="fs-meta-row">
-                <div class="fs-meta-icon">⚡</div>
-                <span>Average response time under 4 hours</span>
-              </div>
+        <div class="fs-still-layout">
+
+          <!-- LEFT: contact channel options -->
+          <div>
+            <p class="fs-still-left-heading" style="font-family:var(--font-body);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin:0 0 16px">Contact options</p>
+            <div class="fs-channels">
+
+              <a href="tel:+15551234567" class="fs-channel">
+                <div class="fs-ch-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.4a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </div>
+                <div class="fs-ch-body">
+                  <span class="fs-ch-title">Call us</span>
+                  <span class="fs-ch-sub">+1 (555) 123-4567 &middot; Mon&ndash;Fri, 8am&ndash;8pm</span>
+                </div>
+                <span class="fs-ch-arrow">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </a>
+
+              <a href="sms:+15551234567" class="fs-channel">
+                <div class="fs-ch-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div class="fs-ch-body">
+                  <span class="fs-ch-title">Text us</span>
+                  <span class="fs-ch-sub">+1 (555) 123-4567 &middot; We reply fast</span>
+                </div>
+                <span class="fs-ch-arrow">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </a>
+
+              <a href="mailto:support@znapp.io" class="fs-channel">
+                <div class="fs-ch-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <div class="fs-ch-body">
+                  <span class="fs-ch-title">Email us</span>
+                  <span class="fs-ch-sub">support@znapp.io &middot; 24-hour reply</span>
+                </div>
+                <span class="fs-ch-arrow">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </a>
+
             </div>
           </div>
 
+          <!-- RIGHT: contact form -->
           <div class="fs-form-card">
-            <h3>Send us a message</h3>
-
+            <h3>Send a message</h3>
+            <p class="fs-form-subheading">We'll reply within 24 hours — usually much sooner.</p>
             <form class="fs-form" id="contactForm" novalidate>
               <div class="fs-form-row">
                 <div class="fs-field">
@@ -992,19 +883,20 @@
                 </select>
               </div>
               <div class="fs-field">
-                <label for="cf-message">Message</label>
-                <textarea id="cf-message" name="message" placeholder="Tell us what's on your mind…" required></textarea>
+                <label for="cf-msg">Message</label>
+                <textarea id="cf-msg" name="message" placeholder="Tell us what's on your mind…" required></textarea>
               </div>
-              <div class="fs-form-submit">
+              <div class="fs-submit">
                 <button type="submit" class="btn btn-comic btn-lg">Send Message</button>
               </div>
-              <p class="fs-form-note">We keep your info private. No spam, ever.</p>
+              <p class="fs-form-note">Your info is kept private. No spam, ever.</p>
             </form>
-
-            <div class="fs-form-success" id="formSuccess">
-              <div class="fs-success-icon">✓</div>
+            <div class="fs-success" id="formSuccess">
+              <div class="fs-success-ring">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
               <h4>Message sent!</h4>
-              <p>Thanks for reaching out. A member of our team will reply to your email within 24 hours.</p>
+              <p>A team member will reply to your email within 24 hours.</p>
             </div>
           </div>
 
@@ -1014,7 +906,6 @@
 
   </main>
 
-  <!-- ═══ FOOTER ═══ -->
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
@@ -1045,105 +936,224 @@
     // Mobile menu
     (function(){
       var t=document.querySelector('.mobile-toggle'),n=document.querySelector('.nav');
-      if(t&&n){
-        t.addEventListener('click',function(){this.classList.toggle('active');n.classList.toggle('mobile-open');});
-        n.querySelectorAll('a').forEach(function(l){l.addEventListener('click',function(){t.classList.remove('active');n.classList.remove('mobile-open');});});
-        document.addEventListener('click',function(e){if(!n.contains(e.target)&&!t.contains(e.target)){t.classList.remove('active');n.classList.remove('mobile-open');}});
-      }
+      if(!t||!n)return;
+      t.addEventListener('click',function(){this.classList.toggle('active');n.classList.toggle('mobile-open');});
+      n.querySelectorAll('a').forEach(function(l){l.addEventListener('click',function(){t.classList.remove('active');n.classList.remove('mobile-open');});});
+      document.addEventListener('click',function(e){if(!n.contains(e.target)&&!t.contains(e.target)){t.classList.remove('active');n.classList.remove('mobile-open');}});
     })();
 
-    // FAQ accordion
+    // Smooth accordion
     (function(){
-      var items = document.querySelectorAll('.fs-faq-item');
-      items.forEach(function(item){
-        var btn = item.querySelector('.fs-faq-q');
-        var body = item.querySelector('.fs-faq-body');
-        btn.addEventListener('click', function(){
-          var isOpen = btn.getAttribute('aria-expanded') === 'true';
-          // close all others
-          items.forEach(function(other){
-            other.querySelector('.fs-faq-q').setAttribute('aria-expanded','false');
-            other.querySelector('.fs-faq-body').classList.remove('open');
+      document.querySelectorAll('.fs-q').forEach(function(btn){
+        btn.addEventListener('click',function(){
+          var open = btn.getAttribute('aria-expanded')==='true';
+          document.querySelectorAll('.fs-q').forEach(function(b){
+            b.setAttribute('aria-expanded','false');
+            b.closest('.fs-item').querySelector('.fs-a').style.maxHeight='0';
           });
-          if(!isOpen){
+          if(!open){
             btn.setAttribute('aria-expanded','true');
-            body.classList.add('open');
+            var body=btn.closest('.fs-item').querySelector('.fs-a');
+            body.style.maxHeight=body.scrollHeight+'px';
+          }
+          // sync collapse button visibility
+          var colWrap = document.getElementById('faqCollapseWrap');
+          if(colWrap){
+            var anyOpen = !!document.querySelector('.fs-q[aria-expanded="true"]');
+            colWrap.classList.toggle('hidden', !anyOpen);
           }
         });
       });
     })();
 
-    // Category filter
+    // Sidebar category filter
     (function(){
-      var catBtns = document.querySelectorAll('.fs-cat-btn');
-      var items = document.querySelectorAll('.fs-faq-item');
-      catBtns.forEach(function(btn){
-        btn.addEventListener('click', function(){
-          catBtns.forEach(function(b){ b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+      var btns=document.querySelectorAll('.fs-sidebar-btn');
+      var items=document.querySelectorAll('.fs-item');
+      btns.forEach(function(btn){
+        btn.addEventListener('click',function(){
+          btns.forEach(function(b){b.classList.remove('active');});
           btn.classList.add('active');
-          btn.setAttribute('aria-selected','true');
-          var cat = btn.getAttribute('data-cat');
+          var cat=btn.getAttribute('data-filter');
+          document.querySelectorAll('.fs-q').forEach(function(b){
+            b.setAttribute('aria-expanded','false');
+            b.closest('.fs-item').querySelector('.fs-a').style.maxHeight='0';
+          });
           items.forEach(function(item){
-            if(cat === 'all' || item.getAttribute('data-cat') === cat){
+            if(cat==='all'||item.getAttribute('data-cat')===cat){
               item.removeAttribute('hidden');
             } else {
               item.setAttribute('hidden','');
             }
           });
-          document.getElementById('faqSearch').value = '';
-          document.getElementById('faqNoResults').classList.remove('visible');
         });
       });
     })();
 
-    // Search filter
+    // FAQ preview + search + show-more
     (function(){
-      var input = document.getElementById('faqSearch');
-      var clearBtn = document.getElementById('faqSearchClear');
-      var items = document.querySelectorAll('.fs-faq-item');
-      var noResults = document.getElementById('faqNoResults');
+      var PREVIEW = 5;
+      var input        = document.getElementById('faqSearch');
+      var clear        = document.getElementById('faqSearchClear');
+      var status       = document.getElementById('faqSearchStatus');
+      var noRes        = document.getElementById('faqNoResults');
+      var showMoreWrap = document.getElementById('faqShowMoreWrap');
+      var showMoreBtn  = document.getElementById('faqShowMore');
+      var collapseWrap = document.getElementById('faqCollapseWrap');
+      var collapseBtn  = document.getElementById('faqCollapseAll');
+      var items        = document.querySelectorAll('.fs-item');
+      var sidebarBtns  = document.querySelectorAll('.fs-sidebar-btn');
+      var expanded     = false;
 
-      function doSearch(){
-        var q = input.value.trim().toLowerCase();
-        if(!q){
-          items.forEach(function(item){ item.removeAttribute('hidden'); });
-          noResults.classList.remove('visible');
-          return;
-        }
-        // reset category tabs
-        document.querySelectorAll('.fs-cat-btn').forEach(function(b){ b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-        document.querySelector('[data-cat="all"]').classList.add('active');
+      var showMoreLabel = document.getElementById('faqShowMoreLabel');
+      var showMoreIcon  = document.getElementById('faqShowMoreIcon');
 
-        var found = 0;
-        items.forEach(function(item){
-          var text = (item.getAttribute('data-q') || '') + ' ' + (item.textContent || '');
-          if(text.toLowerCase().includes(q)){
-            item.removeAttribute('hidden');
-            found++;
-          } else {
-            item.setAttribute('hidden','');
-          }
-        });
-        noResults.classList.toggle('visible', found === 0);
+      if(!input) return;
+
+      // Show/hide collapse button based on whether any item is open
+      function syncCollapseBtn(){
+        var anyOpen = Array.prototype.some.call(
+          document.querySelectorAll('.fs-q[aria-expanded="true"]'),
+          function(){ return true; }
+        );
+        collapseWrap.classList.toggle('hidden', !anyOpen);
       }
 
-      input.addEventListener('input', doSearch);
-      clearBtn.addEventListener('click', function(){
-        input.value = '';
-        doSearch();
-        input.focus();
+      function normalise(str){ return str.toLowerCase().replace(/['']/g,"'"); }
+
+      function collapseItem(item){
+        var btn = item.querySelector('.fs-q');
+        if(btn){ btn.setAttribute('aria-expanded','false'); }
+        var body = item.querySelector('.fs-a');
+        if(body){ body.style.maxHeight = '0'; }
+      }
+
+      // Apply preview: show only PREVIEW items from the visibleList, hide the rest
+      function applyPreview(visibleList){
+        visibleList.forEach(function(item, i){
+          if(i < PREVIEW){ item.removeAttribute('hidden'); }
+          else { item.setAttribute('hidden',''); collapseItem(item); }
+        });
+        // Reset button to "show all" state
+        showMoreBtn.setAttribute('data-state','more');
+        showMoreIcon.querySelector('polyline').setAttribute('points','6 9 12 15 18 9');
+        if(visibleList.length > PREVIEW){
+          showMoreWrap.classList.remove('hidden');
+          showMoreLabel.textContent = 'Show all ' + visibleList.length + ' questions';
+        } else {
+          showMoreWrap.classList.add('hidden');
+        }
+      }
+
+      // Get the list of items that match the current sidebar category
+      function activeCatItems(){
+        var cat = (document.querySelector('.fs-sidebar-btn.active')||{}).getAttribute('data-filter')||'all';
+        return Array.prototype.filter.call(items, function(item){
+          return cat === 'all' || item.getAttribute('data-cat') === cat;
+        });
+      }
+
+      function runSearch(raw){
+        var q = normalise(raw.trim());
+        clear.hidden = q.length === 0;
+        expanded = false;
+
+        if(q === ''){
+          status.textContent = '';
+          noRes.classList.remove('show');
+          // Hide items not in active category
+          var catItems = activeCatItems();
+          items.forEach(function(item){
+            if(catItems.indexOf(item) === -1){ item.setAttribute('hidden',''); collapseItem(item); }
+          });
+          applyPreview(catItems);
+          return;
+        }
+
+        // Search across ALL items regardless of sidebar
+        var matched = [];
+        items.forEach(function(item){
+          var text = normalise(item.textContent);
+          if(text.indexOf(q) !== -1){ matched.push(item); }
+          else { item.setAttribute('hidden',''); collapseItem(item); }
+        });
+
+        // In search mode show all matches (no preview cap)
+        matched.forEach(function(item){ item.removeAttribute('hidden'); });
+        showMoreWrap.classList.add('hidden');
+
+        noRes.classList.toggle('show', matched.length === 0);
+        status.textContent = matched.length === 0
+          ? 'No results found.'
+          : matched.length + ' result' + (matched.length===1?'':'s') + ' found';
+      }
+
+      // Show more / collapse back toggle
+      showMoreBtn.addEventListener('click', function(){
+        var state = showMoreBtn.getAttribute('data-state');
+        if(state === 'more'){
+          // Expand: show all in category
+          expanded = true;
+          activeCatItems().forEach(function(item){ item.removeAttribute('hidden'); });
+          showMoreBtn.setAttribute('data-state','less');
+          showMoreLabel.textContent = 'Show less';
+          showMoreIcon.setAttribute('viewBox','0 0 24 24');
+          showMoreIcon.querySelector('polyline').setAttribute('points','18 15 12 9 6 15');
+        } else {
+          // Collapse back to preview
+          expanded = false;
+          applyPreview(activeCatItems());
+          showMoreBtn.setAttribute('data-state','more');
+        }
+      });
+
+      // Collapse all button
+      collapseWrap.classList.add('hidden'); // hidden until something is open
+      collapseBtn.addEventListener('click', function(){
+        document.querySelectorAll('.fs-q').forEach(function(b){
+          b.setAttribute('aria-expanded','false');
+          b.closest('.fs-item').querySelector('.fs-a').style.maxHeight='0';
+        });
+        collapseWrap.classList.add('hidden');
+      });
+
+      // Initial preview on page load
+      applyPreview(activeCatItems());
+
+      input.addEventListener('input', function(){ runSearch(this.value); });
+      clear.addEventListener('click', function(){ input.value=''; runSearch(''); input.focus(); });
+
+      // Sidebar filter resets search and re-applies preview
+      sidebarBtns.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          input.value = '';
+          clear.hidden = true;
+          status.textContent = '';
+          noRes.classList.remove('show');
+          expanded = false;
+          collapseWrap.classList.add('hidden');
+          var cat = btn.getAttribute('data-filter');
+          items.forEach(function(item){
+            collapseItem(item);
+            var match = cat==='all' || item.getAttribute('data-cat')===cat;
+            if(!match){ item.setAttribute('hidden',''); }
+            else { item.removeAttribute('hidden'); }
+          });
+          // re-apply preview for this category
+          applyPreview(activeCatItems());
+        });
       });
     })();
 
     // Contact form
     (function(){
-      var form = document.getElementById('contactForm');
-      var success = document.getElementById('formSuccess');
-      if(!form) return;
-      form.addEventListener('submit', function(e){
+      var form=document.getElementById('contactForm');
+      var success=document.getElementById('formSuccess');
+      if(!form)return;
+      form.addEventListener('submit',function(e){
         e.preventDefault();
-        form.style.display = 'none';
-        success.classList.add('visible');
+        form.style.display='none';
+        success.classList.add('show');
       });
     })();
   </script>
