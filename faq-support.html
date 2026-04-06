@@ -302,99 +302,12 @@
     }
     .fs-success p { font-family: var(--font-body); font-size: .95rem; color: var(--text-muted); margin: 0; }
 
-    /* ══ SEARCH + ACCORDION COLUMN ══ */
+    /* ══ ACCORDION COLUMN ══ */
     .fs-accordion-col {
       display: flex;
       flex-direction: column;
       gap: 20px;
       min-width: 0;
-    }
-
-    /* Search bar — sits above accordion */
-    .fs-search-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .fs-search-box {
-      position: relative;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      background: var(--card);
-      border: 3px solid rgba(0,0,0,.9);
-      border-radius: 100px;
-      box-shadow: 4px 4px 0 rgba(0,0,0,.88);
-      overflow: hidden;
-      transition: box-shadow .18s, transform .18s;
-    }
-    .fs-search-box:focus-within {
-      box-shadow: 6px 6px 0 rgba(0,0,0,.88);
-      transform: translate(-1px,-1px);
-    }
-    .fs-search-icon {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      padding: 0 0 0 18px;
-      color: var(--purple);
-      pointer-events: none;
-    }
-    .fs-search-input {
-      flex: 1;
-      height: 50px;
-      padding: 0 14px;
-      border: none;
-      outline: none;
-      background: transparent;
-      font-family: var(--font-body);
-      font-size: .96rem;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-      color: var(--text);
-      -webkit-appearance: none;
-    }
-    .fs-search-input::placeholder { color: var(--gray); }
-    .fs-search-input::-webkit-search-cancel-button { display: none; }
-    .fs-search-clear {
-      flex-shrink: 0;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0 16px 0 8px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      transition: color .15s;
-    }
-    .fs-search-clear:hover { color: var(--purple); }
-    .fs-search-clear[hidden] { display: none; }
-    .fs-search-status {
-      font-family: var(--font-body);
-      font-size: .78rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      min-height: 1.1em;
-      margin: 0;
-      padding-left: 4px;
-    }
-
-    /* No results */
-    .fs-no-results {
-      display: none;
-      text-align: center;
-      padding: 48px 24px;
-      font-family: var(--font-body);
-      font-size: .95rem;
-      color: var(--text-muted);
-      letter-spacing: 0.03em;
-    }
-    .fs-no-results.show { display: block; }
-    .fs-no-results strong {
-      color: var(--purple); font-family: var(--font-display);
-      font-size: 1.4rem; display: block; margin-bottom: 8px;
-      letter-spacing: var(--letter-spacing-heading);
     }
 
     /* Show more */
@@ -560,30 +473,11 @@
             </div>
           </aside>
 
-          <!-- Search + Accordion -->
+          <!-- Accordion column -->
           <div class="fs-accordion-col">
-
-            <!-- Search bar -->
-            <div class="fs-search-wrap">
-              <label for="faqSearch" class="visually-hidden">Search FAQs</label>
-              <div class="fs-search-box">
-                <span class="fs-search-icon" aria-hidden="true">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                </span>
-                <input type="search" id="faqSearch" class="fs-search-input" placeholder="Search questions…" autocomplete="off" />
-                <button class="fs-search-clear" id="faqSearchClear" aria-label="Clear search" hidden>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
-              </div>
-              <p class="fs-search-status" id="faqSearchStatus" aria-live="polite"></p>
-            </div>
 
             <!-- Accordion -->
             <div class="fs-accordion">
-            <div class="fs-no-results" id="faqNoResults">
-              <strong>No results</strong>
-              Try different keywords, or browse by topic in the sidebar.
-            </div>
 
             <div class="fs-item" data-cat="getting-started">
               <button class="fs-q" aria-expanded="false">
@@ -966,75 +860,37 @@
       });
     })();
 
-    // Sidebar category filter
+    // FAQ preview + show-more + collapse
     (function(){
-      var btns=document.querySelectorAll('.fs-sidebar-btn');
-      var items=document.querySelectorAll('.fs-item');
-      btns.forEach(function(btn){
-        btn.addEventListener('click',function(){
-          btns.forEach(function(b){b.classList.remove('active');});
-          btn.classList.add('active');
-          var cat=btn.getAttribute('data-filter');
-          document.querySelectorAll('.fs-q').forEach(function(b){
-            b.setAttribute('aria-expanded','false');
-            b.closest('.fs-item').querySelector('.fs-a').style.maxHeight='0';
-          });
-          items.forEach(function(item){
-            if(cat==='all'||item.getAttribute('data-cat')===cat){
-              item.removeAttribute('hidden');
-            } else {
-              item.setAttribute('hidden','');
-            }
-          });
-        });
-      });
-    })();
-
-    // FAQ preview + search + show-more
-    (function(){
-      var PREVIEW = 5;
-      var input        = document.getElementById('faqSearch');
-      var clear        = document.getElementById('faqSearchClear');
-      var status       = document.getElementById('faqSearchStatus');
-      var noRes        = document.getElementById('faqNoResults');
+      var PREVIEW      = 5;
       var showMoreWrap = document.getElementById('faqShowMoreWrap');
       var showMoreBtn  = document.getElementById('faqShowMore');
+      var showMoreLabel= document.getElementById('faqShowMoreLabel');
+      var showMoreIcon = document.getElementById('faqShowMoreIcon');
       var collapseWrap = document.getElementById('faqCollapseWrap');
       var collapseBtn  = document.getElementById('faqCollapseAll');
       var items        = document.querySelectorAll('.fs-item');
       var sidebarBtns  = document.querySelectorAll('.fs-sidebar-btn');
-      var expanded     = false;
-
-      var showMoreLabel = document.getElementById('faqShowMoreLabel');
-      var showMoreIcon  = document.getElementById('faqShowMoreIcon');
-
-      if(!input) return;
-
-      // Show/hide collapse button based on whether any item is open
-      function syncCollapseBtn(){
-        var anyOpen = Array.prototype.some.call(
-          document.querySelectorAll('.fs-q[aria-expanded="true"]'),
-          function(){ return true; }
-        );
-        collapseWrap.classList.toggle('hidden', !anyOpen);
-      }
-
-      function normalise(str){ return str.toLowerCase().replace(/['']/g,"'"); }
 
       function collapseItem(item){
         var btn = item.querySelector('.fs-q');
         if(btn){ btn.setAttribute('aria-expanded','false'); }
         var body = item.querySelector('.fs-a');
-        if(body){ body.style.maxHeight = '0'; }
+        if(body){ body.style.maxHeight='0'; }
       }
 
-      // Apply preview: show only PREVIEW items from the visibleList, hide the rest
+      function activeCatItems(){
+        var cat = (document.querySelector('.fs-sidebar-btn.active')||{}).getAttribute('data-filter')||'all';
+        return Array.prototype.filter.call(items, function(item){
+          return cat==='all' || item.getAttribute('data-cat')===cat;
+        });
+      }
+
       function applyPreview(visibleList){
         visibleList.forEach(function(item, i){
           if(i < PREVIEW){ item.removeAttribute('hidden'); }
           else { item.setAttribute('hidden',''); collapseItem(item); }
         });
-        // Reset button to "show all" state
         showMoreBtn.setAttribute('data-state','more');
         showMoreIcon.querySelector('polyline').setAttribute('points','6 9 12 15 18 9');
         if(visibleList.length > PREVIEW){
@@ -1045,70 +901,20 @@
         }
       }
 
-      // Get the list of items that match the current sidebar category
-      function activeCatItems(){
-        var cat = (document.querySelector('.fs-sidebar-btn.active')||{}).getAttribute('data-filter')||'all';
-        return Array.prototype.filter.call(items, function(item){
-          return cat === 'all' || item.getAttribute('data-cat') === cat;
-        });
-      }
-
-      function runSearch(raw){
-        var q = normalise(raw.trim());
-        clear.hidden = q.length === 0;
-        expanded = false;
-
-        if(q === ''){
-          status.textContent = '';
-          noRes.classList.remove('show');
-          // Hide items not in active category
-          var catItems = activeCatItems();
-          items.forEach(function(item){
-            if(catItems.indexOf(item) === -1){ item.setAttribute('hidden',''); collapseItem(item); }
-          });
-          applyPreview(catItems);
-          return;
-        }
-
-        // Search across ALL items regardless of sidebar
-        var matched = [];
-        items.forEach(function(item){
-          var text = normalise(item.textContent);
-          if(text.indexOf(q) !== -1){ matched.push(item); }
-          else { item.setAttribute('hidden',''); collapseItem(item); }
-        });
-
-        // In search mode show all matches (no preview cap)
-        matched.forEach(function(item){ item.removeAttribute('hidden'); });
-        showMoreWrap.classList.add('hidden');
-
-        noRes.classList.toggle('show', matched.length === 0);
-        status.textContent = matched.length === 0
-          ? 'No results found.'
-          : matched.length + ' result' + (matched.length===1?'':'s') + ' found';
-      }
-
-      // Show more / collapse back toggle
+      // Show all / show less toggle
       showMoreBtn.addEventListener('click', function(){
-        var state = showMoreBtn.getAttribute('data-state');
-        if(state === 'more'){
-          // Expand: show all in category
-          expanded = true;
+        if(showMoreBtn.getAttribute('data-state')==='more'){
           activeCatItems().forEach(function(item){ item.removeAttribute('hidden'); });
           showMoreBtn.setAttribute('data-state','less');
           showMoreLabel.textContent = 'Show less';
-          showMoreIcon.setAttribute('viewBox','0 0 24 24');
           showMoreIcon.querySelector('polyline').setAttribute('points','18 15 12 9 6 15');
         } else {
-          // Collapse back to preview
-          expanded = false;
           applyPreview(activeCatItems());
-          showMoreBtn.setAttribute('data-state','more');
         }
       });
 
-      // Collapse all button
-      collapseWrap.classList.add('hidden'); // hidden until something is open
+      // Collapse all
+      collapseWrap.classList.add('hidden');
       collapseBtn.addEventListener('click', function(){
         document.querySelectorAll('.fs-q').forEach(function(b){
           b.setAttribute('aria-expanded','false');
@@ -1117,32 +923,23 @@
         collapseWrap.classList.add('hidden');
       });
 
-      // Initial preview on page load
-      applyPreview(activeCatItems());
-
-      input.addEventListener('input', function(){ runSearch(this.value); });
-      clear.addEventListener('click', function(){ input.value=''; runSearch(''); input.focus(); });
-
-      // Sidebar filter resets search and re-applies preview
+      // Sidebar filter
       sidebarBtns.forEach(function(btn){
         btn.addEventListener('click', function(){
-          input.value = '';
-          clear.hidden = true;
-          status.textContent = '';
-          noRes.classList.remove('show');
-          expanded = false;
+          sidebarBtns.forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
           collapseWrap.classList.add('hidden');
           var cat = btn.getAttribute('data-filter');
           items.forEach(function(item){
             collapseItem(item);
-            var match = cat==='all' || item.getAttribute('data-cat')===cat;
-            if(!match){ item.setAttribute('hidden',''); }
-            else { item.removeAttribute('hidden'); }
+            if(cat==='all' || item.getAttribute('data-cat')===cat){ item.removeAttribute('hidden'); }
+            else { item.setAttribute('hidden',''); }
           });
-          // re-apply preview for this category
           applyPreview(activeCatItems());
         });
       });
+
+      applyPreview(activeCatItems());
     })();
 
     // Contact form
