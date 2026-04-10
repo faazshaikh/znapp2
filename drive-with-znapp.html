@@ -9,18 +9,25 @@
   <link rel="apple-touch-icon" href="img/branding/favicon-znapp.png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    .dwz-hero{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 55%,#30b8c8 100%);padding:100px 0 110px;position:relative;overflow:hidden}
+    .dwz-hero{background:linear-gradient(135deg,var(--purple-dark) 0%,var(--purple) 55%,#30b8c8 100%);padding:100px 0 64px;position:relative;overflow:hidden}
     .dwz-hero::before{content:"";position:absolute;inset:0;background:url('img/backgrounds/tools-split-bg-znapp.svg') center/cover no-repeat;opacity:.08;pointer-events:none}
-    .dwz-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;position:relative;z-index:1}
+    .dwz-hero-grid{display:grid;grid-template-columns:1fr minmax(220px,min(36vw,380px));gap:48px;align-items:center;position:relative;z-index:1}
     .dwz-hero-copy h1{font-family:var(--font-display);font-size:clamp(2.4rem,5vw,3.8rem);color:var(--white);line-height:1.06;letter-spacing:var(--letter-spacing-heading);margin:0 0 20px}
     .dwz-hero-copy h1 .accent{color:var(--teal)}
     .dwz-hero-copy p{font-family:var(--font-body);font-size:1.1rem;color:rgba(255,255,255,.88);line-height:1.7;margin:0 0 32px;max-width:44ch}
-    .dwz-hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-    .dwz-hero-card{background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.22);border-radius:var(--radius-lg);padding:36px 32px;backdrop-filter:blur(12px);display:grid;grid-template-columns:1fr 1fr;gap:20px}
-    .dwz-stat{text-align:center;padding:18px 12px;background:rgba(255,255,255,.08);border-radius:var(--radius);border:1.5px solid rgba(255,255,255,.18)}
-    .dwz-stat-val{font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.4rem);color:var(--teal);line-height:1;display:block;margin-bottom:6px;letter-spacing:.04em}
-    .dwz-stat-label{font-family:var(--font-body);font-size:.82rem;color:rgba(255,255,255,.75);font-weight:700;text-transform:uppercase;letter-spacing:.07em}
-    .dwz-why{background:var(--bg);padding:88px 0}
+    .dwz-hero-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+    .dwz-hero-actions .btn{height:52px;font-size:1rem;padding:0 30px;border-radius:12px}
+    .dwz-hero-carousel{position:relative;width:100%;max-width:380px;justify-self:end;border-radius:var(--radius-lg);overflow:hidden;border:2px solid rgba(255,255,255,.28);background:rgba(0,0,0,.35);backdrop-filter:blur(14px);box-shadow:0 12px 40px rgba(0,0,0,.25)}
+    .dwz-hero-carousel-track{position:relative;width:100%;aspect-ratio:3/4;min-height:240px;max-height:min(60vh,440px)}
+    .dwz-hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .7s ease;pointer-events:none}
+    .dwz-hero-slide.is-active{opacity:1}
+    .dwz-hero-slide img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;padding:0;box-sizing:border-box}
+    .dwz-hero-slide--device img{object-position:center center}
+    .dwz-hero-carousel-dots{position:absolute;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:8px;z-index:2}
+    .dwz-hero-dot{width:9px;height:9px;border-radius:50%;border:2px solid rgba(255,255,255,.85);background:transparent;padding:0;cursor:pointer;transition:background .2s,transform .2s}
+    .dwz-hero-dot:hover{transform:scale(1.15)}
+    .dwz-hero-dot.is-active{background:var(--teal);border-color:var(--black)}
+    .dwz-why{background:var(--bg);padding:52px 0 88px}
     .dwz-why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
     .dwz-why-card{background:var(--card);border:3px solid rgba(0,0,0,.9);border-radius:var(--radius);box-shadow:5px 5px 0 rgba(0,0,0,.9);padding:32px 28px;transition:transform .2s ease,box-shadow .2s ease}
     .dwz-why-card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.9)}
@@ -50,9 +57,12 @@
     .dwz-earn-card--highlight .dwz-earn-card-label{color:rgba(255,255,255,.8)}
     .dwz-reqs{background:var(--bg-alt);padding:88px 0}
     .dwz-reqs-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
-    .dwz-req-card{background:var(--card);border:3px solid rgba(0,0,0,.9);border-radius:var(--radius);box-shadow:5px 5px 0 rgba(0,0,0,.9);padding:28px 26px;transition:transform .2s ease,box-shadow .2s ease}
+    .dwz-req-card{background:var(--card);border:3px solid rgba(0,0,0,.9);border-radius:var(--radius);box-shadow:5px 5px 0 rgba(0,0,0,.9);padding:0;transition:transform .2s ease,box-shadow .2s ease;display:flex;flex-direction:row;align-items:stretch;overflow:hidden}
     .dwz-req-card:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.9)}
-    .dwz-req-card h3{font-family:var(--font-display);font-size:1.2rem;letter-spacing:var(--letter-spacing-heading);margin:0 0 14px;display:flex;align-items:center;gap:10px}
+    .dwz-req-card-body{flex:1;min-width:0;padding:24px 22px;display:flex;flex-direction:column;justify-content:center}
+    .dwz-req-card-visual{flex:0 0 clamp(150px,36%,280px);min-width:150px;min-height:220px;align-self:stretch;border-left:3px solid rgba(0,0,0,.9);background:#1a1224;overflow:hidden}
+    .dwz-req-card-visual img{width:100%;height:100%;min-height:220px;object-fit:cover;object-position:center;display:block;margin:0;border:none;border-radius:0;box-shadow:none}
+    .dwz-req-card h3{font-family:var(--font-display);font-size:1.2rem;letter-spacing:var(--letter-spacing-heading);margin:0 0 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .req-badge{display:inline-flex;height:24px;padding:0 10px;align-items:center;border-radius:999px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:rgba(48,213,200,.9);color:var(--black);border:1.5px solid rgba(0,0,0,.7);font-family:var(--font-body)}
     .dwz-req-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
     .dwz-req-list li{font-family:var(--font-body);font-size:.9rem;color:var(--text-muted);padding-left:18px;position:relative}
@@ -62,8 +72,8 @@
     .dwz-cta p{font-family:var(--font-body);font-size:1.08rem;color:rgba(255,255,255,.88);margin:0 0 36px;line-height:1.65}
     .dwz-cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
     .nav a.active{color:var(--purple);font-weight:700}
-    @media(max-width:1024px){.dwz-hero-grid{grid-template-columns:1fr;gap:40px}.dwz-why-grid{grid-template-columns:1fr 1fr}.dwz-steps{grid-template-columns:1fr 1fr;gap:36px}.dwz-steps::before{display:none}.dwz-earnings-layout{grid-template-columns:1fr;gap:40px}}
-    @media(max-width:768px){.dwz-hero{padding:72px 0 80px}.dwz-hero-card{grid-template-columns:1fr 1fr}.dwz-why-grid{grid-template-columns:1fr}.dwz-steps{grid-template-columns:1fr}.dwz-earnings-cards{grid-template-columns:1fr 1fr}.dwz-reqs-grid{grid-template-columns:1fr}}
+    @media(max-width:1024px){.dwz-hero-grid{grid-template-columns:1fr;gap:40px}.dwz-hero-carousel{max-width:320px;justify-self:center}.dwz-why-grid{grid-template-columns:1fr 1fr}.dwz-steps{grid-template-columns:1fr 1fr;gap:36px}.dwz-steps::before{display:none}.dwz-earnings-layout{grid-template-columns:1fr;gap:40px}}
+    @media(max-width:768px){.dwz-hero{padding:72px 0 48px}.dwz-hero-carousel{max-width:min(100%,280px)}.dwz-hero-carousel-track{min-height:220px;max-height:360px}.dwz-why-grid{grid-template-columns:1fr}.dwz-steps{grid-template-columns:1fr}.dwz-earnings-cards{grid-template-columns:1fr 1fr}.dwz-reqs-grid{grid-template-columns:1fr}.dwz-req-card{flex-direction:column}.dwz-req-card-visual{order:-1;flex:0 0 auto;width:100%;min-width:0;border-left:none;border-bottom:3px solid rgba(0,0,0,.9);min-height:0;aspect-ratio:3/4;max-height:min(52vw,320px)}.dwz-req-card-visual img{min-height:0;height:100%}.dwz-req-card-body{padding:22px 20px}}
   </style>
 </head>
 <body>
@@ -103,11 +113,23 @@
               <a href="#how-it-works" class="btn btn-secondary-cta">How it works</a>
             </div>
           </div>
-          <div class="dwz-hero-card">
-            <div class="dwz-stat"><span class="dwz-stat-val">$320+</span><span class="dwz-stat-label">Avg. weekly earnings</span></div>
-            <div class="dwz-stat"><span class="dwz-stat-val">2,400</span><span class="dwz-stat-label">Active drivers</span></div>
-            <div class="dwz-stat"><span class="dwz-stat-val">48h</span><span class="dwz-stat-label">Avg. onboarding time</span></div>
-            <div class="dwz-stat"><span class="dwz-stat-val">100%</span><span class="dwz-stat-label">Transparent pay</span></div>
+          <div class="dwz-hero-carousel" role="region" aria-roledescription="carousel" aria-label="ZNAPP! driver highlights">
+            <div class="dwz-hero-carousel-track">
+              <div class="dwz-hero-slide is-active" aria-hidden="false">
+                <img src="img/illustrations/driver-comic.png" width="600" height="800" alt="Comic-style illustration of a driver using ZNAPP!" />
+              </div>
+              <div class="dwz-hero-slide" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&q=80" width="800" height="800" alt="Driver on an open road at night" crossorigin="anonymous" referrerpolicy="no-referrer" />
+              </div>
+              <div class="dwz-hero-slide" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80" width="800" height="800" alt="Car dashboard and city night driving" crossorigin="anonymous" referrerpolicy="no-referrer" />
+              </div>
+            </div>
+            <div class="dwz-hero-carousel-dots" role="tablist" aria-label="Choose slide">
+              <button type="button" class="dwz-hero-dot is-active" role="tab" aria-selected="true" aria-label="Slide 1"></button>
+              <button type="button" class="dwz-hero-dot" role="tab" aria-selected="false" aria-label="Slide 2"></button>
+              <button type="button" class="dwz-hero-dot" role="tab" aria-selected="false" aria-label="Slide 3"></button>
+            </div>
           </div>
         </div>
       </div>
@@ -186,10 +208,34 @@
           <p class="section-sub">We keep the bar straightforward. If you can legally drive, you're most of the way there.</p>
         </div>
         <div class="dwz-reqs-grid">
-          <div class="dwz-req-card"><h3>Documents <span class="req-badge">Required</span></h3><ul class="dwz-req-list"><li>Valid driver's license (not expired)</li><li>Current vehicle registration in your name</li><li>Proof of active auto insurance</li><li>Government-issued photo ID</li></ul></div>
-          <div class="dwz-req-card"><h3>Vehicle <span class="req-badge">Required</span></h3><ul class="dwz-req-list"><li>4-door vehicle, 2010 or newer</li><li>Pass a basic safety inspection</li><li>Clean interior and exterior</li><li>Working seatbelts in all seats</li></ul></div>
-          <div class="dwz-req-card"><h3>Background check <span class="req-badge">Required</span></h3><ul class="dwz-req-list"><li>Standard criminal background check</li><li>Clean driving record (last 3 years)</li><li>No major traffic violations</li><li>We'll help you complete the process</li></ul></div>
-          <div class="dwz-req-card"><h3>Device <span class="req-badge">Needed</span></h3><ul class="dwz-req-list"><li>iPhone (iOS 14+) or Android (8.0+)</li><li>Active data plan for in-trip navigation</li><li>Phone mount recommended (not required)</li><li>Charging cable for long shifts</li></ul></div>
+          <div class="dwz-req-card">
+            <div class="dwz-req-card-body">
+              <h3>Documents <span class="req-badge">Required</span></h3>
+              <ul class="dwz-req-list"><li>Valid driver's license (not expired)</li><li>Current vehicle registration in your name</li><li>Proof of active auto insurance</li><li>Government-issued photo ID</li></ul>
+            </div>
+            <div class="dwz-req-card-visual"><img src="img/illustrations/driver-comic.png" width="200" height="200" alt="" loading="lazy" /></div>
+          </div>
+          <div class="dwz-req-card">
+            <div class="dwz-req-card-body">
+              <h3>Vehicle <span class="req-badge">Required</span></h3>
+              <ul class="dwz-req-list"><li>4-door vehicle, 2010 or newer</li><li>Pass a basic safety inspection</li><li>Clean interior and exterior</li><li>Working seatbelts in all seats</li></ul>
+            </div>
+            <div class="dwz-req-card-visual"><img src="img/illustrations/driver-comic.png" width="200" height="200" alt="" loading="lazy" /></div>
+          </div>
+          <div class="dwz-req-card">
+            <div class="dwz-req-card-body">
+              <h3>Background check <span class="req-badge">Required</span></h3>
+              <ul class="dwz-req-list"><li>Standard criminal background check</li><li>Clean driving record (last 3 years)</li><li>No major traffic violations</li><li>We'll help you complete the process</li></ul>
+            </div>
+            <div class="dwz-req-card-visual"><img src="img/illustrations/driver-comic.png" width="200" height="200" alt="" loading="lazy" /></div>
+          </div>
+          <div class="dwz-req-card">
+            <div class="dwz-req-card-body">
+              <h3>Device <span class="req-badge">Needed</span></h3>
+              <ul class="dwz-req-list"><li>iPhone (iOS 14+) or Android (8.0+)</li><li>Active data plan for in-trip navigation</li><li>Phone mount recommended (not required)</li><li>Charging cable for long shifts</li></ul>
+            </div>
+            <div class="dwz-req-card-visual"><img src="img/illustrations/driver-comic.png" width="200" height="200" alt="" loading="lazy" /></div>
+          </div>
         </div>
       </div>
     </section>
@@ -256,6 +302,55 @@
         t.addEventListener('click',function(){this.classList.toggle('active');n.classList.toggle('mobile-open')});
         n.querySelectorAll('a').forEach(l=>l.addEventListener('click',()=>{t.classList.remove('active');n.classList.remove('mobile-open')}));
         document.addEventListener('click',function(e){if(!n.contains(e.target)&&!t.contains(e.target)){t.classList.remove('active');n.classList.remove('mobile-open')}});
+      }
+    })();
+
+    (function(){
+      var root = document.querySelector('.dwz-hero-carousel');
+      if (!root) return;
+      var slides = root.querySelectorAll('.dwz-hero-slide');
+      var dots = root.querySelectorAll('.dwz-hero-dot');
+      if (!slides.length) return;
+      var i = 0;
+      var timer;
+
+      function show(idx){
+        idx = (idx + slides.length) % slides.length;
+        slides[i].classList.remove('is-active');
+        slides[i].setAttribute('aria-hidden', 'true');
+        if (dots[i]) {
+          dots[i].classList.remove('is-active');
+          dots[i].setAttribute('aria-selected', 'false');
+        }
+        i = idx;
+        slides[i].classList.add('is-active');
+        slides[i].setAttribute('aria-hidden', 'false');
+        if (dots[i]) {
+          dots[i].classList.add('is-active');
+          dots[i].setAttribute('aria-selected', 'true');
+        }
+      }
+
+      function next(){ show(i + 1); }
+
+      function arm(){
+        clearInterval(timer);
+        timer = setInterval(next, 4500);
+      }
+
+      dots.forEach(function(d, idx){
+        d.addEventListener('click', function(){
+          show(idx);
+          arm();
+        });
+      });
+
+      root.addEventListener('mouseenter', function(){ clearInterval(timer); });
+      root.addEventListener('mouseleave', arm);
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        /* Dots still work; no auto-advance */
+      } else {
+        arm();
       }
     })();
   </script>
